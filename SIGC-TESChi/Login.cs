@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,52 @@ namespace SIGC_TESChi
         public Login()
         {
             InitializeComponent();
+
+            // Configurar transparencia
+            this.FormBorderStyle = FormBorderStyle.None;              // Sin bordes
+            this.StartPosition = FormStartPosition.CenterScreen;      // Centrado
+            this.BackColor = Color.Black;                             // Color de fondo (se puede cambiar)
+            this.TransparencyKey = this.BackColor;                    // Hace invisible el color de fondo
+            this.TopMost = true;
+
+            pnlLogin.BackColor = Color.Transparent;
+
+            // Agregamos evento de pintado personalizado
+            pnlLogin.Paint += PnlLogin_Paint;
+
+        }
+
+        private void PnlLogin_Paint(object sender, PaintEventArgs e)
+        {
+            Panel panel = sender as Panel;
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+
+            // Color de fondo con transparencia
+            Color colorInicio = Color.FromArgb(150, 30, 0, 60); // RGBA
+            Color colorFin = Color.FromArgb(150, 50, 0, 150);
+
+            using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle, colorInicio, colorFin, LinearGradientMode.Vertical))
+            {
+                using (GraphicsPath path = GetRoundedRectanglePath(panel.ClientRectangle, 30))
+                {
+                    e.Graphics.FillPath(brush, path);
+                }
+            }
+        }
+
+        // Función para crear un rectángulo con bordes redondeados
+        private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
+        {
+            GraphicsPath path = new GraphicsPath();
+            int diameter = radius * 2;
+
+            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
+            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
+            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
+            path.CloseFigure();
+
+            return path;
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -60,7 +107,7 @@ namespace SIGC_TESChi
                     {
                         string tipoUsuario = reader["dTipoUsuario"].ToString();
 
-                        MessageBox.Show("Bienvenido " + tipoUsuario, "Acceso permitido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //MessageBox.Show("Bienvenido " + tipoUsuario, "Acceso permitido", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         // Abrir formulario Menu
                         Menu menu = new Menu();
@@ -70,7 +117,7 @@ namespace SIGC_TESChi
                     }
                     else
                     {
-                        MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        //MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -86,6 +133,11 @@ namespace SIGC_TESChi
         }
 
         private void txtboxPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnlLogin_Paint(object sender, PaintEventArgs e)
         {
 
         }
