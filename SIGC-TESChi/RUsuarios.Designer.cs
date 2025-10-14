@@ -1,6 +1,6 @@
 ﻿namespace SIGC_TESChi
 {
-    partial class Lobby
+    partial class RUsuarios
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -34,18 +34,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(588, 213);
+            this.label1.Location = new System.Drawing.Point(497, 178);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 16);
+            this.label1.Size = new System.Drawing.Size(181, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Vende Tele ";
+            this.label1.Text = "Ayuda me siento de la verga ";
             // 
-            // Lobby
+            // RUsuarios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Name = "Lobby";
+            this.Name = "RUsuarios";
             this.Size = new System.Drawing.Size(1672, 1006);
             this.ResumeLayout(false);
             this.PerformLayout();

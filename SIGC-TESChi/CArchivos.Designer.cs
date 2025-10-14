@@ -1,6 +1,6 @@
 ﻿namespace SIGC_TESChi
 {
-    partial class Lobby
+    partial class CArchivos
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -34,18 +34,18 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(588, 213);
+            this.label1.Location = new System.Drawing.Point(564, 130);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(81, 16);
+            this.label1.Size = new System.Drawing.Size(142, 16);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Vende Tele ";
+            this.label1.Text = "Temas muy Profundas";
             // 
-            // Lobby
+            // CArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Name = "Lobby";
+            this.Name = "CArchivos";
             this.Size = new System.Drawing.Size(1672, 1006);
             this.ResumeLayout(false);
             this.PerformLayout();
