@@ -16,5 +16,10 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
         }
+
+        private void Lobby_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

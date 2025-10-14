@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.MenuControl = new System.Windows.Forms.Panel();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnLobby = new System.Windows.Forms.Button();
             this.Categorias = new System.Windows.Forms.Panel();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -47,8 +47,18 @@
             this.MenuControl.Controls.Add(this.Categorias);
             this.MenuControl.Location = new System.Drawing.Point(1, 1);
             this.MenuControl.Name = "MenuControl";
-            this.MenuControl.Size = new System.Drawing.Size(1879, 1052);
+            this.MenuControl.Size = new System.Drawing.Size(1428, 900);
             this.MenuControl.TabIndex = 0;
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(1313, 9);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(101, 23);
+            this.btnCerrarSesion.TabIndex = 0;
+            this.btnCerrarSesion.Text = "Cerrar Sesion";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // btnCArchivos
             // 
@@ -83,26 +93,16 @@
             // Categorias
             // 
             this.Categorias.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Categorias.Location = new System.Drawing.Point(206, 45);
+            this.Categorias.Location = new System.Drawing.Point(173, 45);
             this.Categorias.Name = "Categorias";
-            this.Categorias.Size = new System.Drawing.Size(1672, 1006);
+            this.Categorias.Size = new System.Drawing.Size(1248, 801);
             this.Categorias.TabIndex = 0;
-            // 
-            // btnCerrarSesion
-            // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(1766, 9);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(101, 23);
-            this.btnCerrarSesion.TabIndex = 0;
-            this.btnCerrarSesion.Text = "Cerrar Sesion";
-            this.btnCerrarSesion.UseVisualStyleBackColor = true;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1882, 1055);
+            this.ClientSize = new System.Drawing.Size(1429, 853);
             this.Controls.Add(this.MenuControl);
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
