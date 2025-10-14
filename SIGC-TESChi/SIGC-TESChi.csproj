@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -46,12 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archivos.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Archivos.Designer.cs">
-      <DependentUpon>Archivos.cs</DependentUpon>
-    </Compile>
     <Compile Include="CArchivos.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -82,6 +91,16 @@
     <Compile Include="RUsuarios.Designer.cs">
       <DependentUpon>RUsuarios.cs</DependentUpon>
     </Compile>
+    <Compile Include="SGCTESCHIDataSet.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SGCTESCHIDataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,12 +109,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Usuarios.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Usuarios.Designer.cs">
-      <DependentUpon>Usuarios.cs</DependentUpon>
-    </Compile>
     <EmbeddedResource Include="CArchivos.resx">
       <DependentUpon>CArchivos.cs</DependentUpon>
     </EmbeddedResource>
@@ -132,9 +145,43 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="SGCTESCHIDataSet.xsc">
+      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet.xss">
+      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet1.xsc">
+      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet1.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet1.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet1.xss">
+      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 y x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
