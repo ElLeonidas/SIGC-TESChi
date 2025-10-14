@@ -29,16 +29,18 @@
         private void InitializeComponent()
         {
             this.MenuControl = new System.Windows.Forms.Panel();
-            this.Categorias = new System.Windows.Forms.Panel();
-            this.btnLobby = new System.Windows.Forms.Button();
-            this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnCArchivos = new System.Windows.Forms.Button();
+            this.btnRUsuarios = new System.Windows.Forms.Button();
+            this.btnLobby = new System.Windows.Forms.Button();
+            this.Categorias = new System.Windows.Forms.Panel();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuControl
             // 
             this.MenuControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MenuControl.Controls.Add(this.btnCerrarSesion);
             this.MenuControl.Controls.Add(this.btnCArchivos);
             this.MenuControl.Controls.Add(this.btnRUsuarios);
             this.MenuControl.Controls.Add(this.btnLobby);
@@ -48,23 +50,15 @@
             this.MenuControl.Size = new System.Drawing.Size(1879, 1052);
             this.MenuControl.TabIndex = 0;
             // 
-            // Categorias
+            // btnCArchivos
             // 
-            this.Categorias.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.Categorias.Location = new System.Drawing.Point(206, 45);
-            this.Categorias.Name = "Categorias";
-            this.Categorias.Size = new System.Drawing.Size(1672, 1006);
-            this.Categorias.TabIndex = 0;
-            // 
-            // btnLobby
-            // 
-            this.btnLobby.Location = new System.Drawing.Point(9, 45);
-            this.btnLobby.Name = "btnLobby";
-            this.btnLobby.Size = new System.Drawing.Size(75, 23);
-            this.btnLobby.TabIndex = 0;
-            this.btnLobby.Text = "Lobby";
-            this.btnLobby.UseVisualStyleBackColor = true;
-            this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
+            this.btnCArchivos.Location = new System.Drawing.Point(9, 121);
+            this.btnCArchivos.Name = "btnCArchivos";
+            this.btnCArchivos.Size = new System.Drawing.Size(75, 23);
+            this.btnCArchivos.TabIndex = 0;
+            this.btnCArchivos.Text = "Control de Archivos ";
+            this.btnCArchivos.UseVisualStyleBackColor = true;
+            this.btnCArchivos.Click += new System.EventHandler(this.btnCArchivos_Click);
             // 
             // btnRUsuarios
             // 
@@ -76,15 +70,33 @@
             this.btnRUsuarios.UseVisualStyleBackColor = true;
             this.btnRUsuarios.Click += new System.EventHandler(this.btnRUsuarios_Click);
             // 
-            // btnCArchivos
+            // btnLobby
             // 
-            this.btnCArchivos.Location = new System.Drawing.Point(9, 121);
-            this.btnCArchivos.Name = "btnCArchivos";
-            this.btnCArchivos.Size = new System.Drawing.Size(75, 23);
-            this.btnCArchivos.TabIndex = 0;
-            this.btnCArchivos.Text = "Control de Archivos ";
-            this.btnCArchivos.UseVisualStyleBackColor = true;
-            this.btnCArchivos.Click += new System.EventHandler(this.btnCArchivos_Click);
+            this.btnLobby.Location = new System.Drawing.Point(9, 45);
+            this.btnLobby.Name = "btnLobby";
+            this.btnLobby.Size = new System.Drawing.Size(75, 23);
+            this.btnLobby.TabIndex = 0;
+            this.btnLobby.Text = "Lobby";
+            this.btnLobby.UseVisualStyleBackColor = true;
+            this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
+            // 
+            // Categorias
+            // 
+            this.Categorias.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Categorias.Location = new System.Drawing.Point(206, 45);
+            this.Categorias.Name = "Categorias";
+            this.Categorias.Size = new System.Drawing.Size(1672, 1006);
+            this.Categorias.TabIndex = 0;
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(1766, 9);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(101, 23);
+            this.btnCerrarSesion.TabIndex = 0;
+            this.btnCerrarSesion.Text = "Cerrar Sesion";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // Menu
             // 
@@ -107,5 +119,6 @@
         private System.Windows.Forms.Button btnCArchivos;
         private System.Windows.Forms.Button btnRUsuarios;
         private System.Windows.Forms.Button btnLobby;
+        private System.Windows.Forms.Button btnCerrarSesion;
     }
 }
