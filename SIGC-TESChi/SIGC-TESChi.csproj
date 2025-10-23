@@ -101,6 +101,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SGCTESCHIDataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +171,17 @@
     </None>
     <None Include="SGCTESCHIDataSet1.xss">
       <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet2.xsc">
+      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet2.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet2.xss">
+      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

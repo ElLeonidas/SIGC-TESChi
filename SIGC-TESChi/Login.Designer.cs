@@ -35,6 +35,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pnlLogin = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.pnlLogin.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -101,6 +102,7 @@
             // 
             this.pnlLogin.BackColor = System.Drawing.Color.Transparent;
             this.pnlLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pnlLogin.Controls.Add(this.button1);
             this.pnlLogin.Controls.Add(this.labelLogin);
             this.pnlLogin.Controls.Add(this.btnIniciarSesion);
             this.pnlLogin.Controls.Add(this.label2);
@@ -112,6 +114,15 @@
             this.pnlLogin.Size = new System.Drawing.Size(379, 473);
             this.pnlLogin.TabIndex = 6;
             this.pnlLogin.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlLogin_Paint);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(334, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(30, 23);
+            this.button1.TabIndex = 6;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Login
             // 
@@ -138,5 +149,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel pnlLogin;
+        private System.Windows.Forms.Button button1;
     }
 }

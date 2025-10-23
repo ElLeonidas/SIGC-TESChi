@@ -28,7 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.MenuControl = new System.Windows.Forms.Panel();
+            this.btnSecciones = new System.Windows.Forms.Button();
+            this.btnUbicaciones = new System.Windows.Forms.Button();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
@@ -40,6 +43,8 @@
             // MenuControl
             // 
             this.MenuControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MenuControl.Controls.Add(this.btnSecciones);
+            this.MenuControl.Controls.Add(this.btnUbicaciones);
             this.MenuControl.Controls.Add(this.btnCerrarSesion);
             this.MenuControl.Controls.Add(this.btnCArchivos);
             this.MenuControl.Controls.Add(this.btnRUsuarios);
@@ -49,6 +54,24 @@
             this.MenuControl.Name = "MenuControl";
             this.MenuControl.Size = new System.Drawing.Size(1428, 900);
             this.MenuControl.TabIndex = 0;
+            // 
+            // btnSecciones
+            // 
+            this.btnSecciones.Location = new System.Drawing.Point(27, 317);
+            this.btnSecciones.Name = "btnSecciones";
+            this.btnSecciones.Size = new System.Drawing.Size(85, 23);
+            this.btnSecciones.TabIndex = 2;
+            this.btnSecciones.Text = "Secciones";
+            this.btnSecciones.UseVisualStyleBackColor = true;
+            // 
+            // btnUbicaciones
+            // 
+            this.btnUbicaciones.Location = new System.Drawing.Point(27, 236);
+            this.btnUbicaciones.Name = "btnUbicaciones";
+            this.btnUbicaciones.Size = new System.Drawing.Size(96, 23);
+            this.btnUbicaciones.TabIndex = 1;
+            this.btnUbicaciones.Text = "Ubicaciones";
+            this.btnUbicaciones.UseVisualStyleBackColor = true;
             // 
             // btnCerrarSesion
             // 
@@ -62,7 +85,7 @@
             // 
             // btnCArchivos
             // 
-            this.btnCArchivos.Location = new System.Drawing.Point(9, 121);
+            this.btnCArchivos.Location = new System.Drawing.Point(48, 185);
             this.btnCArchivos.Name = "btnCArchivos";
             this.btnCArchivos.Size = new System.Drawing.Size(75, 23);
             this.btnCArchivos.TabIndex = 0;
@@ -72,17 +95,20 @@
             // 
             // btnRUsuarios
             // 
-            this.btnRUsuarios.Location = new System.Drawing.Point(9, 83);
+            this.btnRUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRUsuarios.BackgroundImage")));
+            this.btnRUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btnRUsuarios.Location = new System.Drawing.Point(9, 103);
             this.btnRUsuarios.Name = "btnRUsuarios";
-            this.btnRUsuarios.Size = new System.Drawing.Size(75, 23);
+            this.btnRUsuarios.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.btnRUsuarios.Size = new System.Drawing.Size(158, 61);
             this.btnRUsuarios.TabIndex = 0;
-            this.btnRUsuarios.Text = "Usuarios";
+            this.btnRUsuarios.Tag = "Usuarios";
             this.btnRUsuarios.UseVisualStyleBackColor = true;
             this.btnRUsuarios.Click += new System.EventHandler(this.btnRUsuarios_Click);
             // 
             // btnLobby
             // 
-            this.btnLobby.Location = new System.Drawing.Point(9, 45);
+            this.btnLobby.Location = new System.Drawing.Point(48, 55);
             this.btnLobby.Name = "btnLobby";
             this.btnLobby.Size = new System.Drawing.Size(75, 23);
             this.btnLobby.TabIndex = 0;
@@ -120,5 +146,7 @@
         private System.Windows.Forms.Button btnRUsuarios;
         private System.Windows.Forms.Button btnLobby;
         private System.Windows.Forms.Button btnCerrarSesion;
+        private System.Windows.Forms.Button btnUbicaciones;
+        private System.Windows.Forms.Button btnSecciones;
     }
 }
