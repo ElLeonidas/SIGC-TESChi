@@ -75,11 +75,12 @@
             // 
             // btnCerrarSesion
             // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(1313, 9);
+            this.btnCerrarSesion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCerrarSesion.BackgroundImage")));
+            this.btnCerrarSesion.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnCerrarSesion.Location = new System.Drawing.Point(1378, 9);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(101, 23);
+            this.btnCerrarSesion.Size = new System.Drawing.Size(36, 30);
             this.btnCerrarSesion.TabIndex = 0;
-            this.btnCerrarSesion.Text = "Cerrar Sesion";
             this.btnCerrarSesion.UseVisualStyleBackColor = true;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
@@ -97,10 +98,10 @@
             // 
             this.btnRUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRUsuarios.BackgroundImage")));
             this.btnRUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnRUsuarios.Location = new System.Drawing.Point(9, 103);
+            this.btnRUsuarios.Location = new System.Drawing.Point(9, 114);
             this.btnRUsuarios.Name = "btnRUsuarios";
             this.btnRUsuarios.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnRUsuarios.Size = new System.Drawing.Size(158, 61);
+            this.btnRUsuarios.Size = new System.Drawing.Size(58, 52);
             this.btnRUsuarios.TabIndex = 0;
             this.btnRUsuarios.Tag = "Usuarios";
             this.btnRUsuarios.UseVisualStyleBackColor = true;

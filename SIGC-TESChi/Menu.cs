@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using ToolTip = System.Windows.Forms.ToolTip;
 
 namespace SIGC_TESChi
@@ -13,27 +12,40 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            // Inicializamos el ToolTip
             toolTip = new ToolTip();
-            toolTip.AutoPopDelay = 5000;  // visible por 5 segundos
-            toolTip.InitialDelay = 200;   // aparece tras 0.2 segundos
-            toolTip.ReshowDelay = 100;    // retardo entre botones
-            toolTip.ShowAlways = true;    // siempre visible
+            toolTip.AutoPopDelay = 5000;  // Visible 5 segundos
+            toolTip.InitialDelay = 200;   // Aparece tras 0.2 segundos
+            toolTip.ReshowDelay = 100;    // Retardo entre botones
+            toolTip.ShowAlways = true;    // Siempre visible
+
+            // Asignar eventos de mouse para mostrar tooltips
+            btnLobby.MouseEnter += (s, e) => toolTip.Show("Ir al Lobby principal", btnLobby);
+            btnLobby.MouseLeave += (s, e) => toolTip.Hide(btnLobby);
+
+            btnRUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar nuevos usuarios", btnRUsuarios);
+            btnRUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnRUsuarios);
+
+            btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Consultar archivos del sistema", btnCArchivos);
+            btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
+
+            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Consultar ubicaciones de los archivos", btnUbicaciones);
+            btnUbicaciones.MouseLeave += (s, e) => toolTip.Hide(btnUbicaciones);
+
+            btnSecciones.MouseEnter += (s, e) => toolTip.Show("Consultar secciones de los archivos", btnSecciones);
+            btnSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSecciones);
+
+            btnCerrarSesion.MouseEnter += (s, e) => toolTip.Show("Cerrar sesión", btnCerrarSesion);
+            btnCerrarSesion.MouseLeave += (s, e) => toolTip.Hide(btnCerrarSesion);
         }
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            // Carga por defecto el Lobby al abrir el menú
+            // Carga el panel por defecto al iniciar
             LoadPanel(new Lobby());
-
-            // ✅ Asigna los textos aquí (solo una vez al cargar el formulario)
-            toolTip.SetToolTip(btnLobby, "Ir al Lobby principal");
-            toolTip.SetToolTip(btnRUsuarios, "Registrar nuevos usuarios");
-            toolTip.SetToolTip(btnCArchivos, "Consultar archivos del sistema");
-            toolTip.SetToolTip(btnUbicaciones, "Consultar ubicaciones de los archivos");
-            toolTip.SetToolTip(btnSecciones, "Consultar secciones de los archivos");
         }
 
-        // 👉 Método para cargar cualquier UserControl en el panel Categorias
+        // Método para cargar cualquier UserControl en el panel Categorias
         private void LoadPanel(UserControl control)
         {
             Categorias.Controls.Clear();      // Limpia el panel
@@ -64,3 +76,4 @@ namespace SIGC_TESChi
         }
     }
 }
+
