@@ -74,6 +74,21 @@ namespace SIGC_TESChi
             loginForm.Show();
             this.Hide();
         }
+
+        private void btnSecciones_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnUbicaciones_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new Ubicaciones());
+        }
+
+        private void btnEstadistica_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

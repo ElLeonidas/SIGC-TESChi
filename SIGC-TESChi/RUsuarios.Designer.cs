@@ -66,7 +66,7 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1248, 801);
+            this.panel1.Size = new System.Drawing.Size(1356, 845);
             this.panel1.TabIndex = 1;
             // 
             // flowLayoutPanel1
@@ -75,7 +75,7 @@
             this.flowLayoutPanel1.Controls.Add(this.TablaUsuarios);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 348);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1238, 446);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1346, 498);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // TablaUsuarios
@@ -140,7 +140,7 @@
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1238, 323);
+            this.panel2.Size = new System.Drawing.Size(1346, 323);
             this.panel2.TabIndex = 1;
             // 
             // usuarioTableAdapter
@@ -153,7 +153,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Name = "RUsuarios";
-            this.Size = new System.Drawing.Size(1248, 801);
+            this.Size = new System.Drawing.Size(1356, 848);
+            this.Load += new System.EventHandler(this.RUsuarios_Load_1);
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).EndInit();

@@ -43,5 +43,10 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error al cargar usuarios: " + ex.Message);
             }
         }
+
+        private void RUsuarios_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }

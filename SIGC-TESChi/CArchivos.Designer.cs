@@ -33,9 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panelTablaCArchivos = new System.Windows.Forms.Panel();
             this.TablaArchivos = new System.Windows.Forms.DataGridView();
-            this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
-            this.controlBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
             this.idcontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.añocontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cUAcontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -51,11 +48,14 @@
             this.observacionesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idEstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idPersonalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.controlBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
+            this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
             this.panel1.SuspendLayout();
             this.panelTablaCArchivos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -74,7 +74,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1248, 801);
+            this.panel1.Size = new System.Drawing.Size(1356, 848);
             this.panel1.TabIndex = 1;
             // 
             // panelTablaCArchivos
@@ -113,20 +113,6 @@
             this.TablaArchivos.Size = new System.Drawing.Size(1214, 150);
             this.TablaArchivos.TabIndex = 0;
             this.TablaArchivos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // sGCTESCHIDataSet2
-            // 
-            this.sGCTESCHIDataSet2.DataSetName = "SGCTESCHIDataSet2";
-            this.sGCTESCHIDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // controlBindingSource
-            // 
-            this.controlBindingSource.DataMember = "Control";
-            this.controlBindingSource.DataSource = this.sGCTESCHIDataSet2;
-            // 
-            // controlTableAdapter
-            // 
-            this.controlTableAdapter.ClearBeforeFill = true;
             // 
             // idcontrolDataGridViewTextBoxColumn
             // 
@@ -250,6 +236,20 @@
             this.idPersonalDataGridViewTextBoxColumn.Name = "idPersonalDataGridViewTextBoxColumn";
             this.idPersonalDataGridViewTextBoxColumn.Width = 125;
             // 
+            // controlBindingSource
+            // 
+            this.controlBindingSource.DataMember = "Control";
+            this.controlBindingSource.DataSource = this.sGCTESCHIDataSet2;
+            // 
+            // sGCTESCHIDataSet2
+            // 
+            this.sGCTESCHIDataSet2.DataSetName = "SGCTESCHIDataSet2";
+            this.sGCTESCHIDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // controlTableAdapter
+            // 
+            this.controlTableAdapter.ClearBeforeFill = true;
+            // 
             // CArchivos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -261,8 +261,8 @@
             this.panel1.PerformLayout();
             this.panelTablaCArchivos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).EndInit();
             this.ResumeLayout(false);
 
         }

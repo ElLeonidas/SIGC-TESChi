@@ -114,6 +114,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ubicaciones.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Ubicaciones.Designer.cs">
+      <DependentUpon>Ubicaciones.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="CArchivos.resx">
       <DependentUpon>CArchivos.cs</DependentUpon>
     </EmbeddedResource>
@@ -140,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ubicaciones.resx">
+      <DependentUpon>Ubicaciones.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
