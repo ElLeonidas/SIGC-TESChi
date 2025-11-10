@@ -48,5 +48,10 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error al cargar usuarios: " + ex.Message);
             }
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
