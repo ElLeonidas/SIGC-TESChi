@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RUsuarios));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -41,6 +42,13 @@
             this.idUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contrasenaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comboTipoUsuario = new System.Windows.Forms.ComboBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnLimpiar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
@@ -53,7 +61,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 39);
+            this.label1.Location = new System.Drawing.Point(3, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(181, 16);
             this.label1.TabIndex = 0;
@@ -66,7 +74,7 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1249, 849);
+            this.panel1.Size = new System.Drawing.Size(1255, 849);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
@@ -111,10 +119,17 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btnLimpiar);
+            this.panel2.Controls.Add(this.btnEliminar);
+            this.panel2.Controls.Add(this.btnModificar);
+            this.panel2.Controls.Add(this.btnAgregar);
+            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.textBox1);
+            this.panel2.Controls.Add(this.comboTipoUsuario);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1244, 323);
+            this.panel2.Size = new System.Drawing.Size(1245, 323);
             this.panel2.TabIndex = 1;
             // 
             // usuarioTableAdapter
@@ -147,6 +162,70 @@
             this.contrasenaDataGridViewTextBoxColumn.Name = "contrasenaDataGridViewTextBoxColumn";
             this.contrasenaDataGridViewTextBoxColumn.ReadOnly = true;
             this.contrasenaDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // comboTipoUsuario
+            // 
+            this.comboTipoUsuario.FormattingEnabled = true;
+            this.comboTipoUsuario.Location = new System.Drawing.Point(422, 71);
+            this.comboTipoUsuario.Name = "comboTipoUsuario";
+            this.comboTipoUsuario.Size = new System.Drawing.Size(121, 24);
+            this.comboTipoUsuario.TabIndex = 1;
+            this.comboTipoUsuario.SelectedIndexChanged += new System.EventHandler(this.comboTipoUsuario_SelectedIndexChanged);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(422, 33);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(121, 22);
+            this.textBox1.TabIndex = 2;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(422, 110);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(121, 22);
+            this.textBox2.TabIndex = 3;
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
+            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAgregar.Location = new System.Drawing.Point(648, 48);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(50, 50);
+            this.btnAgregar.TabIndex = 4;
+            this.btnAgregar.UseVisualStyleBackColor = true;
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
+            this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnModificar.Location = new System.Drawing.Point(648, 104);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(50, 50);
+            this.btnModificar.TabIndex = 5;
+            this.btnModificar.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
+            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEliminar.Location = new System.Drawing.Point(729, 48);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(50, 50);
+            this.btnEliminar.TabIndex = 6;
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            this.btnEliminar.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
+            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLimpiar.Location = new System.Drawing.Point(729, 104);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(50, 50);
+            this.btnLimpiar.TabIndex = 7;
+            this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
             // RUsuarios
             // 
@@ -182,5 +261,12 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn idUsuarioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn contrasenaDataGridViewTextBoxColumn;
+        private System.Windows.Forms.ComboBox comboTipoUsuario;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnLimpiar;
+        private System.Windows.Forms.Button btnEliminar;
+        private System.Windows.Forms.Button btnModificar;
+        private System.Windows.Forms.Button btnAgregar;
     }
 }
