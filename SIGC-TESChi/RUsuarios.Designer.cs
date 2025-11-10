@@ -33,14 +33,14 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.TablaUsuarios = new System.Windows.Forms.DataGridView();
-            this.idUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contrasenaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.usuarioBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.sGCTESCHIDataSet1 = new SIGC_TESChi.SGCTESCHIDataSet1();
             this.panel2 = new System.Windows.Forms.Panel();
             this.dataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.usuarioTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet1TableAdapters.UsuarioTableAdapter();
+            this.idUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.contrasenaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
@@ -66,16 +66,17 @@
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1356, 845);
+            this.panel1.Size = new System.Drawing.Size(1249, 849);
             this.panel1.TabIndex = 1;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.flowLayoutPanel1.Controls.Add(this.TablaUsuarios);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 348);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 347);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1346, 498);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(1245, 495);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // TablaUsuarios
@@ -94,35 +95,8 @@
             this.TablaUsuarios.ReadOnly = true;
             this.TablaUsuarios.RowHeadersWidth = 51;
             this.TablaUsuarios.RowTemplate.Height = 24;
-            this.TablaUsuarios.Size = new System.Drawing.Size(604, 150);
+            this.TablaUsuarios.Size = new System.Drawing.Size(1240, 490);
             this.TablaUsuarios.TabIndex = 0;
-            // 
-            // idUsuarioDataGridViewTextBoxColumn
-            // 
-            this.idUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idUsuario";
-            this.idUsuarioDataGridViewTextBoxColumn.HeaderText = "idUsuario";
-            this.idUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idUsuarioDataGridViewTextBoxColumn.Name = "idUsuarioDataGridViewTextBoxColumn";
-            this.idUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idTipoUsuarioDataGridViewTextBoxColumn
-            // 
-            this.idTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Name = "idTipoUsuarioDataGridViewTextBoxColumn";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // contrasenaDataGridViewTextBoxColumn
-            // 
-            this.contrasenaDataGridViewTextBoxColumn.DataPropertyName = "contrasena";
-            this.contrasenaDataGridViewTextBoxColumn.HeaderText = "contrasena";
-            this.contrasenaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.contrasenaDataGridViewTextBoxColumn.Name = "contrasenaDataGridViewTextBoxColumn";
-            this.contrasenaDataGridViewTextBoxColumn.ReadOnly = true;
-            this.contrasenaDataGridViewTextBoxColumn.Width = 125;
             // 
             // usuarioBindingSource
             // 
@@ -140,12 +114,39 @@
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1346, 323);
+            this.panel2.Size = new System.Drawing.Size(1244, 323);
             this.panel2.TabIndex = 1;
             // 
             // usuarioTableAdapter
             // 
             this.usuarioTableAdapter.ClearBeforeFill = true;
+            // 
+            // idUsuarioDataGridViewTextBoxColumn
+            // 
+            this.idUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idUsuario";
+            this.idUsuarioDataGridViewTextBoxColumn.HeaderText = "Usuario";
+            this.idUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idUsuarioDataGridViewTextBoxColumn.Name = "idUsuarioDataGridViewTextBoxColumn";
+            this.idUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idUsuarioDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // idTipoUsuarioDataGridViewTextBoxColumn
+            // 
+            this.idTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idTipoUsuario";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "TipoUsuario";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idTipoUsuarioDataGridViewTextBoxColumn.Name = "idTipoUsuarioDataGridViewTextBoxColumn";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idTipoUsuarioDataGridViewTextBoxColumn.Width = 200;
+            // 
+            // contrasenaDataGridViewTextBoxColumn
+            // 
+            this.contrasenaDataGridViewTextBoxColumn.DataPropertyName = "contrasena";
+            this.contrasenaDataGridViewTextBoxColumn.HeaderText = "contrasena";
+            this.contrasenaDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.contrasenaDataGridViewTextBoxColumn.Name = "contrasenaDataGridViewTextBoxColumn";
+            this.contrasenaDataGridViewTextBoxColumn.ReadOnly = true;
+            this.contrasenaDataGridViewTextBoxColumn.Width = 200;
             // 
             // RUsuarios
             // 
@@ -153,7 +154,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Name = "RUsuarios";
-            this.Size = new System.Drawing.Size(1356, 848);
+            this.Size = new System.Drawing.Size(1255, 849);
             this.Load += new System.EventHandler(this.RUsuarios_Load_1);
             this.panel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -174,12 +175,12 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView TablaUsuarios;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idUsuarioDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn contrasenaDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource usuarioBindingSource;
         private SGCTESCHIDataSet1 sGCTESCHIDataSet1;
         private System.Windows.Forms.BindingSource dataSet1BindingSource;
         private SGCTESCHIDataSet1TableAdapters.UsuarioTableAdapter usuarioTableAdapter;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idUsuarioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn contrasenaDataGridViewTextBoxColumn;
     }
 }

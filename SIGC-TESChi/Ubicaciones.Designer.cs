@@ -47,7 +47,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
             this.Name = "Ubicaciones";
-            this.Size = new System.Drawing.Size(1339, 688);
+            this.Size = new System.Drawing.Size(1249, 838);
             this.ResumeLayout(false);
             this.PerformLayout();
 

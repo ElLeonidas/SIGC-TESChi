@@ -46,6 +46,7 @@
             // 
             this.MenuControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MenuControl.Controls.Add(this.btnEstadistica);
+            this.MenuControl.Controls.Add(this.Categorias);
             this.MenuControl.Controls.Add(this.btnCerrarSesion);
             this.MenuControl.Controls.Add(this.btnFormato);
             this.MenuControl.Controls.Add(this.btnSecciones);
@@ -53,10 +54,9 @@
             this.MenuControl.Controls.Add(this.btnCArchivos);
             this.MenuControl.Controls.Add(this.btnRUsuarios);
             this.MenuControl.Controls.Add(this.btnLobby);
-            this.MenuControl.Controls.Add(this.Categorias);
-            this.MenuControl.Location = new System.Drawing.Point(1, 1);
+            this.MenuControl.Location = new System.Drawing.Point(0, 1);
             this.MenuControl.Name = "MenuControl";
-            this.MenuControl.Size = new System.Drawing.Size(1428, 900);
+            this.MenuControl.Size = new System.Drawing.Size(1323, 843);
             this.MenuControl.TabIndex = 0;
             // 
             // btnEstadistica
@@ -153,18 +153,20 @@
             this.Categorias.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.Categorias.Location = new System.Drawing.Point(65, -2);
             this.Categorias.Name = "Categorias";
-            this.Categorias.Size = new System.Drawing.Size(1356, 848);
+            this.Categorias.Size = new System.Drawing.Size(1249, 838);
             this.Categorias.TabIndex = 0;
             // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1429, 853);
+            this.ClientSize = new System.Drawing.Size(1324, 843);
             this.Controls.Add(this.MenuControl);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";
+            this.Load += new System.EventHandler(this.Menu_Load_1);
             this.MenuControl.ResumeLayout(false);
             this.ResumeLayout(false);
 

@@ -89,6 +89,11 @@ namespace SIGC_TESChi
         {
 
         }
+
+        private void Menu_Load_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 
