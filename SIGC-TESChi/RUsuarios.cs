@@ -34,7 +34,6 @@ namespace SIGC_TESChi
             comboTipoUsuario.Items.Clear();
             comboTipoUsuario.Items.Add("1 - Administrador");
             comboTipoUsuario.Items.Add("2 - Servicio");
-            comboTipoUsuario.Items.Add("3 - Licenciada");
             comboTipoUsuario.SelectedIndex = -1;
         }
 

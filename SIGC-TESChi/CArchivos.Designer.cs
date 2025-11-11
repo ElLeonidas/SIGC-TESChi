@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panelTablaCArchivos = new System.Windows.Forms.Panel();
             this.TablaArchivos = new System.Windows.Forms.DataGridView();
             this.idcontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.añocontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -52,7 +51,6 @@
             this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
             this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
             this.panel1.SuspendLayout();
-            this.panelTablaCArchivos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).BeginInit();
@@ -70,21 +68,13 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel1.Controls.Add(this.panelTablaCArchivos);
+            this.panel1.Controls.Add(this.TablaArchivos);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1249, 838);
             this.panel1.TabIndex = 1;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
-            // 
-            // panelTablaCArchivos
-            // 
-            this.panelTablaCArchivos.Controls.Add(this.TablaArchivos);
-            this.panelTablaCArchivos.Location = new System.Drawing.Point(16, 398);
-            this.panelTablaCArchivos.Name = "panelTablaCArchivos";
-            this.panelTablaCArchivos.Size = new System.Drawing.Size(1214, 386);
-            this.panelTablaCArchivos.TabIndex = 1;
             // 
             // TablaArchivos
             // 
@@ -107,13 +97,12 @@
             this.idEstatusDataGridViewTextBoxColumn,
             this.idPersonalDataGridViewTextBoxColumn});
             this.TablaArchivos.DataSource = this.controlBindingSource;
-            this.TablaArchivos.Location = new System.Drawing.Point(0, 0);
+            this.TablaArchivos.Location = new System.Drawing.Point(19, 420);
             this.TablaArchivos.Name = "TablaArchivos";
             this.TablaArchivos.RowHeadersWidth = 51;
             this.TablaArchivos.RowTemplate.Height = 24;
             this.TablaArchivos.Size = new System.Drawing.Size(1214, 150);
             this.TablaArchivos.TabIndex = 0;
-            this.TablaArchivos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // idcontrolDataGridViewTextBoxColumn
             // 
@@ -260,7 +249,6 @@
             this.Size = new System.Drawing.Size(1255, 849);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.panelTablaCArchivos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).EndInit();
@@ -272,7 +260,6 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panelTablaCArchivos;
         private System.Windows.Forms.DataGridView TablaArchivos;
         private System.Windows.Forms.BindingSource controlBindingSource;
         private SGCTESCHIDataSet2 sGCTESCHIDataSet2;

@@ -23,6 +23,9 @@ namespace SIGC_TESChi
             btnLobby.MouseEnter += (s, e) => toolTip.Show("Ir al Lobby principal", btnLobby);
             btnLobby.MouseLeave += (s, e) => toolTip.Hide(btnLobby);
 
+            btnTipoUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar nuevos Tipos de usuarios", btnTipoUsuarios);
+            btnTipoUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnTipoUsuarios);
+
             btnRUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar nuevos usuarios", btnRUsuarios);
             btnRUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnRUsuarios);
 
@@ -89,10 +92,9 @@ namespace SIGC_TESChi
         {
 
         }
-
-        private void Menu_Load_1(object sender, EventArgs e)
+        private void btnTipoUsuarios_Click(object sender, EventArgs e)
         {
-
+            LoadPanel(new TipoUsuarios());
         }
     }
 }

@@ -111,6 +111,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SGCTESCHIDataSet3.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SGCTESCHIDataSet4.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +124,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TipoUsuarios.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TipoUsuarios.Designer.cs">
+      <DependentUpon>TipoUsuarios.cs</DependentUpon>
+    </Compile>
     <Compile Include="Ubicaciones.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -152,9 +163,13 @@
     <EmbeddedResource Include="SplashScreen.resx">
       <DependentUpon>SplashScreen.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TipoUsuarios.resx">
+      <DependentUpon>TipoUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ubicaciones.resx">
       <DependentUpon>Ubicaciones.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\DataSources\SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -208,6 +223,17 @@
     <None Include="SGCTESCHIDataSet3.xss">
       <DependentUpon>SGCTESCHIDataSet3.xsd</DependentUpon>
     </None>
+    <None Include="SGCTESCHIDataSet4.xsc">
+      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet4.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet4.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet4.xss">
+      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -223,6 +249,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
