@@ -116,6 +116,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
     </Compile>
+    <Compile Include="SGCTESCHIDataSet5.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SGCTESCHIDataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SGCTESCHIDataSet7.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SGCTESCHIDataSet8.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
+    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +253,50 @@
     </None>
     <None Include="SGCTESCHIDataSet4.xss">
       <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet5.xsc">
+      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet5.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet5.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet5.xss">
+      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet6.xsc">
+      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet6.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet6.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet6.xss">
+      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet7.xsc">
+      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet7.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet7.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet7.xss">
+      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet8.xsc">
+      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
+    </None>
+    <None Include="SGCTESCHIDataSet8.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SGCTESCHIDataSet8.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SGCTESCHIDataSet8.xss">
+      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TipoUsuarios));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.btnLimpiar = new System.Windows.Forms.Button();
@@ -38,11 +39,27 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtTipoUsuario = new System.Windows.Forms.TextBox();
-            this.txtidentificador = new System.Windows.Forms.TextBox();
+            this.txtIdentificador = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.TablaTiposUsuarios = new System.Windows.Forms.DataGridView();
+            this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tipoUsuarioBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.sGCTESCHIDataSet6 = new SIGC_TESChi.SGCTESCHIDataSet6();
+            this.tipoUsuarioBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.sGCTESCHIDataSet5 = new SIGC_TESChi.SGCTESCHIDataSet5();
             this.tipoUsuarioTableAdapterBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.tipoUsuarioTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet5TableAdapters.TipoUsuarioTableAdapter();
+            this.tipoUsuarioTableAdapter1 = new SIGC_TESChi.SGCTESCHIDataSet6TableAdapters.TipoUsuarioTableAdapter();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.TablaTiposUsuarios)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioTableAdapterBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,6 +77,7 @@
             // 
             this.panel3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.label3);
             this.panel3.Controls.Add(this.btnLimpiar);
             this.panel3.Controls.Add(this.btnEliminar);
             this.panel3.Controls.Add(this.btnModificar);
@@ -67,41 +85,46 @@
             this.panel3.Controls.Add(this.label2);
             this.panel3.Controls.Add(this.label1);
             this.panel3.Controls.Add(this.txtTipoUsuario);
-            this.panel3.Controls.Add(this.txtidentificador);
-            this.panel3.Location = new System.Drawing.Point(8, 3);
+            this.panel3.Controls.Add(this.txtIdentificador);
+            this.panel3.Location = new System.Drawing.Point(3, 3);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1231, 272);
+            this.panel3.Size = new System.Drawing.Size(1236, 272);
             this.panel3.TabIndex = 3;
             // 
             // btnLimpiar
             // 
+            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
+            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLimpiar.Location = new System.Drawing.Point(639, 144);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(50, 50);
             this.btnLimpiar.TabIndex = 7;
-            this.btnLimpiar.Text = "button4";
             this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
             // btnEliminar
             // 
+            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
+            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnEliminar.Location = new System.Drawing.Point(639, 88);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(50, 50);
             this.btnEliminar.TabIndex = 6;
-            this.btnEliminar.Text = "button3";
             this.btnEliminar.UseVisualStyleBackColor = true;
             // 
             // btnModificar
             // 
+            this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
+            this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnModificar.Location = new System.Drawing.Point(583, 144);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(50, 50);
             this.btnModificar.TabIndex = 5;
-            this.btnModificar.Text = "button2";
             this.btnModificar.UseVisualStyleBackColor = true;
             // 
             // btnAgregar
             // 
+            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
+            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAgregar.Location = new System.Drawing.Point(583, 88);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(50, 50);
@@ -111,11 +134,11 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(149, 129);
+            this.label2.Location = new System.Drawing.Point(54, 129);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 16);
+            this.label2.Size = new System.Drawing.Size(201, 16);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Tipo de Usuario:";
+            this.label2.Text = "Descripcion de Tipo de Usuario:";
             // 
             // label1
             // 
@@ -128,29 +151,105 @@
             // 
             // txtTipoUsuario
             // 
-            this.txtTipoUsuario.Location = new System.Drawing.Point(262, 123);
+            this.txtTipoUsuario.Location = new System.Drawing.Point(272, 126);
             this.txtTipoUsuario.Name = "txtTipoUsuario";
             this.txtTipoUsuario.Size = new System.Drawing.Size(197, 22);
             this.txtTipoUsuario.TabIndex = 1;
             // 
-            // txtidentificador
+            // txtIdentificador
             // 
-            this.txtidentificador.Location = new System.Drawing.Point(262, 76);
-            this.txtidentificador.Name = "txtidentificador";
-            this.txtidentificador.Size = new System.Drawing.Size(197, 22);
-            this.txtidentificador.TabIndex = 0;
+            this.txtIdentificador.Location = new System.Drawing.Point(272, 79);
+            this.txtIdentificador.Name = "txtIdentificador";
+            this.txtIdentificador.Size = new System.Drawing.Size(197, 22);
+            this.txtIdentificador.TabIndex = 0;
             // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.TablaTiposUsuarios);
             this.panel2.Location = new System.Drawing.Point(3, 308);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1241, 521);
             this.panel2.TabIndex = 2;
             // 
+            // TablaTiposUsuarios
+            // 
+            this.TablaTiposUsuarios.AllowUserToAddRows = false;
+            this.TablaTiposUsuarios.AllowUserToDeleteRows = false;
+            this.TablaTiposUsuarios.AutoGenerateColumns = false;
+            this.TablaTiposUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TablaTiposUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idTipoUsuarioDataGridViewTextBoxColumn,
+            this.dTipoUsuarioDataGridViewTextBoxColumn});
+            this.TablaTiposUsuarios.DataSource = this.tipoUsuarioBindingSource1;
+            this.TablaTiposUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TablaTiposUsuarios.Location = new System.Drawing.Point(0, 0);
+            this.TablaTiposUsuarios.Name = "TablaTiposUsuarios";
+            this.TablaTiposUsuarios.ReadOnly = true;
+            this.TablaTiposUsuarios.RowHeadersWidth = 51;
+            this.TablaTiposUsuarios.RowTemplate.Height = 24;
+            this.TablaTiposUsuarios.Size = new System.Drawing.Size(1237, 517);
+            this.TablaTiposUsuarios.TabIndex = 0;
+            // 
+            // idTipoUsuarioDataGridViewTextBoxColumn
+            // 
+            this.idTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idTipoUsuario";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "idTipoUsuario";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.idTipoUsuarioDataGridViewTextBoxColumn.Name = "idTipoUsuarioDataGridViewTextBoxColumn";
+            this.idTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
+            this.idTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // dTipoUsuarioDataGridViewTextBoxColumn
+            // 
+            this.dTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "dTipoUsuario";
+            this.dTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "dTipoUsuario";
+            this.dTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.dTipoUsuarioDataGridViewTextBoxColumn.Name = "dTipoUsuarioDataGridViewTextBoxColumn";
+            this.dTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
+            this.dTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
+            // 
+            // tipoUsuarioBindingSource1
+            // 
+            this.tipoUsuarioBindingSource1.DataMember = "TipoUsuario";
+            this.tipoUsuarioBindingSource1.DataSource = this.sGCTESCHIDataSet6;
+            // 
+            // sGCTESCHIDataSet6
+            // 
+            this.sGCTESCHIDataSet6.DataSetName = "SGCTESCHIDataSet6";
+            this.sGCTESCHIDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // tipoUsuarioBindingSource
+            // 
+            this.tipoUsuarioBindingSource.DataMember = "TipoUsuario";
+            this.tipoUsuarioBindingSource.DataSource = this.sGCTESCHIDataSet5;
+            // 
+            // sGCTESCHIDataSet5
+            // 
+            this.sGCTESCHIDataSet5.DataSetName = "SGCTESCHIDataSet5";
+            this.sGCTESCHIDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
             // tipoUsuarioTableAdapterBindingSource
             // 
             this.tipoUsuarioTableAdapterBindingSource.DataSource = typeof(SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter);
+            // 
+            // tipoUsuarioTableAdapter
+            // 
+            this.tipoUsuarioTableAdapter.ClearBeforeFill = true;
+            // 
+            // tipoUsuarioTableAdapter1
+            // 
+            this.tipoUsuarioTableAdapter1.ClearBeforeFill = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(-2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(258, 24);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Registro de Tipos de Usuarios";
             // 
             // TipoUsuarios
             // 
@@ -162,6 +261,12 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.TablaTiposUsuarios)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioTableAdapterBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -176,10 +281,20 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtTipoUsuario;
-        private System.Windows.Forms.TextBox txtidentificador;
+        private System.Windows.Forms.TextBox txtIdentificador;
         private System.Windows.Forms.Button btnLimpiar;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.BindingSource tipoUsuarioBindingSource;
+        private SGCTESCHIDataSet5 sGCTESCHIDataSet5;
+        private SGCTESCHIDataSet5TableAdapters.TipoUsuarioTableAdapter tipoUsuarioTableAdapter;
+        private System.Windows.Forms.DataGridView TablaTiposUsuarios;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dTipoUsuarioDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource tipoUsuarioBindingSource1;
+        private SGCTESCHIDataSet6 sGCTESCHIDataSet6;
+        private SGCTESCHIDataSet6TableAdapters.TipoUsuarioTableAdapter tipoUsuarioTableAdapter1;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -20,6 +20,8 @@ namespace SIGC_TESChi
             InitializeComponent();
             Load += Ubicaciones_Load;
 
+            // <-- Muy importante: enlazar el evento CellClick para que se ejecute el manejador
+            tablaUbicaciones.CellClick += tablaUbicaciones_CellClick;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -54,8 +56,6 @@ namespace SIGC_TESChi
             }
         }
 
-
-
         private void LimpiarCampos()
         {
             txtID.Clear();
@@ -77,7 +77,6 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    // 🔍 Primero verificamos si la ubicación ya existe
                     string checkQuery = "SELECT COUNT(*) FROM Ubicacion WHERE dUbicacion = @dUbicacion";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                     checkCmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
@@ -91,7 +90,6 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    // 🔹 Si no existe, procedemos a insertar
                     string query = "INSERT INTO Ubicacion (idUbicacion, dUbicacion) VALUES (@idUbicacion, @dUbicacion)";
                     SqlCommand cmd = new SqlCommand(query, conn);
 
@@ -108,7 +106,6 @@ namespace SIGC_TESChi
             }
             catch (SqlException ex)
             {
-                // ⚠️ Error por ID duplicada
                 if (ex.Number == 2627 || ex.Number == 2601)
                 {
                     MessageBox.Show("⚠️ El ID ingresado ya existe. Por favor ingresa un ID diferente.",
@@ -125,8 +122,6 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error general: " + ex.Message,
                                 "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
@@ -217,9 +212,9 @@ namespace SIGC_TESChi
             }
         }
 
+        // Manejador robusto: busca las columnas por DataPropertyName/Name/HeaderText y cae a índices seguros
         private void tablaUbicaciones_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            
             if (e.RowIndex < 0)
                 return;
 
@@ -227,23 +222,79 @@ namespace SIGC_TESChi
             {
                 DataGridViewRow fila = tablaUbicaciones.Rows[e.RowIndex];
 
-                // Asumiendo que las columnas son: 0=Numero, 1=ID, 2=Ubicación
-                txtID.Text = fila.Cells[0].Value?.ToString() ?? "";
-                txtUbicacion.Text = fila.Cells[1].Value?.ToString() ?? "";
+                // Nombre esperados de columnas en la fuente de datos
+                string colIdNames = "idUbicacion";
+                string colDescNames = "dUbicacion";
+
+                // Helper local para buscar el índice real de la columna por varios atributos
+                int FindColumnIndex(string expectedName)
+                {
+                    // 1) Buscar por DataPropertyName (DataBinding)
+                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
+                    {
+                        var col = tablaUbicaciones.Columns[i];
+                        if (!string.IsNullOrEmpty(col.DataPropertyName) &&
+                            string.Equals(col.DataPropertyName, expectedName, StringComparison.OrdinalIgnoreCase))
+                            return i;
+                    }
+
+                    // 2) Buscar por Name
+                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
+                    {
+                        var col = tablaUbicaciones.Columns[i];
+                        if (!string.IsNullOrEmpty(col.Name) &&
+                            string.Equals(col.Name, expectedName, StringComparison.OrdinalIgnoreCase))
+                            return i;
+                    }
+
+                    // 3) Buscar por HeaderText (lo que ve el usuario)
+                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
+                    {
+                        var col = tablaUbicaciones.Columns[i];
+                        if (!string.IsNullOrEmpty(col.HeaderText) &&
+                            string.Equals(col.HeaderText, expectedName, StringComparison.OrdinalIgnoreCase))
+                            return i;
+                    }
+
+                    // 4) Si no se encontró, devolver -1
+                    return -1;
+                }
+
+                int idxId = FindColumnIndex(colIdNames);
+                int idxDesc = FindColumnIndex(colDescNames);
+
+                // Si no encontró por nombre, intentar suponer posiciones comunes:
+                if (idxId == -1 || idxDesc == -1)
+                {
+                    // Intentar por índices: (caso: columna extra 'Número' en la posición 0)
+                    if (tablaUbicaciones.Columns.Count >= 3)
+                    {
+                        // suposición típica: 0 = Numero, 1 = id, 2 = descripcion
+                        idxId = idxId == -1 ? 1 : idxId;
+                        idxDesc = idxDesc == -1 ? 2 : idxDesc;
+                    }
+                    else if (tablaUbicaciones.Columns.Count == 2)
+                    {
+                        idxId = idxId == -1 ? 0 : idxId;
+                        idxDesc = idxDesc == -1 ? 1 : idxDesc;
+                    }
+                }
+
+                // Finalmente asignar (comprobando que existan esos índices)
+                if (idxId >= 0 && idxId < fila.Cells.Count)
+                    txtID.Text = fila.Cells[idxId].Value?.ToString() ?? "";
+                else
+                    txtID.Text = ""; // no encontrado, limpiar
+
+                if (idxDesc >= 0 && idxDesc < fila.Cells.Count)
+                    txtUbicacion.Text = fila.Cells[idxDesc].Value?.ToString() ?? "";
+                else
+                    txtUbicacion.Text = ""; // no encontrado, limpiar
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar los datos en los campos: " + ex.Message);
             }
         }
-
-        
-
-        private void tablaUbicaciones_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-
     }
 }
