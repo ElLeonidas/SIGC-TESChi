@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.MenuControl = new System.Windows.Forms.Panel();
+            this.btnTipoUsuarios = new System.Windows.Forms.Button();
             this.btnEstadistica = new System.Windows.Forms.Button();
             this.Categorias = new System.Windows.Forms.Panel();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
@@ -39,13 +40,14 @@
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnLobby = new System.Windows.Forms.Button();
-            this.btnTipoUsuarios = new System.Windows.Forms.Button();
+            this.btnSubSecciones = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuControl
             // 
             this.MenuControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MenuControl.Controls.Add(this.btnSubSecciones);
             this.MenuControl.Controls.Add(this.btnTipoUsuarios);
             this.MenuControl.Controls.Add(this.btnEstadistica);
             this.MenuControl.Controls.Add(this.Categorias);
@@ -61,11 +63,22 @@
             this.MenuControl.Size = new System.Drawing.Size(1323, 843);
             this.MenuControl.TabIndex = 0;
             // 
+            // btnTipoUsuarios
+            // 
+            this.btnTipoUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTipoUsuarios.BackgroundImage")));
+            this.btnTipoUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnTipoUsuarios.Location = new System.Drawing.Point(10, 65);
+            this.btnTipoUsuarios.Name = "btnTipoUsuarios";
+            this.btnTipoUsuarios.Size = new System.Drawing.Size(50, 50);
+            this.btnTipoUsuarios.TabIndex = 0;
+            this.btnTipoUsuarios.UseVisualStyleBackColor = true;
+            this.btnTipoUsuarios.Click += new System.EventHandler(this.btnTipoUsuarios_Click);
+            // 
             // btnEstadistica
             // 
             this.btnEstadistica.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEstadistica.BackgroundImage")));
             this.btnEstadistica.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEstadistica.Location = new System.Drawing.Point(10, 401);
+            this.btnEstadistica.Location = new System.Drawing.Point(10, 457);
             this.btnEstadistica.Name = "btnEstadistica";
             this.btnEstadistica.Size = new System.Drawing.Size(50, 50);
             this.btnEstadistica.TabIndex = 0;
@@ -85,7 +98,7 @@
             // 
             this.btnCerrarSesion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCerrarSesion.BackgroundImage")));
             this.btnCerrarSesion.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(10, 457);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(10, 513);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(50, 50);
             this.btnCerrarSesion.TabIndex = 0;
@@ -96,7 +109,7 @@
             // 
             this.btnFormato.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFormato.BackgroundImage")));
             this.btnFormato.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFormato.Location = new System.Drawing.Point(10, 345);
+            this.btnFormato.Location = new System.Drawing.Point(10, 401);
             this.btnFormato.Name = "btnFormato";
             this.btnFormato.Size = new System.Drawing.Size(50, 50);
             this.btnFormato.TabIndex = 0;
@@ -158,16 +171,14 @@
             this.btnLobby.UseVisualStyleBackColor = true;
             this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
             // 
-            // btnTipoUsuarios
+            // btnSubSecciones
             // 
-            this.btnTipoUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTipoUsuarios.BackgroundImage")));
-            this.btnTipoUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTipoUsuarios.Location = new System.Drawing.Point(10, 65);
-            this.btnTipoUsuarios.Name = "btnTipoUsuarios";
-            this.btnTipoUsuarios.Size = new System.Drawing.Size(50, 50);
-            this.btnTipoUsuarios.TabIndex = 0;
-            this.btnTipoUsuarios.UseVisualStyleBackColor = true;
-            this.btnTipoUsuarios.Click += new System.EventHandler(this.btnTipoUsuarios_Click);
+            this.btnSubSecciones.Location = new System.Drawing.Point(10, 345);
+            this.btnSubSecciones.Name = "btnSubSecciones";
+            this.btnSubSecciones.Size = new System.Drawing.Size(50, 50);
+            this.btnSubSecciones.TabIndex = 0;
+            this.btnSubSecciones.UseVisualStyleBackColor = true;
+            this.btnSubSecciones.Click += new System.EventHandler(this.btnSubSecciones_Click);
             // 
             // Menu
             // 
@@ -197,5 +208,6 @@
         private System.Windows.Forms.Button btnFormato;
         private System.Windows.Forms.Button btnEstadistica;
         private System.Windows.Forms.Button btnTipoUsuarios;
+        private System.Windows.Forms.Button btnSubSecciones;
     }
 }

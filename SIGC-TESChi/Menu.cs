@@ -80,7 +80,7 @@ namespace SIGC_TESChi
 
         private void btnSecciones_Click(object sender, EventArgs e)
         {
-
+            LoadPanel(new Secciones());
         }
 
         private void btnUbicaciones_Click(object sender, EventArgs e)
@@ -95,6 +95,11 @@ namespace SIGC_TESChi
         private void btnTipoUsuarios_Click(object sender, EventArgs e)
         {
             LoadPanel(new TipoUsuarios());
+        }
+
+        private void btnSubSecciones_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new SubSecciones());
         }
     }
 }
