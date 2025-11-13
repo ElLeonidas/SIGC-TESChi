@@ -32,6 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TipoUsuarios));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.tipoUsuarioTableAdapterBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tipoUsuarioTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet5TableAdapters.TipoUsuarioTableAdapter();
             this.tipoUsuarioTableAdapter1 = new SIGC_TESChi.SGCTESCHIDataSet6TableAdapters.TipoUsuarioTableAdapter();
-            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -72,6 +72,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1251, 836);
             this.panel1.TabIndex = 0;
+            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // panel3
             // 
@@ -90,6 +91,16 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1236, 272);
             this.panel3.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(-2, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(258, 24);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Registro de Tipos de Usuarios";
             // 
             // btnLimpiar
             // 
@@ -240,16 +251,6 @@
             // tipoUsuarioTableAdapter1
             // 
             this.tipoUsuarioTableAdapter1.ClearBeforeFill = true;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Comic Sans MS", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(-2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(258, 24);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "Registro de Tipos de Usuarios";
             // 
             // TipoUsuarios
             // 

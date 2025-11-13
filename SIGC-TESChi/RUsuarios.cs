@@ -8,7 +8,7 @@ namespace SIGC_TESChi
     public partial class RUsuarios : UserControl
     {
         private ToolTip toolTip;
-        string connectionString = @"Server=.\SQLEXPRESS;Database=SGCTESCHI;Trusted_Connection=True;";
+        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public RUsuarios()
         {
@@ -85,11 +85,23 @@ namespace SIGC_TESChi
                 {
                     con.Open();
 
-                    string query = "SELECT idUsuario, idTipoUsuario, Contrasena FROM Usuario";
+                    // Consulta completa con INNER JOIN
+                    string query = @"
+                SELECT 
+                    U.idUsuario,
+                    U.Nombre,
+                    U.Apaterno,
+                    U.Amaterno,
+                    T.dTipoUsuario AS TipoUsuario,
+                    U.contrasena
+                FROM Usuario U
+                INNER JOIN TipoUsuario T ON U.idTipoUsuario = T.idTipoUsuario";
+
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
+                    // Cargar datos en el DataGridView
                     TablaUsuarios.AutoGenerateColumns = true;
                     TablaUsuarios.DataSource = null;
                     TablaUsuarios.Columns.Clear();
@@ -105,29 +117,64 @@ namespace SIGC_TESChi
         // ✅ Verificar si existe el usuario (idUsuario = nombre)
         private bool ExisteUsuario(string idUsuario)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            try
             {
-                con.Open();
-                string q = "SELECT COUNT(*) FROM Usuario WHERE idUsuario = @u";
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@u", idUsuario);
-                return Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    // Usar COUNT(1) garantiza que ExecuteScalar() devuelva un número (0 o >0)
+                    string query = "SELECT COUNT(1) FROM Usuario WHERE idUsuario = @u";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@u", idUsuario);
+
+                        object result = cmd.ExecuteScalar();
+
+                        // Comprobaciones de seguridad
+                        if (result == null || result == DBNull.Value)
+                        {
+                            return false;
+                        }
+
+                        // Intentar convertir a entero de forma segura
+                        if (int.TryParse(result.ToString(), out int count))
+                        {
+                            return count > 0;
+                        }
+
+                        // Si por alguna razón no se pudo convertir, asumimos que no existe
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Opcional: puedes loguear ex.Message
+                MessageBox.Show("Error al verificar usuario: " + ex.Message);
+                return false;
             }
         }
 
         // ✅ AGREGAR
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (txtUsuario.Text == "" || txtContrasena.Text == "" || comboTipoUsuario.SelectedIndex == -1)
+            if (txtUsuario.Text == "" || txtContrasena.Text == "" || comboTipoUsuario.SelectedIndex == -1 ||
+       txtApaterno.Text == "" || txtAmaterno.Text == "")
             {
                 MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
-            string idUsuario = txtUsuario.Text.Trim();
+            string nombre = txtUsuario.Text.Trim();
+            string apaterno = txtApaterno.Text.Trim();
+            string amaterno = txtAmaterno.Text.Trim();
+            string contrasena = txtContrasena.Text.Trim();
             string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
 
-            if (ExisteUsuario(idUsuario))
+            // Si deseas verificar duplicados por nombre (no por ID)
+            if (ExisteUsuario(nombre))
             {
                 MessageBox.Show("Ese nombre de usuario ya existe. Usa otro.");
                 return;
@@ -136,12 +183,17 @@ namespace SIGC_TESChi
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                string query = "INSERT INTO Usuario (idUsuario, Contrasena, idTipoUsuario) VALUES (@u, @c, @t)";
-                SqlCommand cmd = new SqlCommand(query, con);
 
-                cmd.Parameters.AddWithValue("@u", idUsuario);
-                cmd.Parameters.AddWithValue("@c", txtContrasena.Text.Trim());
+                string query = @"
+            INSERT INTO Usuario (Nombre, Apaterno, Amaterno, idTipoUsuario, Contrasena)
+            VALUES (@n, @aP, @aM, @t, @c)";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@n", nombre);
+                cmd.Parameters.AddWithValue("@aP", apaterno);
+                cmd.Parameters.AddWithValue("@aM", amaterno);
                 cmd.Parameters.AddWithValue("@t", tipo);
+                cmd.Parameters.AddWithValue("@c", contrasena);
 
                 cmd.ExecuteNonQuery();
             }
@@ -247,6 +299,21 @@ namespace SIGC_TESChi
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

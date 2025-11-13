@@ -13,7 +13,7 @@ namespace SIGC_TESChi
 {
     public partial class Ubicaciones : UserControl
     {
-        string connectionString = @"Server=.\SQLEXPRESS;Database=SGCTESCHI;Trusted_Connection=True;";
+        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Ubicaciones()
         {
@@ -295,6 +295,11 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al cargar los datos en los campos: " + ex.Message);
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

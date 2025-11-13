@@ -32,6 +32,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.TablaArchivos = new System.Windows.Forms.DataGridView();
+            this.controlBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
+            this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
+            this.dBCONTRALORIADataSet2 = new SIGC_TESChi.DBCONTRALORIADataSet2();
+            this.controlBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.controlTableAdapter1 = new SIGC_TESChi.DBCONTRALORIADataSet2TableAdapters.ControlTableAdapter();
             this.idcontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.añocontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.cUAcontrolDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,14 +52,13 @@
             this.idUbicacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.observacionesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.idEstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idPersonalDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.controlBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
-            this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
+            this.enlaceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -95,8 +100,8 @@
             this.idUbicacionDataGridViewTextBoxColumn,
             this.observacionesDataGridViewTextBoxColumn,
             this.idEstatusDataGridViewTextBoxColumn,
-            this.idPersonalDataGridViewTextBoxColumn});
-            this.TablaArchivos.DataSource = this.controlBindingSource;
+            this.enlaceDataGridViewTextBoxColumn});
+            this.TablaArchivos.DataSource = this.controlBindingSource1;
             this.TablaArchivos.Location = new System.Drawing.Point(19, 420);
             this.TablaArchivos.Name = "TablaArchivos";
             this.TablaArchivos.RowHeadersWidth = 51;
@@ -104,15 +109,41 @@
             this.TablaArchivos.Size = new System.Drawing.Size(1214, 150);
             this.TablaArchivos.TabIndex = 0;
             // 
+            // controlBindingSource
+            // 
+            this.controlBindingSource.DataMember = "Control";
+            this.controlBindingSource.DataSource = this.sGCTESCHIDataSet2;
+            // 
+            // sGCTESCHIDataSet2
+            // 
+            this.sGCTESCHIDataSet2.DataSetName = "SGCTESCHIDataSet2";
+            this.sGCTESCHIDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // controlTableAdapter
+            // 
+            this.controlTableAdapter.ClearBeforeFill = true;
+            // 
+            // dBCONTRALORIADataSet2
+            // 
+            this.dBCONTRALORIADataSet2.DataSetName = "DBCONTRALORIADataSet2";
+            this.dBCONTRALORIADataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // controlBindingSource1
+            // 
+            this.controlBindingSource1.DataMember = "Control";
+            this.controlBindingSource1.DataSource = this.dBCONTRALORIADataSet2;
+            // 
+            // controlTableAdapter1
+            // 
+            this.controlTableAdapter1.ClearBeforeFill = true;
+            // 
             // idcontrolDataGridViewTextBoxColumn
             // 
             this.idcontrolDataGridViewTextBoxColumn.DataPropertyName = "id_control";
-            this.idcontrolDataGridViewTextBoxColumn.FillWeight = 50F;
-            this.idcontrolDataGridViewTextBoxColumn.HeaderText = "ID";
+            this.idcontrolDataGridViewTextBoxColumn.HeaderText = "id_control";
             this.idcontrolDataGridViewTextBoxColumn.MinimumWidth = 6;
             this.idcontrolDataGridViewTextBoxColumn.Name = "idcontrolDataGridViewTextBoxColumn";
-            this.idcontrolDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idcontrolDataGridViewTextBoxColumn.Width = 45;
+            this.idcontrolDataGridViewTextBoxColumn.Width = 125;
             // 
             // añocontrolDataGridViewTextBoxColumn
             // 
@@ -218,27 +249,13 @@
             this.idEstatusDataGridViewTextBoxColumn.Name = "idEstatusDataGridViewTextBoxColumn";
             this.idEstatusDataGridViewTextBoxColumn.Width = 125;
             // 
-            // idPersonalDataGridViewTextBoxColumn
+            // enlaceDataGridViewTextBoxColumn
             // 
-            this.idPersonalDataGridViewTextBoxColumn.DataPropertyName = "idPersonal";
-            this.idPersonalDataGridViewTextBoxColumn.HeaderText = "idPersonal";
-            this.idPersonalDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idPersonalDataGridViewTextBoxColumn.Name = "idPersonalDataGridViewTextBoxColumn";
-            this.idPersonalDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // controlBindingSource
-            // 
-            this.controlBindingSource.DataMember = "Control";
-            this.controlBindingSource.DataSource = this.sGCTESCHIDataSet2;
-            // 
-            // sGCTESCHIDataSet2
-            // 
-            this.sGCTESCHIDataSet2.DataSetName = "SGCTESCHIDataSet2";
-            this.sGCTESCHIDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // controlTableAdapter
-            // 
-            this.controlTableAdapter.ClearBeforeFill = true;
+            this.enlaceDataGridViewTextBoxColumn.DataPropertyName = "enlace";
+            this.enlaceDataGridViewTextBoxColumn.HeaderText = "enlace";
+            this.enlaceDataGridViewTextBoxColumn.MinimumWidth = 6;
+            this.enlaceDataGridViewTextBoxColumn.Name = "enlaceDataGridViewTextBoxColumn";
+            this.enlaceDataGridViewTextBoxColumn.Width = 125;
             // 
             // CArchivos
             // 
@@ -252,6 +269,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.TablaArchivos)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -278,6 +297,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn idUbicacionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn observacionesDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idEstatusDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idPersonalDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn enlaceDataGridViewTextBoxColumn;
+        private System.Windows.Forms.BindingSource controlBindingSource1;
+        private DBCONTRALORIADataSet2 dBCONTRALORIADataSet2;
+        private DBCONTRALORIADataSet2TableAdapters.ControlTableAdapter controlTableAdapter1;
     }
 }

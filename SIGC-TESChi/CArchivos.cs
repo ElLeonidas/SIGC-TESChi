@@ -8,7 +8,7 @@ namespace SIGC_TESChi
     public partial class CArchivos : UserControl
     {
 
-        string connectionString = @"Server=.\SQLEXPRESS;Database=SGCTESCHI;Trusted_Connection=True;";
+        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
 
         public CArchivos()

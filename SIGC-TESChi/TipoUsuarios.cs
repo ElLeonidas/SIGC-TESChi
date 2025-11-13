@@ -8,7 +8,7 @@ namespace SIGC_TESChi
     public partial class TipoUsuarios : UserControl
     {
         private ToolTip toolTip;
-        string connectionString = @"Server=.\SQLEXPRESS;Database=SGCTESCHI;Trusted_Connection=True;";
+        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public TipoUsuarios()
         {
@@ -231,6 +231,11 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al seleccionar valores: " + ex.Message);
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
