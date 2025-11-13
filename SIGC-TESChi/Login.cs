@@ -10,7 +10,7 @@ namespace SIGC_TESChi
     {
 
         // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
-        string connectionString = @"Server=.\SQLEXPRESS;Database=SGCTESCHI;Trusted_Connection=True;";
+        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Login()
         {
@@ -71,12 +71,13 @@ namespace SIGC_TESChi
         private void btnIniciarSesion_Click(object sender, EventArgs e)
         {
             // Obtiene los valores de los TextBox (suponiendo txtUsuario y txtContrasena)
-            string usuario = txtboxUsuario.Text.Trim();
+            string nombre = txtboxUsuario.Text.Trim();
             string contrasena = txtboxPassword.Text.Trim();
 
-            if (usuario == "" || contrasena == "")
+            // Validación de campos vacíos
+            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(contrasena))
             {
-                MessageBox.Show("Por favor, ingresa usuario y contraseña.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Por favor, ingresa nombre y contraseña.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -86,32 +87,37 @@ namespace SIGC_TESChi
                 {
                     connection.Open();
 
-                    string query = @"SELECT u.idUsuario, tu.dTipoUsuario 
-                                     FROM Usuario u
-                                     INNER JOIN TipoUsuario tu ON u.idTipoUsuario = tu.idTipoUsuario
-                                     WHERE u.idUsuario = @idUsuario AND u.contrasena = @contrasena";
+                    string query = @"SELECT Nombre, idTipoUsuario
+                 FROM Usuario
+                 WHERE Nombre = @nombre AND contrasena = @contrasena";
 
-                    SqlCommand cmd = new SqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@idUsuario", usuario);
-                    cmd.Parameters.AddWithValue("@contrasena", contrasena);
 
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    if (reader.Read())
+                    using (SqlCommand cmd = new SqlCommand(query, connection))
                     {
-                        string tipoUsuario = reader["dTipoUsuario"].ToString();
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@contrasena", contrasena);
 
-                        //MessageBox.Show("Bienvenido " + tipoUsuario, "Acceso permitido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                string tipoUsuario = reader["idTipoUsuario"].ToString();
+                                string nombreUsuario = reader["Nombre"].ToString();
 
-                        // Abrir formulario Menu
-                        Menu menu = new Menu();
-                        menu.Show();
+                                // Mensaje opcional
+                                // MessageBox.Show($"Bienvenido {nombreUsuario} ({tipoUsuario})", "Acceso permitido", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        this.Hide();
-                    }
-                    else
-                    {
-                        //MessageBox.Show("Usuario o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // Abrir formulario principal (Menu)
+                                Menu menu = new Menu();
+                                menu.Show();
+
+                                this.Hide();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Nombre o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                        }
                     }
                 }
             }
