@@ -43,6 +43,7 @@
             this.usuarioBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.dBCONTRALORIADataSet1 = new SIGC_TESChi.DBCONTRALORIADataSet1();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.txtAmaterno = new System.Windows.Forms.TextBox();
             this.txtApaterno = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -67,7 +68,6 @@
             this.usuarioTableAdapter1 = new SIGC_TESChi.DBCONTRALORIADataSetTableAdapters.UsuarioTableAdapter();
             this.usuarioTableAdapter2 = new SIGC_TESChi.DBCONTRALORIADataSet1TableAdapters.UsuarioTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.btnBuscar = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
@@ -219,6 +219,17 @@
             this.panel2.Size = new System.Drawing.Size(1245, 323);
             this.panel2.TabIndex = 1;
             // 
+            // btnBuscar
+            // 
+            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
+            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBuscar.Location = new System.Drawing.Point(412, 199);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(65, 65);
+            this.btnBuscar.TabIndex = 16;
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
+            // 
             // txtAmaterno
             // 
             this.txtAmaterno.Location = new System.Drawing.Point(175, 165);
@@ -292,9 +303,9 @@
             // 
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLimpiar.Location = new System.Drawing.Point(483, 152);
+            this.btnLimpiar.Location = new System.Drawing.Point(483, 128);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(50, 50);
+            this.btnLimpiar.Size = new System.Drawing.Size(65, 65);
             this.btnLimpiar.TabIndex = 7;
             this.btnLimpiar.UseVisualStyleBackColor = true;
             this.btnLimpiar.Click += new System.EventHandler(this.btnLimpiar_Click);
@@ -303,9 +314,9 @@
             // 
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEliminar.Location = new System.Drawing.Point(483, 96);
+            this.btnEliminar.Location = new System.Drawing.Point(483, 57);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(50, 50);
+            this.btnEliminar.Size = new System.Drawing.Size(65, 65);
             this.btnEliminar.TabIndex = 6;
             this.btnEliminar.UseVisualStyleBackColor = true;
             // 
@@ -313,9 +324,9 @@
             // 
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnModificar.Location = new System.Drawing.Point(427, 152);
+            this.btnModificar.Location = new System.Drawing.Point(412, 128);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(50, 50);
+            this.btnModificar.Size = new System.Drawing.Size(65, 65);
             this.btnModificar.TabIndex = 5;
             this.btnModificar.UseVisualStyleBackColor = true;
             // 
@@ -323,9 +334,9 @@
             // 
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAgregar.Location = new System.Drawing.Point(427, 96);
+            this.btnAgregar.Location = new System.Drawing.Point(412, 57);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(50, 50);
+            this.btnAgregar.Size = new System.Drawing.Size(65, 65);
             this.btnAgregar.TabIndex = 4;
             this.btnAgregar.UseVisualStyleBackColor = true;
             // 
@@ -388,17 +399,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
-            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(427, 208);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(50, 50);
-            this.btnBuscar.TabIndex = 16;
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // RUsuarios
             // 
