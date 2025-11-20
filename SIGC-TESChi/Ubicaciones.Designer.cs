@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ubicaciones));
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaUbicaciones = new System.Windows.Forms.DataGridView();
@@ -37,6 +38,7 @@
             this.ubicacionBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.sGCTESCHIDataSet8 = new SIGC_TESChi.SGCTESCHIDataSet8();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnBuscar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.txtUbicacion = new System.Windows.Forms.TextBox();
             this.btnLimpiar = new System.Windows.Forms.Button();
@@ -74,7 +76,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1249, 838);
             this.panel1.TabIndex = 0;
-            this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
             // panel3
             // 
@@ -135,6 +136,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btnBuscar);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.txtUbicacion);
             this.panel2.Controls.Add(this.btnLimpiar);
@@ -148,6 +150,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1239, 203);
             this.panel2.TabIndex = 9;
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
+            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBuscar.Location = new System.Drawing.Point(829, 39);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(50, 50);
+            this.btnBuscar.TabIndex = 9;
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // label1
             // 
@@ -311,5 +324,6 @@
         private System.Windows.Forms.BindingSource ubicacionBindingSource2;
         private SGCTESCHIDataSet8 sGCTESCHIDataSet8;
         private SGCTESCHIDataSet8TableAdapters.UbicacionTableAdapter ubicacionTableAdapter2;
+        private System.Windows.Forms.Button btnBuscar;
     }
 }

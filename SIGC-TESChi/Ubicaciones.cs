@@ -24,11 +24,6 @@ namespace SIGC_TESChi
             tablaUbicaciones.CellClick += tablaUbicaciones_CellClick;
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Ubicaciones_Load(object sender, EventArgs e)
         {
             CargarUbicaciones();
@@ -297,9 +292,52 @@ namespace SIGC_TESChi
             }
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        // BUSCAR UBICACIONES (FILTRO FLEXIBLE)
+        private void BuscarUbicaciones()
         {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
 
+                    string query = "SELECT * FROM Ubicacion WHERE 1=1";
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = con;
+
+                    // FILTRAR POR ID
+                    if (!string.IsNullOrWhiteSpace(txtID.Text))
+                    {
+                        query += " AND idUbicacion = @id";
+                        cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    }
+
+                    // FILTRAR POR UBICACIÓN
+                    if (!string.IsNullOrWhiteSpace(txtUbicacion.Text))
+                    {
+                        query += " AND dUbicacion LIKE @ubicacion";
+                        cmd.Parameters.AddWithValue("@ubicacion", "%" + txtUbicacion.Text + "%");
+                    }
+
+                    cmd.CommandText = query;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    tablaUbicaciones.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar ubicaciones: " + ex.Message);
+            }
+        }
+
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            BuscarUbicaciones();
         }
     }
 }
