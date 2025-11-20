@@ -12,6 +12,10 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            // Evitar que la ventana se agrande o cambie de tamaño
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+
             // Inicializamos el ToolTip
             toolTip = new ToolTip();
             toolTip.AutoPopDelay = 5000;  // Visible 5 segundos

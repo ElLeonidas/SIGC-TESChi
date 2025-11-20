@@ -47,7 +47,7 @@ namespace SIGC_TESChi
             CargarUsuarios();
         }
 
-        // ✅ Cargar ComboBox
+        // Cargar ComboBox
         private void CargarTiposUsuario()
         {
             try
@@ -77,7 +77,7 @@ namespace SIGC_TESChi
         }
 
 
-        // ✅ Cargar usuarios desde SQL (tabla: Usuario)
+        // Cargar usuarios desde SQL (tabla: Usuario)
         private void CargarUsuarios()
         {
             try
@@ -115,7 +115,7 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ Verificar si existe el usuario (idUsuario = nombre)
+        // Verificar si existe el usuario (idUsuario = nombre)
         private bool ExisteUsuario(string idUsuario)
         {
             try
@@ -158,7 +158,7 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ AGREGAR
+        // AGREGAR
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             if (txtUsuario.Text == "" || txtContrasena.Text == "" || comboTipoUsuario.SelectedIndex == -1 ||
@@ -203,7 +203,7 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-        // ✅ MODIFICAR (ACTUALIZAR)
+        // MODIFICAR (ACTUALIZAR)
         private void btnModificar_Click(object sender, EventArgs e)
         {
             if (txtUsuario.Text == "")
@@ -239,7 +239,7 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-        // ✅ ELIMINAR
+        // ELIMINAR
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (txtUsuario.Text == "")
@@ -269,7 +269,7 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-        // ✅ SELECCIONAR USUARIO DE LA TABLA
+        // SELECCIONAR USUARIO DE LA TABLA
         private void TablaUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -289,7 +289,7 @@ namespace SIGC_TESChi
                 comboTipoUsuario.SelectedItem = "3 - Licenciada";
         }
 
-        // ✅ LIMPIAR CAMPOS
+        // LIMPIAR CAMPOS
         private void LimpiarCampos()
         {
             txtUsuario.Text = "";

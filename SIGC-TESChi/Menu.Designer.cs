@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.MenuControl = new System.Windows.Forms.Panel();
+            this.btnSubSecciones = new System.Windows.Forms.Button();
             this.btnTipoUsuarios = new System.Windows.Forms.Button();
             this.btnEstadistica = new System.Windows.Forms.Button();
             this.Categorias = new System.Windows.Forms.Panel();
@@ -40,7 +41,6 @@
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnLobby = new System.Windows.Forms.Button();
-            this.btnSubSecciones = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,6 +62,15 @@
             this.MenuControl.Name = "MenuControl";
             this.MenuControl.Size = new System.Drawing.Size(1323, 843);
             this.MenuControl.TabIndex = 0;
+            // 
+            // btnSubSecciones
+            // 
+            this.btnSubSecciones.Location = new System.Drawing.Point(10, 345);
+            this.btnSubSecciones.Name = "btnSubSecciones";
+            this.btnSubSecciones.Size = new System.Drawing.Size(50, 50);
+            this.btnSubSecciones.TabIndex = 0;
+            this.btnSubSecciones.UseVisualStyleBackColor = true;
+            this.btnSubSecciones.Click += new System.EventHandler(this.btnSubSecciones_Click);
             // 
             // btnTipoUsuarios
             // 
@@ -170,15 +179,6 @@
             this.btnLobby.TabIndex = 0;
             this.btnLobby.UseVisualStyleBackColor = true;
             this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
-            // 
-            // btnSubSecciones
-            // 
-            this.btnSubSecciones.Location = new System.Drawing.Point(10, 345);
-            this.btnSubSecciones.Name = "btnSubSecciones";
-            this.btnSubSecciones.Size = new System.Drawing.Size(50, 50);
-            this.btnSubSecciones.TabIndex = 0;
-            this.btnSubSecciones.UseVisualStyleBackColor = true;
-            this.btnSubSecciones.Click += new System.EventHandler(this.btnSubSecciones_Click);
             // 
             // Menu
             // 
