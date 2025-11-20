@@ -21,6 +21,7 @@ namespace SIGC_TESChi
             btnEliminar.Click += btnEliminar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
             TablaUsuarios.CellClick += TablaUsuarios_CellClick;
+            btnBuscar.Click += btnBuscar_Click;
 
             // Inicializamos el ToolTip
             toolTip = new ToolTip();
@@ -296,24 +297,84 @@ namespace SIGC_TESChi
             comboTipoUsuario.SelectedIndex = -1;
         }
 
+        // BUSCAR USUARIOS (FILTROS FLEXIBLES)
+        private void BuscarUsuarios()
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string query = @"
+                SELECT 
+                    U.idUsuario,
+                    U.Nombre,
+                    U.Apaterno,
+                    U.Amaterno,
+                    T.dTipoUsuario AS TipoUsuario,
+                    U.contrasena
+                FROM Usuario U
+                INNER JOIN TipoUsuario T ON U.idTipoUsuario = T.idTipoUsuario
+                WHERE 1=1
+            ";
+
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = con;
+
+                    // FILTRAR por Nombre (txtUsuario)
+                    if (!string.IsNullOrWhiteSpace(txtUsuario.Text))
+                    {
+                        query += " AND U.Nombre LIKE @nombre";
+                        cmd.Parameters.AddWithValue("@nombre", "%" + txtUsuario.Text + "%");
+                    }
+
+                    // FILTRAR por Apellido Paterno
+                    if (!string.IsNullOrWhiteSpace(txtApaterno.Text))
+                    {
+                        query += " AND U.Apaterno LIKE @apaterno";
+                        cmd.Parameters.AddWithValue("@apaterno", "%" + txtApaterno.Text + "%");
+                    }
+
+                    // FILTRAR por Apellido Materno
+                    if (!string.IsNullOrWhiteSpace(txtAmaterno.Text))
+                    {
+                        query += " AND U.Amaterno LIKE @amaterno";
+                        cmd.Parameters.AddWithValue("@amaterno", "%" + txtAmaterno.Text + "%");
+                    }
+
+                    // FILTRAR por Tipo de Usuario desde ComboBox
+                    if (comboTipoUsuario.SelectedIndex != -1)
+                    {
+                        string idTipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
+                        query += " AND U.idTipoUsuario = @tipo";
+                        cmd.Parameters.AddWithValue("@tipo", idTipo);
+                    }
+
+                    cmd.CommandText = query;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    TablaUsuarios.DataSource = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al buscar usuarios: " + ex.Message);
+            }
+        }
+
+
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
         }
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
+        private void btnBuscar_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtUsuario_TextChanged(object sender, EventArgs e)
-        {
-
+            BuscarUsuarios();
         }
     }
 }
