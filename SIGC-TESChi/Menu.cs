@@ -105,6 +105,11 @@ namespace SIGC_TESChi
         {
             LoadPanel(new SubSecciones());
         }
+
+        private void btnFormato_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new CaratulaExpediente());
+        }
     }
 }
 

@@ -13,7 +13,9 @@ namespace SIGC_TESChi
 {
     public partial class Ubicaciones : UserControl
     {
-        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
+        string connectionString =
+            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Ubicaciones()
         {
@@ -338,6 +340,11 @@ namespace SIGC_TESChi
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             BuscarUbicaciones();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

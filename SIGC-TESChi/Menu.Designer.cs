@@ -59,15 +59,17 @@
             this.MenuControl.Controls.Add(this.btnRUsuarios);
             this.MenuControl.Controls.Add(this.btnLobby);
             this.MenuControl.Location = new System.Drawing.Point(0, 1);
+            this.MenuControl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.MenuControl.Name = "MenuControl";
-            this.MenuControl.Size = new System.Drawing.Size(1323, 843);
+            this.MenuControl.Size = new System.Drawing.Size(993, 686);
             this.MenuControl.TabIndex = 0;
             // 
             // btnSubSecciones
             // 
-            this.btnSubSecciones.Location = new System.Drawing.Point(10, 345);
+            this.btnSubSecciones.Location = new System.Drawing.Point(8, 280);
+            this.btnSubSecciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSubSecciones.Name = "btnSubSecciones";
-            this.btnSubSecciones.Size = new System.Drawing.Size(50, 50);
+            this.btnSubSecciones.Size = new System.Drawing.Size(38, 41);
             this.btnSubSecciones.TabIndex = 0;
             this.btnSubSecciones.UseVisualStyleBackColor = true;
             this.btnSubSecciones.Click += new System.EventHandler(this.btnSubSecciones_Click);
@@ -76,9 +78,10 @@
             // 
             this.btnTipoUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTipoUsuarios.BackgroundImage")));
             this.btnTipoUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnTipoUsuarios.Location = new System.Drawing.Point(10, 65);
+            this.btnTipoUsuarios.Location = new System.Drawing.Point(8, 53);
+            this.btnTipoUsuarios.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnTipoUsuarios.Name = "btnTipoUsuarios";
-            this.btnTipoUsuarios.Size = new System.Drawing.Size(50, 50);
+            this.btnTipoUsuarios.Size = new System.Drawing.Size(38, 41);
             this.btnTipoUsuarios.TabIndex = 0;
             this.btnTipoUsuarios.UseVisualStyleBackColor = true;
             this.btnTipoUsuarios.Click += new System.EventHandler(this.btnTipoUsuarios_Click);
@@ -87,9 +90,10 @@
             // 
             this.btnEstadistica.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEstadistica.BackgroundImage")));
             this.btnEstadistica.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEstadistica.Location = new System.Drawing.Point(10, 457);
+            this.btnEstadistica.Location = new System.Drawing.Point(8, 371);
+            this.btnEstadistica.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEstadistica.Name = "btnEstadistica";
-            this.btnEstadistica.Size = new System.Drawing.Size(50, 50);
+            this.btnEstadistica.Size = new System.Drawing.Size(38, 41);
             this.btnEstadistica.TabIndex = 0;
             this.btnEstadistica.UseVisualStyleBackColor = true;
             this.btnEstadistica.Click += new System.EventHandler(this.btnEstadistica_Click);
@@ -98,18 +102,20 @@
             // 
             this.Categorias.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Categorias.ImeMode = System.Windows.Forms.ImeMode.Alpha;
-            this.Categorias.Location = new System.Drawing.Point(65, -2);
+            this.Categorias.Location = new System.Drawing.Point(49, -2);
+            this.Categorias.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Categorias.Name = "Categorias";
-            this.Categorias.Size = new System.Drawing.Size(1249, 838);
+            this.Categorias.Size = new System.Drawing.Size(938, 682);
             this.Categorias.TabIndex = 0;
             // 
             // btnCerrarSesion
             // 
             this.btnCerrarSesion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCerrarSesion.BackgroundImage")));
             this.btnCerrarSesion.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(10, 513);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(8, 417);
+            this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(50, 50);
+            this.btnCerrarSesion.Size = new System.Drawing.Size(38, 41);
             this.btnCerrarSesion.TabIndex = 0;
             this.btnCerrarSesion.UseVisualStyleBackColor = true;
             this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
@@ -118,17 +124,20 @@
             // 
             this.btnFormato.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFormato.BackgroundImage")));
             this.btnFormato.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFormato.Location = new System.Drawing.Point(10, 401);
+            this.btnFormato.Location = new System.Drawing.Point(8, 326);
+            this.btnFormato.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnFormato.Name = "btnFormato";
-            this.btnFormato.Size = new System.Drawing.Size(50, 50);
+            this.btnFormato.Size = new System.Drawing.Size(38, 41);
             this.btnFormato.TabIndex = 0;
             this.btnFormato.UseVisualStyleBackColor = true;
+            this.btnFormato.Click += new System.EventHandler(this.btnFormato_Click);
             // 
             // btnSecciones
             // 
-            this.btnSecciones.Location = new System.Drawing.Point(10, 289);
+            this.btnSecciones.Location = new System.Drawing.Point(8, 235);
+            this.btnSecciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnSecciones.Name = "btnSecciones";
-            this.btnSecciones.Size = new System.Drawing.Size(50, 50);
+            this.btnSecciones.Size = new System.Drawing.Size(38, 41);
             this.btnSecciones.TabIndex = 2;
             this.btnSecciones.Text = "Secciones";
             this.btnSecciones.UseVisualStyleBackColor = true;
@@ -138,9 +147,10 @@
             // 
             this.btnUbicaciones.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUbicaciones.BackgroundImage")));
             this.btnUbicaciones.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnUbicaciones.Location = new System.Drawing.Point(10, 233);
+            this.btnUbicaciones.Location = new System.Drawing.Point(8, 189);
+            this.btnUbicaciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnUbicaciones.Name = "btnUbicaciones";
-            this.btnUbicaciones.Size = new System.Drawing.Size(50, 50);
+            this.btnUbicaciones.Size = new System.Drawing.Size(38, 41);
             this.btnUbicaciones.TabIndex = 1;
             this.btnUbicaciones.UseVisualStyleBackColor = true;
             this.btnUbicaciones.Click += new System.EventHandler(this.btnUbicaciones_Click);
@@ -149,9 +159,10 @@
             // 
             this.btnCArchivos.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCArchivos.BackgroundImage")));
             this.btnCArchivos.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCArchivos.Location = new System.Drawing.Point(10, 177);
+            this.btnCArchivos.Location = new System.Drawing.Point(8, 144);
+            this.btnCArchivos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCArchivos.Name = "btnCArchivos";
-            this.btnCArchivos.Size = new System.Drawing.Size(50, 50);
+            this.btnCArchivos.Size = new System.Drawing.Size(38, 41);
             this.btnCArchivos.TabIndex = 0;
             this.btnCArchivos.UseVisualStyleBackColor = true;
             this.btnCArchivos.Click += new System.EventHandler(this.btnCArchivos_Click);
@@ -160,10 +171,11 @@
             // 
             this.btnRUsuarios.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnRUsuarios.BackgroundImage")));
             this.btnRUsuarios.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnRUsuarios.Location = new System.Drawing.Point(10, 121);
+            this.btnRUsuarios.Location = new System.Drawing.Point(8, 98);
+            this.btnRUsuarios.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnRUsuarios.Name = "btnRUsuarios";
             this.btnRUsuarios.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.btnRUsuarios.Size = new System.Drawing.Size(50, 50);
+            this.btnRUsuarios.Size = new System.Drawing.Size(38, 41);
             this.btnRUsuarios.TabIndex = 0;
             this.btnRUsuarios.Tag = "Usuarios";
             this.btnRUsuarios.UseVisualStyleBackColor = true;
@@ -173,20 +185,22 @@
             // 
             this.btnLobby.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLobby.BackgroundImage")));
             this.btnLobby.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLobby.Location = new System.Drawing.Point(9, 9);
+            this.btnLobby.Location = new System.Drawing.Point(7, 7);
+            this.btnLobby.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnLobby.Name = "btnLobby";
-            this.btnLobby.Size = new System.Drawing.Size(50, 50);
+            this.btnLobby.Size = new System.Drawing.Size(38, 41);
             this.btnLobby.TabIndex = 0;
             this.btnLobby.UseVisualStyleBackColor = true;
             this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
             // 
             // Menu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1324, 843);
+            this.ClientSize = new System.Drawing.Size(993, 685);
             this.Controls.Add(this.MenuControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";

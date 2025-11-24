@@ -10,7 +10,8 @@ namespace SIGC_TESChi
     {
 
         // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
-        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        string connectionString =
+            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Login()
         {

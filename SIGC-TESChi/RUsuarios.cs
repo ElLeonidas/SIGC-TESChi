@@ -8,7 +8,9 @@ namespace SIGC_TESChi
     public partial class RUsuarios : UserControl
     {
         private ToolTip toolTip;
-        string connectionString = @"Server=.\SQLEXPRESS;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
+        string connectionString =
+            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public RUsuarios()
         {
@@ -375,6 +377,11 @@ namespace SIGC_TESChi
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             BuscarUsuarios();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
