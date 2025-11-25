@@ -8,6 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+
 
 namespace SIGC_TESChi
 {
@@ -345,6 +347,111 @@ namespace SIGC_TESChi
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private DataTable ObtenerUbicaciones()
+        {
+            string connectionString =
+                @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+
+            string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion";
+
+            DataTable dt = new DataTable();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+            {
+                conn.Open();
+                da.Fill(dt);
+            }
+
+            return dt;
+        }
+
+        private DataTable DataGridViewFiltradoToDataTable(DataGridView dgv)
+        {
+            DataTable dt = new DataTable();
+
+            // Crear columnas con los mismos encabezados que el DataGridView
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                dt.Columns.Add(col.HeaderText);
+            }
+
+            // Recorrer solo filas visibles (es decir, el resultado de tu búsqueda/filtro)
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (!row.IsNewRow && row.Visible) // <-- clave: solo las visibles
+                {
+                    DataRow dr = dt.NewRow();
+                    for (int i = 0; i < dgv.Columns.Count; i++)
+                    {
+                        dr[i] = row.Cells[i].Value ?? DBNull.Value;
+                    }
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            return dt;
+        }
+
+
+
+        private void ExportarFiltradoACSV()
+        {
+            // Aquí usamos el DataGridView ya filtrado
+            DataTable dt = DataGridViewFiltradoToDataTable(tablaUbicaciones);
+
+            if (dt.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos para exportar (revisa tu búsqueda).");
+                return;
+            }
+
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Archivos CSV (*.csv)|*.csv";
+                sfd.FileName = "Ubicaciones.csv";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    StringBuilder sb = new StringBuilder();
+
+                    // Encabezados
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        sb.Append(dt.Columns[i].ColumnName);
+                        if (i < dt.Columns.Count - 1)
+                            sb.Append(";");
+                    }
+                    sb.AppendLine();
+
+                    // Filas (solo lo filtrado)
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        for (int i = 0; i < dt.Columns.Count; i++)
+                        {
+                            string value = row[i]?.ToString() ?? "";
+                            value = value.Replace(";", ",");
+                            sb.Append(value);
+                            if (i < dt.Columns.Count - 1)
+                                sb.Append(";");
+                        }
+                        sb.AppendLine();
+                    }
+
+                    File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+
+                    MessageBox.Show("Archivo CSV generado .\nPuedes abrirlo con Excel.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void btnExportarPDF_Click(object sender, EventArgs e)
+        {
+            ExportarFiltradoACSV();
         }
     }
 }

@@ -55,6 +55,7 @@
             this.ubicacionBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.ubicacionTableAdapter1 = new SIGC_TESChi.SGCTESCHIDataSet7TableAdapters.UbicacionTableAdapter();
             this.ubicacionTableAdapter2 = new SIGC_TESChi.SGCTESCHIDataSet8TableAdapters.UbicacionTableAdapter();
+            this.btnExportarPDF = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaUbicaciones)).BeginInit();
@@ -73,7 +74,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(938, 682);
             this.panel1.TabIndex = 0;
@@ -84,7 +85,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.tablaUbicaciones);
             this.panel3.Location = new System.Drawing.Point(2, 187);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(930, 489);
             this.panel3.TabIndex = 10;
@@ -101,7 +102,7 @@
             this.tablaUbicaciones.DataSource = this.ubicacionBindingSource2;
             this.tablaUbicaciones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablaUbicaciones.Location = new System.Drawing.Point(0, 0);
-            this.tablaUbicaciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tablaUbicaciones.Margin = new System.Windows.Forms.Padding(2);
             this.tablaUbicaciones.Name = "tablaUbicaciones";
             this.tablaUbicaciones.ReadOnly = true;
             this.tablaUbicaciones.RowHeadersWidth = 51;
@@ -140,6 +141,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.btnExportarPDF);
             this.panel2.Controls.Add(this.btnBuscar);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.txtUbicacion);
@@ -151,7 +153,7 @@
             this.panel2.Controls.Add(this.btnAgregar);
             this.panel2.Controls.Add(this.txtID);
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(930, 166);
             this.panel2.TabIndex = 9;
@@ -161,7 +163,7 @@
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBuscar.Location = new System.Drawing.Point(671, 68);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(45, 49);
             this.btnBuscar.TabIndex = 9;
@@ -183,7 +185,7 @@
             // 
             this.txtUbicacion.Font = new System.Drawing.Font("Georgia", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUbicacion.Location = new System.Drawing.Point(259, 101);
-            this.txtUbicacion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtUbicacion.Margin = new System.Windows.Forms.Padding(2);
             this.txtUbicacion.Name = "txtUbicacion";
             this.txtUbicacion.Size = new System.Drawing.Size(269, 21);
             this.txtUbicacion.TabIndex = 4;
@@ -193,7 +195,7 @@
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLimpiar.Location = new System.Drawing.Point(721, 68);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(45, 49);
             this.btnLimpiar.TabIndex = 8;
@@ -205,7 +207,7 @@
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnEliminar.Location = new System.Drawing.Point(618, 68);
-            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(45, 49);
             this.btnEliminar.TabIndex = 7;
@@ -229,7 +231,7 @@
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnModificar.Location = new System.Drawing.Point(770, 68);
-            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(45, 49);
             this.btnModificar.TabIndex = 6;
@@ -252,7 +254,7 @@
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAgregar.Location = new System.Drawing.Point(565, 68);
-            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(45, 49);
             this.btnAgregar.TabIndex = 5;
@@ -263,7 +265,7 @@
             // 
             this.txtID.Font = new System.Drawing.Font("Georgia", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtID.Location = new System.Drawing.Point(259, 64);
-            this.txtID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtID.Margin = new System.Windows.Forms.Padding(2);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(269, 21);
             this.txtID.TabIndex = 3;
@@ -300,12 +302,22 @@
             // 
             this.ubicacionTableAdapter2.ClearBeforeFill = true;
             // 
+            // btnExportarPDF
+            // 
+            this.btnExportarPDF.Location = new System.Drawing.Point(839, 81);
+            this.btnExportarPDF.Name = "btnExportarPDF";
+            this.btnExportarPDF.Size = new System.Drawing.Size(75, 23);
+            this.btnExportarPDF.TabIndex = 10;
+            this.btnExportarPDF.Text = "Exportar";
+            this.btnExportarPDF.UseVisualStyleBackColor = true;
+            this.btnExportarPDF.Click += new System.EventHandler(this.btnExportarPDF_Click);
+            // 
             // Ubicaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Ubicaciones";
             this.Size = new System.Drawing.Size(937, 681);
             this.panel1.ResumeLayout(false);
@@ -350,5 +362,6 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.DataGridViewTextBoxColumn idUbicacionDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dUbicacionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button btnExportarPDF;
     }
 }
