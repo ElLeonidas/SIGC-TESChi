@@ -378,10 +378,5 @@ namespace SIGC_TESChi
         {
             BuscarUsuarios();
         }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }
