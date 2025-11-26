@@ -37,9 +37,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtLlave = new System.Windows.Forms.TextBox();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -64,11 +62,9 @@
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel2.Controls.Add(this.btnActualizar);
-            this.panel2.Controls.Add(this.txtLlave);
             this.panel2.Controls.Add(this.btnBuscar);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.label5);
-            this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.dtpHasta);
             this.panel2.Controls.Add(this.cmbTabla);
@@ -93,7 +89,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(350, 48);
+            this.label2.Location = new System.Drawing.Point(489, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 20);
             this.label2.TabIndex = 1;
@@ -102,7 +98,7 @@
             // cmbTabla
             // 
             this.cmbTabla.FormattingEnabled = true;
-            this.cmbTabla.Location = new System.Drawing.Point(414, 44);
+            this.cmbTabla.Location = new System.Drawing.Point(553, 51);
             this.cmbTabla.Name = "cmbTabla";
             this.cmbTabla.Size = new System.Drawing.Size(200, 24);
             this.cmbTabla.TabIndex = 2;
@@ -131,16 +127,6 @@
             this.dtpHasta.Size = new System.Drawing.Size(200, 22);
             this.dtpHasta.TabIndex = 5;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(645, 47);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(54, 20);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Llave:";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -150,13 +136,6 @@
             this.label5.Size = new System.Drawing.Size(59, 20);
             this.label5.TabIndex = 7;
             this.label5.Text = "Hasta:";
-            // 
-            // txtLlave
-            // 
-            this.txtLlave.Location = new System.Drawing.Point(710, 44);
-            this.txtLlave.Name = "txtLlave";
-            this.txtLlave.Size = new System.Drawing.Size(200, 22);
-            this.txtLlave.TabIndex = 8;
             // 
             // btnBuscar
             // 
@@ -223,9 +202,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbTabla;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtLlave;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtpHasta;
         private System.Windows.Forms.DateTimePicker dtpDesde;
         private System.Windows.Forms.Label label3;

@@ -13,7 +13,6 @@ namespace SIGC_TESChi
 {
     public partial class Historial : UserControl
     {
-        // 🔹 Cambia tu cadena de conexión según tu servidor y base
         string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Historial()
@@ -21,23 +20,12 @@ namespace SIGC_TESChi
             InitializeComponent();
         }
 
-        // 🔹 Cargar combo y columna botón al cargar el UserControl
         private void Historial_Load(object sender, EventArgs e)
         {
-            // Llenar ComboBox de tablas
-            cmbTabla.Items.Clear();
-            cmbTabla.Items.Add("TODAS");
-            cmbTabla.Items.Add("Control");
-            cmbTabla.Items.Add("Usuario");
-            cmbTabla.Items.Add("TipoUsuario");
-            cmbTabla.Items.Add("Ubicacion");
-            cmbTabla.Items.Add("Seccion");
-            cmbTabla.Items.Add("SubSeccion");
-            cmbTabla.Items.Add("Clasificacion");
-            cmbTabla.Items.Add("Estatus");
-            cmbTabla.SelectedIndex = 0;
+            // Llenar ComboBox con las tablas reales de la base de datos
+            LlenarComboTablas();
 
-            // PASO 3: Agregar columna botón 🔎
+            // PASO 3: Columna botón 🔎
             if (!dgvHistorial.Columns.Contains("VerDetalle"))
             {
                 DataGridViewButtonColumn btnVer = new DataGridViewButtonColumn();
@@ -50,7 +38,6 @@ namespace SIGC_TESChi
                 dgvHistorial.Columns.Add(btnVer);
             }
 
-            // Inicializar DataGridView
             dgvHistorial.AllowUserToAddRows = false;
             dgvHistorial.ReadOnly = true;
 
@@ -58,7 +45,34 @@ namespace SIGC_TESChi
             CargarHistorial();
         }
 
-        // 🔹 Método para cargar datos del historial
+        // 🔹 Llenar ComboBox dinámicamente con tablas existentes
+        private void LlenarComboTablas()
+        {
+            try
+            {
+                cmbTabla.Items.Clear();
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    // Traer nombres de las tablas de la base de datos
+                    DataTable dt = conn.GetSchema("Tables");
+                    cmbTabla.Items.Add("TODAS"); // opción por defecto
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string tableName = row["TABLE_NAME"].ToString();
+                        cmbTabla.Items.Add(tableName);
+                    }
+                    cmbTabla.SelectedIndex = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar tablas: " + ex.Message);
+            }
+        }
+
+        // 🔹 Cargar historial filtrando solo por tabla y rango de fechas
         private void CargarHistorial()
         {
             try
@@ -70,14 +84,12 @@ namespace SIGC_TESChi
                     string sql = @"SELECT idHistorial, Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, DatosAnteriores, DatosNuevos, idUsuarioApp
                                    FROM HistorialCambios
                                    WHERE (@tabla = 'TODAS' OR Tabla = @tabla)
-                                     AND (Llave LIKE '%' + @llave + '%')
                                      AND (FechaAccion BETWEEN @desde AND @hasta)
                                    ORDER BY FechaAccion DESC";
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@tabla", cmbTabla.SelectedItem.ToString());
-                        cmd.Parameters.AddWithValue("@llave", txtLlave.Text.Trim());
                         cmd.Parameters.AddWithValue("@desde", dtpDesde.Value.Date);
                         cmd.Parameters.AddWithValue("@hasta", dtpHasta.Value.Date.AddDays(1).AddSeconds(-1));
 
@@ -87,12 +99,13 @@ namespace SIGC_TESChi
 
                         dgvHistorial.DataSource = dt;
 
-                        // Ajustar columnas visibles
+                        // Ocultar columnas que no quieres mostrar
                         dgvHistorial.Columns["idHistorial"].Visible = false;
                         dgvHistorial.Columns["DatosAnteriores"].Visible = false;
                         dgvHistorial.Columns["DatosNuevos"].Visible = false;
                         dgvHistorial.Columns["idUsuarioApp"].Visible = false;
 
+                        // Renombrar encabezados
                         dgvHistorial.Columns["Tabla"].HeaderText = "Tabla";
                         dgvHistorial.Columns["Llave"].HeaderText = "Llave";
                         dgvHistorial.Columns["TipoAccion"].HeaderText = "Acción";
@@ -117,13 +130,12 @@ namespace SIGC_TESChi
         private void btnActualizar_Click(object sender, EventArgs e)
         {
             cmbTabla.SelectedIndex = 0;
-            txtLlave.Clear();
             dtpDesde.Value = DateTime.Today.AddMonths(-1);
             dtpHasta.Value = DateTime.Today;
             CargarHistorial();
         }
 
-        // 🔹 Evento para abrir DetallesCambio al dar clic en 🔎
+        // 🔹 Evento para abrir DetallesCambio
         private void dgvHistorial_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && dgvHistorial.Columns[e.ColumnIndex].Name == "VerDetalle")
