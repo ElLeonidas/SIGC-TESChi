@@ -43,6 +43,8 @@
             this.usuarioBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.dBCONTRALORIADataSet1 = new SIGC_TESChi.DBCONTRALORIADataSet1();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.txtIdentificador = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.txtNombreAcceso = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -70,8 +72,6 @@
             this.usuarioTableAdapter1 = new SIGC_TESChi.DBCONTRALORIADataSetTableAdapters.UsuarioTableAdapter();
             this.usuarioTableAdapter2 = new SIGC_TESChi.DBCONTRALORIADataSet1TableAdapters.UsuarioTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtIdentificador = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
@@ -230,6 +230,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1245, 279);
             this.panel2.TabIndex = 1;
+            // 
+            // txtIdentificador
+            // 
+            this.txtIdentificador.Location = new System.Drawing.Point(590, 53);
+            this.txtIdentificador.Name = "txtIdentificador";
+            this.txtIdentificador.Size = new System.Drawing.Size(199, 22);
+            this.txtIdentificador.TabIndex = 20;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(438, 55);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(114, 20);
+            this.label9.TabIndex = 19;
+            this.label9.Text = "Identificador:";
             // 
             // txtNombreAcceso
             // 
@@ -443,23 +460,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(438, 55);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(114, 20);
-            this.label9.TabIndex = 19;
-            this.label9.Text = "Identificador:";
-            // 
-            // txtIdentificador
-            // 
-            this.txtIdentificador.Location = new System.Drawing.Point(590, 53);
-            this.txtIdentificador.Name = "txtIdentificador";
-            this.txtIdentificador.Size = new System.Drawing.Size(199, 22);
-            this.txtIdentificador.TabIndex = 20;
             // 
             // RUsuarios
             // 

@@ -42,6 +42,9 @@ namespace SIGC_TESChi
             btnSecciones.MouseEnter += (s, e) => toolTip.Show("Consultar secciones de los archivos", btnSecciones);
             btnSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSecciones);
 
+            btnHistorial.MouseEnter += (s, e) => toolTip.Show("Consultar el Historial", btnHistorial);
+            btnHistorial.MouseLeave += (s, e) => toolTip.Hide(btnHistorial);
+
             btnCerrarSesion.MouseEnter += (s, e) => toolTip.Show("Cerrar sesión", btnCerrarSesion);
             btnCerrarSesion.MouseLeave += (s, e) => toolTip.Hide(btnCerrarSesion);
         }
@@ -109,6 +112,11 @@ namespace SIGC_TESChi
         private void btnFormato_Click(object sender, EventArgs e)
         {
             LoadPanel(new CaratulaExpediente());
+        }
+
+        private void btnHistorial_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new Historial());
         }
     }
 }

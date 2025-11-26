@@ -63,7 +63,9 @@
     <Reference Include="Microsoft.Configuration.ConfigurationBuilders.UserSecrets, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.3.0.0\lib\Net471\Microsoft.Configuration.ConfigurationBuilders.UserSecrets.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -103,6 +105,18 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DBCONTRALORIADataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DetallesCambio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DetallesCambio.Designer.cs">
+      <DependentUpon>DetallesCambio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Historial.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Historial.Designer.cs">
+      <DependentUpon>Historial.cs</DependentUpon>
     </Compile>
     <Compile Include="Lobby.cs">
       <SubType>UserControl</SubType>
@@ -220,6 +234,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CArchivos.resx">
       <DependentUpon>CArchivos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DetallesCambio.resx">
+      <DependentUpon>DetallesCambio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Historial.resx">
+      <DependentUpon>Historial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Lobby.resx">
       <DependentUpon>Lobby.cs</DependentUpon>
