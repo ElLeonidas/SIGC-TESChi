@@ -1,16 +1,9 @@
 ﻿namespace SIGC_TESChi
 {
-    partial class Login
+    partial class FrmLogin
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,118 +15,126 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.labelLogin = new System.Windows.Forms.Label();
-            this.txtboxUsuario = new System.Windows.Forms.TextBox();
-            this.txtboxPassword = new System.Windows.Forms.TextBox();
-            this.btnIniciarSesion = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLogin));
+            this.pnlCard = new System.Windows.Forms.Panel();
             this.pnlLogin = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnCerrarPrograma = new System.Windows.Forms.Button();
+            this.btnOcultar = new System.Windows.Forms.Button();
+            this.txtPassword = new System.Windows.Forms.TextBox();
+            this.txtUsuario = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnLogin = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pnlCard.SuspendLayout();
             this.pnlLogin.SuspendLayout();
             this.SuspendLayout();
             // 
-            // labelLogin
+            // pnlCard
             // 
-            this.labelLogin.AutoSize = true;
-            this.labelLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLogin.ForeColor = System.Drawing.SystemColors.Control;
-            this.labelLogin.Location = new System.Drawing.Point(125, 82);
-            this.labelLogin.Name = "labelLogin";
-            this.labelLogin.Size = new System.Drawing.Size(138, 42);
-            this.labelLogin.TabIndex = 0;
-            this.labelLogin.Text = "LOGIN";
+            this.pnlCard.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCard.BackgroundImage")));
+            this.pnlCard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlCard.Controls.Add(this.pnlLogin);
+            this.pnlCard.Location = new System.Drawing.Point(123, 84);
+            this.pnlCard.Name = "pnlCard";
+            this.pnlCard.Size = new System.Drawing.Size(700, 500);
+            this.pnlCard.TabIndex = 0;
             // 
-            // txtboxUsuario
+            // pnlLogin
             // 
-            this.txtboxUsuario.Location = new System.Drawing.Point(173, 210);
-            this.txtboxUsuario.Name = "txtboxUsuario";
-            this.txtboxUsuario.Size = new System.Drawing.Size(100, 22);
-            this.txtboxUsuario.TabIndex = 1;
-            this.txtboxUsuario.TextChanged += new System.EventHandler(this.txtboxUsuario_TextChanged);
+            this.pnlLogin.Controls.Add(this.btnCerrarPrograma);
+            this.pnlLogin.Controls.Add(this.btnOcultar);
+            this.pnlLogin.Controls.Add(this.txtPassword);
+            this.pnlLogin.Controls.Add(this.txtUsuario);
+            this.pnlLogin.Controls.Add(this.label3);
+            this.pnlLogin.Controls.Add(this.label2);
+            this.pnlLogin.Controls.Add(this.btnLogin);
+            this.pnlLogin.Controls.Add(this.label1);
+            this.pnlLogin.Location = new System.Drawing.Point(98, 47);
+            this.pnlLogin.Name = "pnlLogin";
+            this.pnlLogin.Size = new System.Drawing.Size(500, 400);
+            this.pnlLogin.TabIndex = 0;
             // 
-            // txtboxPassword
+            // btnCerrarPrograma
             // 
-            this.txtboxPassword.Location = new System.Drawing.Point(173, 259);
-            this.txtboxPassword.Name = "txtboxPassword";
-            this.txtboxPassword.Size = new System.Drawing.Size(100, 22);
-            this.txtboxPassword.TabIndex = 2;
-            this.txtboxPassword.TextChanged += new System.EventHandler(this.txtboxPassword_TextChanged);
+            this.btnCerrarPrograma.Location = new System.Drawing.Point(465, 16);
+            this.btnCerrarPrograma.Name = "btnCerrarPrograma";
+            this.btnCerrarPrograma.Size = new System.Drawing.Size(22, 23);
+            this.btnCerrarPrograma.TabIndex = 7;
+            this.btnCerrarPrograma.UseVisualStyleBackColor = true;
             // 
-            // btnIniciarSesion
+            // btnOcultar
             // 
-            this.btnIniciarSesion.Location = new System.Drawing.Point(122, 394);
-            this.btnIniciarSesion.Name = "btnIniciarSesion";
-            this.btnIniciarSesion.Size = new System.Drawing.Size(141, 52);
-            this.btnIniciarSesion.TabIndex = 3;
-            this.btnIniciarSesion.Text = "Iniciar Sesion";
-            this.btnIniciarSesion.UseVisualStyleBackColor = true;
-            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click);
+            this.btnOcultar.Location = new System.Drawing.Point(381, 176);
+            this.btnOcultar.Name = "btnOcultar";
+            this.btnOcultar.Size = new System.Drawing.Size(23, 23);
+            this.btnOcultar.TabIndex = 6;
+            this.btnOcultar.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // txtPassword
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(66, 212);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 20);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "Usuario:";
+            this.txtPassword.Location = new System.Drawing.Point(233, 177);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(100, 20);
+            this.txtPassword.TabIndex = 5;
+            // 
+            // txtUsuario
+            // 
+            this.txtUsuario.Location = new System.Drawing.Point(232, 101);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(100, 20);
+            this.txtUsuario.TabIndex = 4;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(71, 181);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(64, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Contraseña:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(35, 261);
+            this.label2.Location = new System.Drawing.Point(71, 101);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(111, 20);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Contraseña:";
+            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Usuario:";
             // 
-            // pnlLogin
+            // btnLogin
             // 
-            this.pnlLogin.BackColor = System.Drawing.Color.Transparent;
-            this.pnlLogin.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pnlLogin.Controls.Add(this.button1);
-            this.pnlLogin.Controls.Add(this.labelLogin);
-            this.pnlLogin.Controls.Add(this.btnIniciarSesion);
-            this.pnlLogin.Controls.Add(this.label2);
-            this.pnlLogin.Controls.Add(this.txtboxPassword);
-            this.pnlLogin.Controls.Add(this.label1);
-            this.pnlLogin.Controls.Add(this.txtboxUsuario);
-            this.pnlLogin.Location = new System.Drawing.Point(48, 34);
-            this.pnlLogin.Name = "pnlLogin";
-            this.pnlLogin.Size = new System.Drawing.Size(379, 473);
-            this.pnlLogin.TabIndex = 6;
-            this.pnlLogin.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlLogin_Paint);
+            this.btnLogin.Location = new System.Drawing.Point(179, 346);
+            this.btnLogin.Name = "btnLogin";
+            this.btnLogin.Size = new System.Drawing.Size(134, 35);
+            this.btnLogin.TabIndex = 1;
+            this.btnLogin.Text = "Iniciar Sesión";
+            this.btnLogin.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // label1
             // 
-            this.button1.Location = new System.Drawing.Point(334, 14);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(30, 23);
-            this.button1.TabIndex = 6;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Georgia", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.label1.Location = new System.Drawing.Point(197, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(97, 31);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Login";
             // 
-            // Login
+            // FrmLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 553);
-            this.Controls.Add(this.pnlLogin);
-            this.Name = "Login";
+            this.ClientSize = new System.Drawing.Size(984, 661);
+            this.Controls.Add(this.pnlCard);
+            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
-            this.Load += new System.EventHandler(this.Login_Load);
+            this.pnlCard.ResumeLayout(false);
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
             this.ResumeLayout(false);
@@ -142,13 +143,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Label labelLogin;
-        private System.Windows.Forms.TextBox txtboxUsuario;
-        private System.Windows.Forms.TextBox txtboxPassword;
-        private System.Windows.Forms.Button btnIniciarSesion;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel pnlCard;
         private System.Windows.Forms.Panel pnlLogin;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnLogin;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnOcultar;
+        private System.Windows.Forms.TextBox txtPassword;
+        private System.Windows.Forms.TextBox txtUsuario;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnCerrarPrograma;
     }
 }

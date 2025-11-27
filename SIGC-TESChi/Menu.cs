@@ -80,7 +80,7 @@ namespace SIGC_TESChi
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
-            Login loginForm = new Login();
+            FrmLogin loginForm = new FrmLogin();
             loginForm.Show();
             this.Hide();
         }
@@ -117,6 +117,11 @@ namespace SIGC_TESChi
         private void btnHistorial_Click(object sender, EventArgs e)
         {
             LoadPanel(new Historial());
+        }
+
+        private void Menu_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -38,7 +38,7 @@ namespace SIGC_TESChi
             this.Hide();  // Ocultar splash
 
             // Abrir formulario principal (Login)
-            Login mainForm = new Login();
+            FrmLogin mainForm = new FrmLogin();
             mainForm.Show();
         }
 

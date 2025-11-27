@@ -88,13 +88,14 @@ namespace SIGC_TESChi
                 {
                     con.Open();
 
-                    // Consulta completa con INNER JOIN
                     string query = @"
                 SELECT 
                     U.idUsuario,
+                    U.Username,
                     U.Nombre,
                     U.Apaterno,
                     U.Amaterno,
+                    U.idTipoUsuario,
                     T.dTipoUsuario AS TipoUsuario,
                     U.contrasena
                 FROM Usuario U
@@ -104,7 +105,6 @@ namespace SIGC_TESChi
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    // Cargar datos en el DataGridView
                     TablaUsuarios.AutoGenerateColumns = true;
                     TablaUsuarios.DataSource = null;
                     TablaUsuarios.Columns.Clear();
@@ -117,8 +117,9 @@ namespace SIGC_TESChi
             }
         }
 
-        // Verificar si existe el usuario (idUsuario = nombre)
-        private bool ExisteUsuario(string idUsuario)
+
+        // Verificar si existe el usuario (por Username)
+        private bool ExisteUsuario(string username)
         {
             try
             {
@@ -126,58 +127,50 @@ namespace SIGC_TESChi
                 {
                     con.Open();
 
-                    // Usar COUNT(1) garantiza que ExecuteScalar() devuelva un número (0 o >0)
-                    string query = "SELECT COUNT(1) FROM Usuario WHERE idUsuario = @u";
+                    string query = "SELECT COUNT(1) FROM Usuario WHERE Username = @u";
 
                     using (SqlCommand cmd = new SqlCommand(query, con))
                     {
-                        cmd.Parameters.AddWithValue("@u", idUsuario);
+                        cmd.Parameters.AddWithValue("@u", username);
 
                         object result = cmd.ExecuteScalar();
 
-                        // Comprobaciones de seguridad
                         if (result == null || result == DBNull.Value)
-                        {
                             return false;
-                        }
 
-                        // Intentar convertir a entero de forma segura
                         if (int.TryParse(result.ToString(), out int count))
-                        {
                             return count > 0;
-                        }
 
-                        // Si por alguna razón no se pudo convertir, asumimos que no existe
                         return false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                // Opcional: puedes loguear ex.Message
                 MessageBox.Show("Error al verificar usuario: " + ex.Message);
                 return false;
             }
         }
 
-        // AGREGAR
+
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (txtUsuario.Text == "" || txtContrasena.Text == "" || comboTipoUsuario.SelectedIndex == -1 ||
-       txtApaterno.Text == "" || txtAmaterno.Text == "")
+            if (txtUsuario.Text == "" || txtNombreAcceso.Text == "" ||
+                txtApaterno.Text == "" || txtAmaterno.Text == "" ||
+                txtContrasena.Text == "" || comboTipoUsuario.SelectedIndex == -1)
             {
                 MessageBox.Show("Llena todos los campos.");
                 return;
             }
 
-            string nombre = txtUsuario.Text.Trim();
+            string username = txtUsuario.Text.Trim();
+            string nombre = txtNombreAcceso.Text.Trim();
             string apaterno = txtApaterno.Text.Trim();
             string amaterno = txtAmaterno.Text.Trim();
             string contrasena = txtContrasena.Text.Trim();
             string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
 
-            // Si deseas verificar duplicados por nombre (no por ID)
-            if (ExisteUsuario(nombre))
+            if (ExisteUsuario(username))
             {
                 MessageBox.Show("Ese nombre de usuario ya existe. Usa otro.");
                 return;
@@ -188,10 +181,11 @@ namespace SIGC_TESChi
                 con.Open();
 
                 string query = @"
-            INSERT INTO Usuario (Nombre, Apaterno, Amaterno, idTipoUsuario, Contrasena)
-            VALUES (@n, @aP, @aM, @t, @c)";
+            INSERT INTO Usuario (Username, Nombre, Apaterno, Amaterno, idTipoUsuario, Contrasena)
+            VALUES (@user, @n, @aP, @aM, @t, @c)";
 
                 SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@user", username);
                 cmd.Parameters.AddWithValue("@n", nombre);
                 cmd.Parameters.AddWithValue("@aP", apaterno);
                 cmd.Parameters.AddWithValue("@aM", amaterno);
@@ -205,34 +199,44 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-        // MODIFICAR (ACTUALIZAR)
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if (txtUsuario.Text == "")
+            if (string.IsNullOrWhiteSpace(txtIdentificador.Text))
             {
                 MessageBox.Show("Selecciona un usuario.");
                 return;
             }
 
-            string idUsuario = txtUsuario.Text.Trim();
+            int idUsuario = int.Parse(txtIdentificador.Text.Trim());
+            string username = txtUsuario.Text.Trim();
+            string nombre = txtNombreAcceso.Text.Trim();
+            string apaterno = txtApaterno.Text.Trim();
+            string amaterno = txtAmaterno.Text.Trim();
+            string contrasena = txtContrasena.Text.Trim();
             string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
 
-            if (!ExisteUsuario(idUsuario))
-            {
-                MessageBox.Show("El usuario no existe en la base.");
-                return;
-            }
-
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
-                string query = "UPDATE Usuario SET Contrasena=@c, idTipoUsuario=@t WHERE idUsuario=@u";
-                SqlCommand cmd = new SqlCommand(query, con);
+                string query = @"
+            UPDATE Usuario 
+            SET Username=@user,
+                Nombre=@n,
+                Apaterno=@aP,
+                Amaterno=@aM,
+                Contrasena=@c,
+                idTipoUsuario=@t
+            WHERE idUsuario=@id";
 
-                cmd.Parameters.AddWithValue("@c", txtContrasena.Text.Trim());
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.Parameters.AddWithValue("@user", username);
+                cmd.Parameters.AddWithValue("@n", nombre);
+                cmd.Parameters.AddWithValue("@aP", apaterno);
+                cmd.Parameters.AddWithValue("@aM", amaterno);
+                cmd.Parameters.AddWithValue("@c", contrasena);
                 cmd.Parameters.AddWithValue("@t", tipo);
-                cmd.Parameters.AddWithValue("@u", idUsuario);
+                cmd.Parameters.AddWithValue("@id", idUsuario);
 
                 cmd.ExecuteNonQuery();
             }
@@ -241,35 +245,30 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-        // ELIMINAR
+
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (txtUsuario.Text == "")
+            if (string.IsNullOrWhiteSpace(txtIdentificador.Text))
             {
                 MessageBox.Show("Selecciona un usuario.");
                 return;
             }
 
-            string idUsuario = txtUsuario.Text.Trim();
-
-            if (!ExisteUsuario(idUsuario))
-            {
-                MessageBox.Show("El usuario no existe.");
-                return;
-            }
+            int idUsuario = int.Parse(txtIdentificador.Text.Trim());
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                string query = "DELETE FROM Usuario WHERE idUsuario=@u";
+                string query = "DELETE FROM Usuario WHERE idUsuario=@id";
                 SqlCommand cmd = new SqlCommand(query, con);
-                cmd.Parameters.AddWithValue("@u", idUsuario);
+                cmd.Parameters.AddWithValue("@id", idUsuario);
                 cmd.ExecuteNonQuery();
             }
 
             CargarUsuarios();
             LimpiarCampos();
         }
+
 
         // SELECCIONAR USUARIO DE LA TABLA
         private void TablaUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -278,7 +277,13 @@ namespace SIGC_TESChi
 
             var row = TablaUsuarios.Rows[e.RowIndex];
 
-            txtUsuario.Text = row.Cells["idUsuario"].Value?.ToString();
+            // idUsuario en un TextBox oculto o aparte
+            txtIdentificador.Text = row.Cells["idUsuario"].Value?.ToString();
+
+            txtUsuario.Text = row.Cells["Username"].Value?.ToString();
+            txtNombreAcceso.Text = row.Cells["Nombre"].Value?.ToString();
+            txtApaterno.Text = row.Cells["Apaterno"].Value?.ToString();
+            txtAmaterno.Text = row.Cells["Amaterno"].Value?.ToString();
             txtContrasena.Text = row.Cells["Contrasena"].Value?.ToString();
 
             string tipo = row.Cells["idTipoUsuario"].Value?.ToString();
@@ -286,18 +291,32 @@ namespace SIGC_TESChi
             if (tipo == "1")
                 comboTipoUsuario.SelectedItem = "1 - Administrador";
             else if (tipo == "2")
-                comboTipoUsuario.SelectedItem = "2 - Servicio";
+                comboTipoUsuario.SelectedItem = "2 - Licenciada";
             else if (tipo == "3")
-                comboTipoUsuario.SelectedItem = "3 - Licenciada";
+                comboTipoUsuario.SelectedItem = "3 - Servicio";
         }
 
+
+        // LIMPIAR CAMPOS
         // LIMPIAR CAMPOS
         private void LimpiarCampos()
         {
-            txtUsuario.Text = "";
+            
+           
+               
+            txtIdentificador.Text = "";
+            txtUsuario.Text = "";     // Username
+            txtNombreAcceso.Text = "";      // Nombre
+            txtApaterno.Text = "";
+            txtAmaterno.Text = "";
             txtContrasena.Text = "";
             comboTipoUsuario.SelectedIndex = -1;
+
+            // Opcional: limpiar selección de la tabla
+            if (TablaUsuarios != null)
+                TablaUsuarios.ClearSelection();
         }
+
 
         // BUSCAR USUARIOS (FILTROS FLEXIBLES)
         private void BuscarUsuarios()

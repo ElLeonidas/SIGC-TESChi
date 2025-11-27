@@ -1,122 +1,142 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
 {
-    public partial class Login : Form
+    public partial class FrmLogin : Form
     {
-
-        // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
+        // 🔹 Cadena de conexión
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
-        public Login()
+        public FrmLogin()
         {
             InitializeComponent();
 
-            // Configurar transparencia
-            this.FormBorderStyle = FormBorderStyle.None;              // Sin bordes
-            this.StartPosition = FormStartPosition.CenterScreen;      // Centrado
-            this.BackColor = Color.Black;                             // Color de fondo (se puede cambiar)
-            this.TransparencyKey = this.BackColor;                    // Hace invisible el color de fondo
-            this.TopMost = true;
+            // === FORM ===
+            this.FormBorderStyle = FormBorderStyle.None;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.DoubleBuffered = true;
+            this.BackColor = Color.White;
+            this.AcceptButton = btnLogin; // Enter = Iniciar sesión
 
-            pnlLogin.BackColor = Color.Transparent;
+            // === LABELS TRANSPARENTES ===
+            label1.BackColor = Color.Transparent;
+            label2.BackColor = Color.Transparent;
+            label3.BackColor = Color.Transparent;
 
-            // Agregamos evento de pintado personalizado
-            pnlLogin.Paint += PnlLogin_Paint;
+            // === TARJETA CON IMAGEN (pnlCard) ===
+            pnlCard.Dock = DockStyle.Fill;
+            pnlCard.BackgroundImageLayout = ImageLayout.Stretch;
 
+            // === PANEL LOGIN (glass) ===
+            pnlLogin.BackColor = Color.FromArgb(200, 255, 255, 255); // blanco translúcido suave
+
+            // === BOTÓN LOGIN ===
+            btnLogin.FlatStyle = FlatStyle.Flat;
+            btnLogin.FlatAppearance.BorderSize = 0;
+            btnLogin.BackColor = Color.FromArgb(88, 63, 149);
+            btnLogin.ForeColor = Color.White;
+
+            // === TEXTBOX PASSWORD ===
+            txtPassword.UseSystemPasswordChar = true;
+
+            // === BOTÓN OJO ===
+            btnOcultar.FlatStyle = FlatStyle.Flat;
+            btnOcultar.FlatAppearance.BorderSize = 0;
+            btnOcultar.Text = "👁";
+
+            // Centrar panel login al cargar
+            this.Load += FrmLogin_Load;
+
+            // Eventos
+            btnCerrarPrograma.Click += BtnCerrarPrograma_Click;
+            btnLogin.Click += BtnLogin_Click;
+            btnOcultar.Click += btnOcultar_Click;
         }
 
-        private void PnlLogin_Paint(object sender, PaintEventArgs e)
+        private void FrmLogin_Load(object sender, EventArgs e)
         {
-            Panel panel = sender as Panel;
-            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            CentrarPanelLogin();
+        }
 
-            // Color de fondo con transparencia
-            Color colorInicio = Color.FromArgb(150, 30, 0, 60); // RGBA
-            Color colorFin = Color.FromArgb(150, 50, 0, 150);
+        private void CentrarPanelLogin()
+        {
+            pnlLogin.Left = (pnlCard.ClientSize.Width - pnlLogin.Width) / 2;
+            pnlLogin.Top = (pnlCard.ClientSize.Height - pnlLogin.Height) / 2;
+        }
 
-            using (LinearGradientBrush brush = new LinearGradientBrush(panel.ClientRectangle, colorInicio, colorFin, LinearGradientMode.Vertical))
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            CentrarPanelLogin();
+        }
+
+        private void BtnCerrarPrograma_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        // ====================== LOGIN ======================
+        private void BtnLogin_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) ||
+                string.IsNullOrWhiteSpace(txtPassword.Text))
             {
-                using (GraphicsPath path = GetRoundedRectanglePath(panel.ClientRectangle, 30))
-                {
-                    e.Graphics.FillPath(brush, path);
-                }
-            }
-        }
-
-        // Función para crear un rectángulo con bordes redondeados
-        private GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
-        {
-            GraphicsPath path = new GraphicsPath();
-            int diameter = radius * 2;
-
-            path.AddArc(rect.X, rect.Y, diameter, diameter, 180, 90);
-            path.AddArc(rect.Right - diameter, rect.Y, diameter, diameter, 270, 90);
-            path.AddArc(rect.Right - diameter, rect.Bottom - diameter, diameter, diameter, 0, 90);
-            path.AddArc(rect.X, rect.Bottom - diameter, diameter, diameter, 90, 90);
-            path.CloseFigure();
-
-            return path;
-        }
-
-        private void Login_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnIniciarSesion_Click(object sender, EventArgs e)
-        {
-            // Obtiene los valores de los TextBox (suponiendo txtUsuario y txtContrasena)
-            string nombre = txtboxUsuario.Text.Trim();
-            string contrasena = txtboxPassword.Text.Trim();
-
-            // Validación de campos vacíos
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(contrasena))
-            {
-                MessageBox.Show("Por favor, ingresa nombre y contraseña.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Ingrese usuario y contraseña.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            string usuario = txtUsuario.Text.Trim();
+            string password = txtPassword.Text.Trim();
+
             try
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    conn.Open();
 
-                    string query = @"SELECT Nombre, idTipoUsuario
-                 FROM Usuario
-                 WHERE Nombre = @nombre AND contrasena = @contrasena";
+                    string query = @"
+                        SELECT idUsuario, Username, Nombre, Apaterno, Amaterno, idTipoUsuario
+                        FROM Usuario
+                        WHERE Username = @user
+                          AND contrasena = @pass;";
 
-
-                    using (SqlCommand cmd = new SqlCommand(query, connection))
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@nombre", nombre);
-                        cmd.Parameters.AddWithValue("@contrasena", contrasena);
+                        cmd.Parameters.AddWithValue("@user", usuario);
+                        cmd.Parameters.AddWithValue("@pass", password);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                string tipoUsuario = reader["idTipoUsuario"].ToString();
-                                string nombreUsuario = reader["Nombre"].ToString();
+                                // ✅ Login correcto
+                                int idUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
+                                string username = reader.GetString(reader.GetOrdinal("Username"));
+                                string nombre = reader.GetString(reader.GetOrdinal("Nombre"));
+                                string apaterno = reader.GetString(reader.GetOrdinal("Apaterno"));
+                                string amaterno = reader.GetString(reader.GetOrdinal("Amaterno"));
+                                int idTipoUsuario = reader.GetInt32(reader.GetOrdinal("idTipoUsuario"));
 
-                                // Mensaje opcional
-                                // MessageBox.Show($"Bienvenido {nombreUsuario} ({tipoUsuario})", "Acceso permitido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                // Abrir formulario principal (Menu)
+                                // Abrir menú
                                 Menu menu = new Menu();
                                 menu.Show();
-
                                 this.Hide();
                             }
                             else
                             {
-                                MessageBox.Show("Nombre o contraseña incorrectos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                // ❌ Usuario/contraseña incorrectos
+                                MessageBox.Show(
+                                    "Usuario o contraseña incorrectos.",
+                                    "Acceso denegado",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error
+                                );
                             }
                         }
                     }
@@ -124,28 +144,80 @@ namespace SIGC_TESChi
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al conectar con la base de datos: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al iniciar sesión:\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void txtboxUsuario_TextChanged(object sender, EventArgs e)
+        // ================== MOSTRAR / OCULTAR CONTRASEÑA ==================
+        private void btnOcultar_Click(object sender, EventArgs e)
         {
+            bool oculto = txtPassword.UseSystemPasswordChar;
 
+            txtPassword.UseSystemPasswordChar = !oculto;
+            btnOcultar.Text = oculto ? "🚫" : "👁";
+
+            txtPassword.Focus();
+            txtPassword.SelectionStart = txtPassword.Text.Length;
         }
 
-        private void txtboxPassword_TextChanged(object sender, EventArgs e)
-        {
+        // ========= EFECTO BLUR (opcional, puedes comentarlo si no lo usas) =========
+        [DllImport("user32.dll")]
+        private static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
 
+        private enum WindowCompositionAttribute
+        {
+            WCA_ACCENT_POLICY = 19
         }
 
-        private void pnlLogin_Paint(object sender, PaintEventArgs e)
+        private enum AccentState
         {
-
+            ACCENT_DISABLED = 0,
+            ACCENT_ENABLE_BLURBEHIND = 3,
+            ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        [StructLayout(LayoutKind.Sequential)]
+        private struct AccentPolicy
         {
-            Application.Exit();
+            public AccentState AccentState;
+            public int AccentFlags;
+            public int GradientColor;
+            public int AnimationId;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WindowCompositionAttributeData
+        {
+            public WindowCompositionAttribute Attribute;
+            public IntPtr Data;
+            public int SizeOfData;
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            // Si te da problemas visuales, comenta esto:
+            // HabilitarBlur();
+        }
+
+        private void HabilitarBlur()
+        {
+            var accent = new AccentPolicy();
+            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
+
+            int accentStructSize = System.Runtime.InteropServices.Marshal.SizeOf(accent);
+
+            IntPtr accentPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(accentStructSize);
+            System.Runtime.InteropServices.Marshal.StructureToPtr(accent, accentPtr, false);
+
+            var data = new WindowCompositionAttributeData();
+            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
+            data.SizeOfData = accentStructSize;
+            data.Data = accentPtr;
+
+            SetWindowCompositionAttribute(this.Handle, ref data);
+            System.Runtime.InteropServices.Marshal.FreeHGlobal(accentPtr);
         }
     }
 }
