@@ -338,17 +338,6 @@ namespace SIGC_TESChi
             }
         }
 
-
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            BuscarUbicaciones();
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private DataTable ObtenerUbicaciones()
         {
             string connectionString =

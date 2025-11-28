@@ -232,6 +232,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBCONTRALORIADataSet4.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DBCONTRALORIASecciones.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DetallesCambio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -457,6 +462,17 @@
     </None>
     <None Include="DBCONTRALORIADataSet4.xss">
       <DependentUpon>DBCONTRALORIADataSet4.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIASecciones.xsc">
+      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIASecciones.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBCONTRALORIASecciones.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBCONTRALORIASecciones.xss">
+      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter.datasource" />
