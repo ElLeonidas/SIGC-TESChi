@@ -24,26 +24,35 @@ namespace SIGC_TESChi
             toolTip.ShowAlways = true;    // Siempre visible
 
             // Asignar eventos de mouse para mostrar tooltips
-            btnLobby.MouseEnter += (s, e) => toolTip.Show("Ir al Lobby principal", btnLobby);
+            btnLobby.MouseEnter += (s, e) => toolTip.Show("Area de Recepcion", btnLobby);
             btnLobby.MouseLeave += (s, e) => toolTip.Hide(btnLobby);
 
-            btnTipoUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar nuevos Tipos de usuarios", btnTipoUsuarios);
+            btnTipoUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Tipos de usuarios", btnTipoUsuarios);
             btnTipoUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnTipoUsuarios);
 
-            btnRUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar nuevos usuarios", btnRUsuarios);
+            btnRUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Usuarios", btnRUsuarios);
             btnRUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnRUsuarios);
 
-            btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Consultar archivos del sistema", btnCArchivos);
-            btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
+            btnSecciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Secciones de los archivos", btnSecciones);
+            btnSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSecciones);
 
-            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Consultar ubicaciones de los archivos", btnUbicaciones);
+            btnSubSecciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Subsecciones de los archivos", btnSubSecciones);
+            btnSubSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSubSecciones);
+
+            btnInstitucion.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Instituciones", btnInstitucion);
+            btnInstitucion.MouseLeave += (s, e) => toolTip.Hide(btnInstitucion);
+
+            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar ubicaciones de los archivos", btnUbicaciones);
             btnUbicaciones.MouseLeave += (s, e) => toolTip.Hide(btnUbicaciones);
 
-            btnSecciones.MouseEnter += (s, e) => toolTip.Show("Consultar secciones de los archivos", btnSecciones);
-            btnSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSecciones);
+            btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar archivos del sistema", btnCArchivos);
+            btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
 
             btnHistorial.MouseEnter += (s, e) => toolTip.Show("Consultar el Historial", btnHistorial);
             btnHistorial.MouseLeave += (s, e) => toolTip.Hide(btnHistorial);
+
+            btnFormato.MouseEnter += (s, e) => toolTip.Show("Captura e Impresion de Portadas", btnFormato);
+            btnFormato.MouseLeave += (s, e) => toolTip.Hide(btnFormato);
 
             btnCerrarSesion.MouseEnter += (s, e) => toolTip.Show("Cerrar sesión", btnCerrarSesion);
             btnCerrarSesion.MouseLeave += (s, e) => toolTip.Hide(btnCerrarSesion);
@@ -119,9 +128,9 @@ namespace SIGC_TESChi
             LoadPanel(new Historial());
         }
 
-        private void Menu_Load_1(object sender, EventArgs e)
+        private void btnInstitucion_Click(object sender, EventArgs e)
         {
-
+            LoadPanel(new Institucion());
         }
     }
 }

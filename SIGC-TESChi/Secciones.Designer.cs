@@ -42,7 +42,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.tablaSecciones = new System.Windows.Forms.DataGridView();
             this.idSeccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dSeccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -50,20 +49,21 @@
             this.dBCONTRALORIASeccionesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dBCONTRALORIASecciones = new SIGC_TESChi.DBCONTRALORIASecciones();
             this.seccionTableAdapter = new SIGC_TESChi.DBCONTRALORIASeccionesTableAdapters.SeccionTableAdapter();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaSecciones)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIASeccionesBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIASecciones)).BeginInit();
+            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Controls.Add(this.flowLayoutPanel1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1249, 838);
@@ -166,11 +166,11 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(190, 113);
+            this.label2.Location = new System.Drawing.Point(74, 113);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(72, 20);
+            this.label2.Size = new System.Drawing.Size(188, 20);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Seccion:";
+            this.label2.Text = "Descripcion de Seccion:";
             // 
             // label1
             // 
@@ -182,15 +182,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Registro de Secciones";
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.flowLayoutPanel1.Controls.Add(this.tablaSecciones);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 231);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(1239, 600);
-            this.flowLayoutPanel1.TabIndex = 1;
-            // 
             // tablaSecciones
             // 
             this.tablaSecciones.AllowUserToAddRows = false;
@@ -201,12 +192,13 @@
             this.idSeccionDataGridViewTextBoxColumn,
             this.dSeccionDataGridViewTextBoxColumn});
             this.tablaSecciones.DataSource = this.seccionBindingSource;
-            this.tablaSecciones.Location = new System.Drawing.Point(3, 3);
+            this.tablaSecciones.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaSecciones.Location = new System.Drawing.Point(0, 0);
             this.tablaSecciones.Name = "tablaSecciones";
             this.tablaSecciones.ReadOnly = true;
             this.tablaSecciones.RowHeadersWidth = 51;
             this.tablaSecciones.RowTemplate.Height = 24;
-            this.tablaSecciones.Size = new System.Drawing.Size(1234, 595);
+            this.tablaSecciones.Size = new System.Drawing.Size(1235, 596);
             this.tablaSecciones.TabIndex = 0;
             // 
             // idSeccionDataGridViewTextBoxColumn
@@ -246,6 +238,15 @@
             // 
             this.seccionTableAdapter.ClearBeforeFill = true;
             // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.tablaSecciones);
+            this.panel3.Location = new System.Drawing.Point(3, 231);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1239, 600);
+            this.panel3.TabIndex = 3;
+            // 
             // Secciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -256,11 +257,11 @@
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaSecciones)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIASeccionesBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIASecciones)).EndInit();
+            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -268,7 +269,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -287,5 +287,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dSeccionDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource seccionBindingSource;
         private DBCONTRALORIASeccionesTableAdapters.SeccionTableAdapter seccionTableAdapter;
+        private System.Windows.Forms.Panel panel3;
     }
 }

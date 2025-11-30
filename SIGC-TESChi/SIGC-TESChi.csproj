@@ -237,6 +237,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DBCONTRALORIASubseccion.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DetallesCambio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +253,12 @@
     </Compile>
     <Compile Include="Historial.Designer.cs">
       <DependentUpon>Historial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Institucion.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Institucion.Designer.cs">
+      <DependentUpon>Institucion.cs</DependentUpon>
     </Compile>
     <Compile Include="Lobby.cs">
       <SubType>UserControl</SubType>
@@ -372,6 +383,9 @@
     <EmbeddedResource Include="Historial.resx">
       <DependentUpon>Historial.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Institucion.resx">
+      <DependentUpon>Institucion.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Lobby.resx">
       <DependentUpon>Lobby.cs</DependentUpon>
     </EmbeddedResource>
@@ -473,6 +487,17 @@
     </None>
     <None Include="DBCONTRALORIASecciones.xss">
       <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIASubseccion.xsc">
+      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIASubseccion.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBCONTRALORIASubseccion.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBCONTRALORIASubseccion.xss">
+      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter.datasource" />
