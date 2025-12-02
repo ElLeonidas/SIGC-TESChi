@@ -276,7 +276,7 @@ ORDER BY c.idControl DESC";
 
         private void CargarCodUnidAdmin()
         {
-            string query = "SELECT idUnidAdmin, cUnidAdmin FROM UnidadAdministrativa ORDER BY idUnidAdmin;";
+            string query = "SELECT idUniAdmin, cUniAdmin FROM UnidadAdministrativa ORDER BY idUniAdmin;";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
@@ -288,8 +288,8 @@ ORDER BY c.idControl DESC";
                     da.Fill(dt);
 
                     cboCodUnidAdmin.DataSource = dt;
-                    cboCodUnidAdmin.DisplayMember = "cUnidAdmin";   // muestra el código 210C...
-                    cboCodUnidAdmin.ValueMember = "idUnidAdmin";    // valor real
+                    cboCodUnidAdmin.DisplayMember = "cUniAdmin";   // muestra el código 210C...
+                    cboCodUnidAdmin.ValueMember = "idUniAdmin";    // valor real
                     cboCodUnidAdmin.SelectedIndex = -1;
                 }
                 catch (Exception ex)
@@ -304,7 +304,7 @@ ORDER BY c.idControl DESC";
 
         private void CargarNombUnidAdmin()
         {
-            string query = "SELECT idUnidAdmin, nUnidAdmin FROM UnidadAdministrativa ORDER BY idUnidAdmin;";
+            string query = "SELECT idUniAdmin, nUniAdmin FROM UnidadAdministrativa ORDER BY idUniAdmin;";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
@@ -316,8 +316,8 @@ ORDER BY c.idControl DESC";
                     da.Fill(dt);
 
                     cboNombUniAdmin.DataSource = dt;
-                    cboNombUniAdmin.DisplayMember = "nUnidAdmin";    // muestra el nombre del área
-                    cboNombUniAdmin.ValueMember = "idUnidAdmin";      // valor real
+                    cboNombUniAdmin.DisplayMember = "nUniAdmin";    // muestra el nombre del área
+                    cboNombUniAdmin.ValueMember = "idUniAdmin";      // valor real
                     cboNombUniAdmin.SelectedIndex = -1;
                 }
                 catch (Exception ex)

@@ -42,8 +42,11 @@ namespace SIGC_TESChi
             btnInstitucion.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Instituciones", btnInstitucion);
             btnInstitucion.MouseLeave += (s, e) => toolTip.Hide(btnInstitucion);
 
-            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar ubicaciones de los archivos", btnUbicaciones);
+            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Ubicaciones de los Archivos", btnUbicaciones);
             btnUbicaciones.MouseLeave += (s, e) => toolTip.Hide(btnUbicaciones);
+
+            btnUnidadA.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Unidad Administrativa", btnUnidadA);
+            btnUnidadA.MouseLeave += (s, e) => toolTip.Hide(btnUnidadA);
 
             btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar archivos del sistema", btnCArchivos);
             btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
@@ -131,6 +134,11 @@ namespace SIGC_TESChi
         private void btnInstitucion_Click(object sender, EventArgs e)
         {
             LoadPanel(new Institucion());
+        }
+
+        private void btnUnidadA_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new UnidadA());
         }
     }
 }

@@ -37,10 +37,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(57, 39);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(76, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 13);
+            this.label1.Size = new System.Drawing.Size(81, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Vende Tele ";
             // 
@@ -50,29 +49,30 @@
             this.panel1.Controls.Add(this.lblUsuarioActivo);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(938, 682);
+            this.panel1.Size = new System.Drawing.Size(1249, 838);
             this.panel1.TabIndex = 1;
             // 
             // lblUsuarioActivo
             // 
             this.lblUsuarioActivo.AutoSize = true;
-            this.lblUsuarioActivo.Location = new System.Drawing.Point(688, 30);
+            this.lblUsuarioActivo.Location = new System.Drawing.Point(917, 37);
+            this.lblUsuarioActivo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUsuarioActivo.Name = "lblUsuarioActivo";
-            this.lblUsuarioActivo.Size = new System.Drawing.Size(35, 13);
+            this.lblUsuarioActivo.Size = new System.Drawing.Size(44, 16);
             this.lblUsuarioActivo.TabIndex = 1;
             this.lblUsuarioActivo.Text = "label2";
             this.lblUsuarioActivo.Click += new System.EventHandler(this.lblUsuarioActivo_Click);
             // 
             // Lobby
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Lobby";
-            this.Size = new System.Drawing.Size(936, 651);
+            this.Size = new System.Drawing.Size(1248, 801);
             this.Load += new System.EventHandler(this.Lobby_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

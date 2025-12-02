@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Menu));
             this.MenuControl = new System.Windows.Forms.Panel();
+            this.btnInstitucion = new System.Windows.Forms.Button();
             this.btnHistorial = new System.Windows.Forms.Button();
             this.btnSubSecciones = new System.Windows.Forms.Button();
             this.btnTipoUsuarios = new System.Windows.Forms.Button();
@@ -42,13 +43,14 @@
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnLobby = new System.Windows.Forms.Button();
-            this.btnInstitucion = new System.Windows.Forms.Button();
+            this.btnUnidadA = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
             // MenuControl
             // 
             this.MenuControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MenuControl.Controls.Add(this.btnUnidadA);
             this.MenuControl.Controls.Add(this.btnInstitucion);
             this.MenuControl.Controls.Add(this.btnHistorial);
             this.MenuControl.Controls.Add(this.btnSubSecciones);
@@ -68,11 +70,20 @@
             this.MenuControl.Size = new System.Drawing.Size(1323, 843);
             this.MenuControl.TabIndex = 0;
             // 
+            // btnInstitucion
+            // 
+            this.btnInstitucion.Location = new System.Drawing.Point(11, 400);
+            this.btnInstitucion.Name = "btnInstitucion";
+            this.btnInstitucion.Size = new System.Drawing.Size(51, 50);
+            this.btnInstitucion.TabIndex = 0;
+            this.btnInstitucion.UseVisualStyleBackColor = true;
+            this.btnInstitucion.Click += new System.EventHandler(this.btnInstitucion_Click);
+            // 
             // btnHistorial
             // 
             this.btnHistorial.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHistorial.BackgroundImage")));
             this.btnHistorial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnHistorial.Location = new System.Drawing.Point(11, 566);
+            this.btnHistorial.Location = new System.Drawing.Point(11, 622);
             this.btnHistorial.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnHistorial.Name = "btnHistorial";
             this.btnHistorial.Size = new System.Drawing.Size(51, 50);
@@ -82,6 +93,8 @@
             // 
             // btnSubSecciones
             // 
+            this.btnSubSecciones.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSubSecciones.BackgroundImage")));
+            this.btnSubSecciones.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnSubSecciones.Location = new System.Drawing.Point(11, 345);
             this.btnSubSecciones.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnSubSecciones.Name = "btnSubSecciones";
@@ -106,7 +119,7 @@
             // 
             this.btnEstadistica.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEstadistica.BackgroundImage")));
             this.btnEstadistica.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEstadistica.Location = new System.Drawing.Point(11, 511);
+            this.btnEstadistica.Location = new System.Drawing.Point(11, 567);
             this.btnEstadistica.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEstadistica.Name = "btnEstadistica";
             this.btnEstadistica.Size = new System.Drawing.Size(51, 50);
@@ -128,7 +141,7 @@
             // 
             this.btnCerrarSesion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCerrarSesion.BackgroundImage")));
             this.btnCerrarSesion.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnCerrarSesion.Location = new System.Drawing.Point(11, 621);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(11, 677);
             this.btnCerrarSesion.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Size = new System.Drawing.Size(51, 50);
@@ -140,7 +153,7 @@
             // 
             this.btnFormato.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnFormato.BackgroundImage")));
             this.btnFormato.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnFormato.Location = new System.Drawing.Point(11, 455);
+            this.btnFormato.Location = new System.Drawing.Point(11, 511);
             this.btnFormato.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnFormato.Name = "btnFormato";
             this.btnFormato.Size = new System.Drawing.Size(51, 50);
@@ -210,14 +223,14 @@
             this.btnLobby.UseVisualStyleBackColor = true;
             this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
             // 
-            // btnInstitucion
+            // btnUnidadA
             // 
-            this.btnInstitucion.Location = new System.Drawing.Point(11, 400);
-            this.btnInstitucion.Name = "btnInstitucion";
-            this.btnInstitucion.Size = new System.Drawing.Size(51, 50);
-            this.btnInstitucion.TabIndex = 0;
-            this.btnInstitucion.UseVisualStyleBackColor = true;
-            this.btnInstitucion.Click += new System.EventHandler(this.btnInstitucion_Click);
+            this.btnUnidadA.Location = new System.Drawing.Point(11, 456);
+            this.btnUnidadA.Name = "btnUnidadA";
+            this.btnUnidadA.Size = new System.Drawing.Size(51, 50);
+            this.btnUnidadA.TabIndex = 0;
+            this.btnUnidadA.UseVisualStyleBackColor = true;
+            this.btnUnidadA.Click += new System.EventHandler(this.btnUnidadA_Click);
             // 
             // Menu
             // 
@@ -251,5 +264,6 @@
         private System.Windows.Forms.Button btnSubSecciones;
         private System.Windows.Forms.Button btnHistorial;
         private System.Windows.Forms.Button btnInstitucion;
+        private System.Windows.Forms.Button btnUnidadA;
     }
 }
