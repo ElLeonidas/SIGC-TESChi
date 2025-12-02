@@ -134,6 +134,7 @@
             this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.FrmLogin_Load_1);
             this.pnlCard.ResumeLayout(false);
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();

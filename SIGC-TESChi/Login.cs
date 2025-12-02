@@ -115,19 +115,22 @@ namespace SIGC_TESChi
                         {
                             if (reader.Read())
                             {
-                                // ✅ Login correcto
-                                int idUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
-                                string username = reader.GetString(reader.GetOrdinal("Username"));
-                                string nombre = reader.GetString(reader.GetOrdinal("Nombre"));
-                                string apaterno = reader.GetString(reader.GetOrdinal("Apaterno"));
-                                string amaterno = reader.GetString(reader.GetOrdinal("Amaterno"));
-                                int idTipoUsuario = reader.GetInt32(reader.GetOrdinal("idTipoUsuario"));
+                                // Datos de usuario
+                                SessionData.IdUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
+                                SessionData.Username = reader.GetString(reader.GetOrdinal("Username"));
+                                SessionData.NombreCompleto =
+                                    reader.GetString(reader.GetOrdinal("Nombre")) + " " +
+                                    reader.GetString(reader.GetOrdinal("Apaterno")) + " " +
+                                    reader.GetString(reader.GetOrdinal("Amaterno"));
+
+                                SessionData.IdTipoUsuario = reader.GetInt32(reader.GetOrdinal("idTipoUsuario"));
 
                                 // Abrir menú
                                 Menu menu = new Menu();
                                 menu.Show();
                                 this.Hide();
                             }
+
                             else
                             {
                                 // ❌ Usuario/contraseña incorrectos
@@ -218,6 +221,11 @@ namespace SIGC_TESChi
 
             SetWindowCompositionAttribute(this.Handle, ref data);
             System.Runtime.InteropServices.Marshal.FreeHGlobal(accentPtr);
+        }
+
+        private void FrmLogin_Load_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

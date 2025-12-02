@@ -300,6 +300,7 @@
     <Compile Include="Secciones.Designer.cs">
       <DependentUpon>Secciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="SessionData.cs" />
     <Compile Include="SGCTESCHIDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
