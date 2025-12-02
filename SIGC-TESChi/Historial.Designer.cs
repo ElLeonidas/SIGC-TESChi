@@ -305,6 +305,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Historial";
             this.Size = new System.Drawing.Size(937, 681);
+            this.Load += new System.EventHandler(this.Historial_Load);
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).EndInit();

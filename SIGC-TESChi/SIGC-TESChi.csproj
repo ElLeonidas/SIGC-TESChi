@@ -237,6 +237,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBCONTRALORIADataSet5.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DBCONTRALORIADataSet6.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
+    </Compile>
     <Compile Include="DBCONTRALORIASecciones.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -492,6 +497,17 @@
     </None>
     <None Include="DBCONTRALORIADataSet5.xss">
       <DependentUpon>DBCONTRALORIADataSet5.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIADataSet6.xsc">
+      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
+    </None>
+    <None Include="DBCONTRALORIADataSet6.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DBCONTRALORIADataSet6.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="DBCONTRALORIADataSet6.xss">
+      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
     </None>
     <None Include="DBCONTRALORIASecciones.xsc">
       <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>

@@ -7,8 +7,7 @@ namespace SIGC_TESChi
 {
     public partial class Historial : UserControl
     {
-        // ⚠️ VERIFICA que esta cadena es la misma que usas en SSMS (servidor e instancia)
-        // Si en SSMS usas (localdb)\MSSQLLocalDB y la BD se llama DBCONTRALORIA, esto está bien.
+        // Cadena de conexión
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
@@ -19,11 +18,7 @@ namespace SIGC_TESChi
 
         private void Historial_Load(object sender, EventArgs e)
         {
-            MessageBox.Show("Historial_Load se ejecutó", "DEBUG"); // DEBUG 1
-
-            // Asegúrate que en el diseñador esté:
-            // this.Load += new System.EventHandler(this.Historial_Load);
-
+            // Configuración del DataGridView
             dgvHistorial.AllowUserToAddRows = false;
             dgvHistorial.ReadOnly = true;
             dgvHistorial.AutoGenerateColumns = true;
@@ -40,14 +35,11 @@ namespace SIGC_TESChi
         {
             try
             {
-                MessageBox.Show("Entró a LlenarComboTablas", "DEBUG"); // DEBUG 2
-
                 cmbTabla.Items.Clear();
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    MessageBox.Show("Conexión abierta en LlenarComboTablas", "DEBUG"); // DEBUG 3
 
                     string sql = @"SELECT TABLE_NAME 
                                    FROM INFORMATION_SCHEMA.TABLES
@@ -67,12 +59,8 @@ namespace SIGC_TESChi
                     }
                 }
 
-                MessageBox.Show($"Tablas cargadas en combo: {cmbTabla.Items.Count}", "DEBUG"); // DEBUG 4
-
                 if (cmbTabla.Items.Count > 0)
                     cmbTabla.SelectedIndex = 0;
-                else
-                    MessageBox.Show("No se agregó ninguna tabla al ComboBox", "DEBUG");
             }
             catch (Exception ex)
             {
@@ -84,12 +72,9 @@ namespace SIGC_TESChi
         {
             try
             {
-                MessageBox.Show("Entró a CargarHistorial", "DEBUG"); // DEBUG 5
-
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    MessageBox.Show("Conexión abierta en CargarHistorial", "DEBUG"); // DEBUG 6
 
                     string sql = @"SELECT idHistorial, Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, 
                                           DatosAnteriores, DatosNuevos, idUsuarioApp
@@ -104,14 +89,10 @@ namespace SIGC_TESChi
                             ? cmbTabla.SelectedItem.ToString()
                             : "TODAS";
 
-                        MessageBox.Show($"Tabla seleccionada: {tablaSeleccionada}", "DEBUG"); // DEBUG 7
-
                         cmd.Parameters.AddWithValue("@tabla", tablaSeleccionada);
 
                         DateTime desde = dtpDesde.Value.Date;
                         DateTime hasta = dtpHasta.Value.Date.AddDays(1).AddSeconds(-1);
-
-                        MessageBox.Show($"Rango fechas: {desde} - {hasta}", "DEBUG"); // DEBUG 8
 
                         cmd.Parameters.AddWithValue("@desde", desde);
                         cmd.Parameters.AddWithValue("@hasta", hasta);
@@ -119,8 +100,6 @@ namespace SIGC_TESChi
                         SqlDataAdapter da = new SqlDataAdapter(cmd);
                         DataTable dt = new DataTable();
                         da.Fill(dt);
-
-                        MessageBox.Show($"Filas cargadas del historial: {dt.Rows.Count}", "DEBUG"); // DEBUG 9
 
                         dgvHistorial.DataSource = dt;
 
@@ -181,14 +160,16 @@ namespace SIGC_TESChi
                 string datosAntes = row.Cells["DatosAnteriores"]?.Value?.ToString() ?? "";
                 string datosDespues = row.Cells["DatosNuevos"]?.Value?.ToString() ?? "";
 
-                DetallesCambio frm = new DetallesCambio();
-                frm.Tabla = tabla;
-                frm.Llave = llave;
-                frm.Accion = accion;
-                frm.Usuario = usuario;
-                frm.Fecha = fecha;
-                frm.DatosAnteriores = datosAntes;
-                frm.DatosNuevos = datosDespues;
+                DetallesCambio frm = new DetallesCambio
+                {
+                    Tabla = tabla,
+                    Llave = llave,
+                    Accion = accion,
+                    Usuario = usuario,
+                    Fecha = fecha,
+                    DatosAnteriores = datosAntes,
+                    DatosNuevos = datosDespues
+                };
 
                 frm.ShowDialog();
             }
