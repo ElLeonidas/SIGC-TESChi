@@ -264,6 +264,7 @@
     <Compile Include="Historial.Designer.cs">
       <DependentUpon>Historial.cs</DependentUpon>
     </Compile>
+    <Compile Include="HistorialHelper.cs" />
     <Compile Include="Institucion.cs">
       <SubType>UserControl</SubType>
     </Compile>

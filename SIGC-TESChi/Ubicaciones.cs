@@ -96,6 +96,16 @@ namespace SIGC_TESChi
                     cmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
 
                     cmd.ExecuteNonQuery();
+
+                    // ✅ Registrar en HistorialCambios
+                    HistorialHelper.RegistrarCambio(
+                        "Ubicacion",                        // Nombre de la tabla
+                        $"idUbicacion={txtID.Text}",        // Llave primaria del registro
+                        "INSERT",                           // Tipo de acción
+                        "",                                 // Datos anteriores (vacío en un INSERT)
+                        $"{{dUbicacion:'{txtUbicacion.Text}'}}" // Datos nuevos
+
+                        );
                 }
 
                 MessageBox.Show("✅ Ubicación agregada correctamente.");
@@ -441,6 +451,11 @@ namespace SIGC_TESChi
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
             ExportarFiltradoACSV();
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

@@ -31,6 +31,50 @@ namespace SIGC_TESChi
             CargarHistorial();
         }
 
+        public static void RegistrarCambio(
+    string tabla,
+    string llave,
+    string tipoAccion,
+    string datosAnteriores,
+    string datosNuevos)
+        {
+            try
+            {
+                string connectionString =
+                    @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string sql = @"
+                INSERT INTO HistorialCambios
+                (Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, DatosAnteriores, DatosNuevos, idUsuarioApp)
+                VALUES
+                (@tabla, @llave, @tipo, @usuarioBD, @fecha, @datosAnt, @datosNuevos, @idUsuarioApp)";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@tabla", tabla);
+                        cmd.Parameters.AddWithValue("@llave", llave);
+                        cmd.Parameters.AddWithValue("@tipo", tipoAccion);
+                        cmd.Parameters.AddWithValue("@usuarioBD", SessionData.Username);
+                        cmd.Parameters.AddWithValue("@fecha", DateTime.Now);
+                        cmd.Parameters.AddWithValue("@datosAnt", datosAnteriores ?? "");
+                        cmd.Parameters.AddWithValue("@datosNuevos", datosNuevos ?? "");
+                        cmd.Parameters.AddWithValue("@idUsuarioApp", SessionData.IdUsuario);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al registrar cambio: " + ex.Message, "Historial", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
         private void LlenarComboTablas()
         {
             try
@@ -76,12 +120,22 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    string sql = @"SELECT idHistorial, Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, 
-                                          DatosAnteriores, DatosNuevos, idUsuarioApp
-                                   FROM HistorialCambios
-                                   WHERE (@tabla = 'TODAS' OR Tabla = @tabla)
-                                     AND (FechaAccion BETWEEN @desde AND @hasta)
-                                   ORDER BY FechaAccion DESC";
+                    string sql = @"
+    SELECT h.idHistorial,
+           h.Tabla,
+           h.Llave,
+           h.TipoAccion,
+           h.UsuarioBD,
+           h.FechaAccion,
+           h.DatosAnteriores,
+           h.DatosNuevos,
+           u.Nombre + ' ' + u.Apaterno + ' ' + u.Amaterno AS UsuarioApp
+    FROM HistorialCambios h
+    LEFT JOIN Usuario u ON h.idUsuarioApp = u.idUsuario
+    WHERE (@tabla = 'TODAS' OR h.Tabla = @tabla)
+      AND (h.FechaAccion BETWEEN @desde AND @hasta)
+    ORDER BY h.FechaAccion DESC";
+
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {

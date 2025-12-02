@@ -33,15 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
-            this.idHistorialDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tablaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.llaveDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tipoAccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.usuarioBDDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fechaAccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.datosAnterioresDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.datosNuevosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idUsuarioAppDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.historialCambiosBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dBCONTRALORIADataSet3 = new SIGC_TESChi.DBCONTRALORIADataSet3();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -88,19 +79,7 @@
             // 
             this.dgvHistorial.AllowUserToAddRows = false;
             this.dgvHistorial.AllowUserToDeleteRows = false;
-            this.dgvHistorial.AutoGenerateColumns = false;
             this.dgvHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvHistorial.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idHistorialDataGridViewTextBoxColumn,
-            this.tablaDataGridViewTextBoxColumn,
-            this.llaveDataGridViewTextBoxColumn,
-            this.tipoAccionDataGridViewTextBoxColumn,
-            this.usuarioBDDataGridViewTextBoxColumn,
-            this.fechaAccionDataGridViewTextBoxColumn,
-            this.datosAnterioresDataGridViewTextBoxColumn,
-            this.datosNuevosDataGridViewTextBoxColumn,
-            this.idUsuarioAppDataGridViewTextBoxColumn});
-            this.dgvHistorial.DataSource = this.historialCambiosBindingSource;
             this.dgvHistorial.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHistorial.Location = new System.Drawing.Point(0, 0);
             this.dgvHistorial.Margin = new System.Windows.Forms.Padding(2);
@@ -110,69 +89,6 @@
             this.dgvHistorial.RowTemplate.Height = 24;
             this.dgvHistorial.Size = new System.Drawing.Size(929, 500);
             this.dgvHistorial.TabIndex = 0;
-            // 
-            // idHistorialDataGridViewTextBoxColumn
-            // 
-            this.idHistorialDataGridViewTextBoxColumn.DataPropertyName = "idHistorial";
-            this.idHistorialDataGridViewTextBoxColumn.HeaderText = "idHistorial";
-            this.idHistorialDataGridViewTextBoxColumn.Name = "idHistorialDataGridViewTextBoxColumn";
-            this.idHistorialDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tablaDataGridViewTextBoxColumn
-            // 
-            this.tablaDataGridViewTextBoxColumn.DataPropertyName = "Tabla";
-            this.tablaDataGridViewTextBoxColumn.HeaderText = "Tabla";
-            this.tablaDataGridViewTextBoxColumn.Name = "tablaDataGridViewTextBoxColumn";
-            this.tablaDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // llaveDataGridViewTextBoxColumn
-            // 
-            this.llaveDataGridViewTextBoxColumn.DataPropertyName = "Llave";
-            this.llaveDataGridViewTextBoxColumn.HeaderText = "Llave";
-            this.llaveDataGridViewTextBoxColumn.Name = "llaveDataGridViewTextBoxColumn";
-            this.llaveDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // tipoAccionDataGridViewTextBoxColumn
-            // 
-            this.tipoAccionDataGridViewTextBoxColumn.DataPropertyName = "TipoAccion";
-            this.tipoAccionDataGridViewTextBoxColumn.HeaderText = "TipoAccion";
-            this.tipoAccionDataGridViewTextBoxColumn.Name = "tipoAccionDataGridViewTextBoxColumn";
-            this.tipoAccionDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // usuarioBDDataGridViewTextBoxColumn
-            // 
-            this.usuarioBDDataGridViewTextBoxColumn.DataPropertyName = "UsuarioBD";
-            this.usuarioBDDataGridViewTextBoxColumn.HeaderText = "UsuarioBD";
-            this.usuarioBDDataGridViewTextBoxColumn.Name = "usuarioBDDataGridViewTextBoxColumn";
-            this.usuarioBDDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // fechaAccionDataGridViewTextBoxColumn
-            // 
-            this.fechaAccionDataGridViewTextBoxColumn.DataPropertyName = "FechaAccion";
-            this.fechaAccionDataGridViewTextBoxColumn.HeaderText = "FechaAccion";
-            this.fechaAccionDataGridViewTextBoxColumn.Name = "fechaAccionDataGridViewTextBoxColumn";
-            this.fechaAccionDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // datosAnterioresDataGridViewTextBoxColumn
-            // 
-            this.datosAnterioresDataGridViewTextBoxColumn.DataPropertyName = "DatosAnteriores";
-            this.datosAnterioresDataGridViewTextBoxColumn.HeaderText = "DatosAnteriores";
-            this.datosAnterioresDataGridViewTextBoxColumn.Name = "datosAnterioresDataGridViewTextBoxColumn";
-            this.datosAnterioresDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // datosNuevosDataGridViewTextBoxColumn
-            // 
-            this.datosNuevosDataGridViewTextBoxColumn.DataPropertyName = "DatosNuevos";
-            this.datosNuevosDataGridViewTextBoxColumn.HeaderText = "DatosNuevos";
-            this.datosNuevosDataGridViewTextBoxColumn.Name = "datosNuevosDataGridViewTextBoxColumn";
-            this.datosNuevosDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // idUsuarioAppDataGridViewTextBoxColumn
-            // 
-            this.idUsuarioAppDataGridViewTextBoxColumn.DataPropertyName = "idUsuarioApp";
-            this.idUsuarioAppDataGridViewTextBoxColumn.HeaderText = "idUsuarioApp";
-            this.idUsuarioAppDataGridViewTextBoxColumn.Name = "idUsuarioAppDataGridViewTextBoxColumn";
-            this.idUsuarioAppDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // historialCambiosBindingSource
             // 
@@ -332,15 +248,6 @@
         private System.Windows.Forms.Button btnBuscar;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgvHistorial;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idHistorialDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tablaDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn llaveDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn tipoAccionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn usuarioBDDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fechaAccionDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn datosAnterioresDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn datosNuevosDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idUsuarioAppDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource historialCambiosBindingSource;
         private DBCONTRALORIADataSet3 dBCONTRALORIADataSet3;
         private DBCONTRALORIADataSet3TableAdapters.HistorialCambiosTableAdapter historialCambiosTableAdapter;
