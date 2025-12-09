@@ -43,23 +43,15 @@
             this.txtIdentificador = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.TablaTiposUsuarios = new System.Windows.Forms.DataGridView();
-            this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tipoUsuarioBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.sGCTESCHIDataSet6 = new SIGC_TESChi.SGCTESCHIDataSet6();
             this.tipoUsuarioBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sGCTESCHIDataSet5 = new SIGC_TESChi.SGCTESCHIDataSet5();
             this.tipoUsuarioTableAdapterBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tipoUsuarioTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet5TableAdapters.TipoUsuarioTableAdapter();
-            this.tipoUsuarioTableAdapter1 = new SIGC_TESChi.SGCTESCHIDataSet6TableAdapters.TipoUsuarioTableAdapter();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaTiposUsuarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioTableAdapterBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -187,12 +179,7 @@
             // 
             this.TablaTiposUsuarios.AllowUserToAddRows = false;
             this.TablaTiposUsuarios.AllowUserToDeleteRows = false;
-            this.TablaTiposUsuarios.AutoGenerateColumns = false;
             this.TablaTiposUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaTiposUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idTipoUsuarioDataGridViewTextBoxColumn,
-            this.dTipoUsuarioDataGridViewTextBoxColumn});
-            this.TablaTiposUsuarios.DataSource = this.tipoUsuarioBindingSource1;
             this.TablaTiposUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TablaTiposUsuarios.Location = new System.Drawing.Point(0, 0);
             this.TablaTiposUsuarios.Name = "TablaTiposUsuarios";
@@ -202,55 +189,13 @@
             this.TablaTiposUsuarios.Size = new System.Drawing.Size(1237, 517);
             this.TablaTiposUsuarios.TabIndex = 0;
             // 
-            // idTipoUsuarioDataGridViewTextBoxColumn
-            // 
-            this.idTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Name = "idTipoUsuarioDataGridViewTextBoxColumn";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // dTipoUsuarioDataGridViewTextBoxColumn
-            // 
-            this.dTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "dTipoUsuario";
-            this.dTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "dTipoUsuario";
-            this.dTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.dTipoUsuarioDataGridViewTextBoxColumn.Name = "dTipoUsuarioDataGridViewTextBoxColumn";
-            this.dTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.dTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
             // tipoUsuarioBindingSource1
             // 
             this.tipoUsuarioBindingSource1.DataMember = "TipoUsuario";
-            this.tipoUsuarioBindingSource1.DataSource = this.sGCTESCHIDataSet6;
-            // 
-            // sGCTESCHIDataSet6
-            // 
-            this.sGCTESCHIDataSet6.DataSetName = "SGCTESCHIDataSet6";
-            this.sGCTESCHIDataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tipoUsuarioBindingSource
             // 
             this.tipoUsuarioBindingSource.DataMember = "TipoUsuario";
-            this.tipoUsuarioBindingSource.DataSource = this.sGCTESCHIDataSet5;
-            // 
-            // sGCTESCHIDataSet5
-            // 
-            this.sGCTESCHIDataSet5.DataSetName = "SGCTESCHIDataSet5";
-            this.sGCTESCHIDataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // tipoUsuarioTableAdapterBindingSource
-            // 
-            this.tipoUsuarioTableAdapterBindingSource.DataSource = typeof(SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter);
-            // 
-            // tipoUsuarioTableAdapter
-            // 
-            this.tipoUsuarioTableAdapter.ClearBeforeFill = true;
-            // 
-            // tipoUsuarioTableAdapter1
-            // 
-            this.tipoUsuarioTableAdapter1.ClearBeforeFill = true;
             // 
             // TipoUsuarios
             // 
@@ -265,9 +210,7 @@
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaTiposUsuarios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tipoUsuarioTableAdapterBindingSource)).EndInit();
             this.ResumeLayout(false);
 
@@ -288,14 +231,10 @@
         private System.Windows.Forms.Button btnModificar;
         private System.Windows.Forms.Button btnAgregar;
         private System.Windows.Forms.BindingSource tipoUsuarioBindingSource;
-        private SGCTESCHIDataSet5 sGCTESCHIDataSet5;
-        private SGCTESCHIDataSet5TableAdapters.TipoUsuarioTableAdapter tipoUsuarioTableAdapter;
         private System.Windows.Forms.DataGridView TablaTiposUsuarios;
         private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dTipoUsuarioDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource tipoUsuarioBindingSource1;
-        private SGCTESCHIDataSet6 sGCTESCHIDataSet6;
-        private SGCTESCHIDataSet6TableAdapters.TipoUsuarioTableAdapter tipoUsuarioTableAdapter1;
         private System.Windows.Forms.Label label3;
     }
 }

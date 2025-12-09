@@ -69,46 +69,16 @@
             this.cboAño = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvControl = new System.Windows.Forms.DataGridView();
-            this.idControlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.anioControlDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.codUniAdmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nomUniAdmDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.noExpedienteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nExpedienteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fAperturaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fCierreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nForjasDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nLegajosDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idSeccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idSubSeccionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idInstitutoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.formClasificatoriaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idUbicacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.observacionesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idEstatusDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idClasificacionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.controlBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
-            this.dBCONTRALORIADataSet7 = new SIGC_TESChi.DBCONTRALORIADataSet7();
             this.controlBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.dBCONTRALORIADataSet6 = new SIGC_TESChi.DBCONTRALORIADataSet6();
             this.controlBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.dBCONTRALORIADataSet2 = new SIGC_TESChi.DBCONTRALORIADataSet2();
             this.controlBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sGCTESCHIDataSet2 = new SIGC_TESChi.SGCTESCHIDataSet2();
-            this.controlTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet2TableAdapters.ControlTableAdapter();
-            this.controlTableAdapter1 = new SIGC_TESChi.DBCONTRALORIADataSet2TableAdapters.ControlTableAdapter();
-            this.controlTableAdapter2 = new SIGC_TESChi.DBCONTRALORIADataSet6TableAdapters.ControlTableAdapter();
-            this.controlTableAdapter3 = new SIGC_TESChi.DBCONTRALORIADataSet7TableAdapters.ControlTableAdapter();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet7)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -545,28 +515,7 @@
             // 
             // dgvControl
             // 
-            this.dgvControl.AutoGenerateColumns = false;
             this.dgvControl.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvControl.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idControlDataGridViewTextBoxColumn,
-            this.anioControlDataGridViewTextBoxColumn,
-            this.codUniAdmDataGridViewTextBoxColumn,
-            this.nomUniAdmDataGridViewTextBoxColumn,
-            this.noExpedienteDataGridViewTextBoxColumn,
-            this.nExpedienteDataGridViewTextBoxColumn,
-            this.fAperturaDataGridViewTextBoxColumn,
-            this.fCierreDataGridViewTextBoxColumn,
-            this.nForjasDataGridViewTextBoxColumn,
-            this.nLegajosDataGridViewTextBoxColumn,
-            this.idSeccionDataGridViewTextBoxColumn,
-            this.idSubSeccionDataGridViewTextBoxColumn,
-            this.idInstitutoDataGridViewTextBoxColumn,
-            this.formClasificatoriaDataGridViewTextBoxColumn,
-            this.idUbicacionDataGridViewTextBoxColumn,
-            this.observacionesDataGridViewTextBoxColumn,
-            this.idEstatusDataGridViewTextBoxColumn,
-            this.idClasificacionDataGridViewTextBoxColumn});
-            this.dgvControl.DataSource = this.controlBindingSource3;
             this.dgvControl.Location = new System.Drawing.Point(21, 404);
             this.dgvControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvControl.Name = "dgvControl";
@@ -577,205 +526,21 @@
             this.dgvControl.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvControl_CellClick);
             this.dgvControl.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvControl_CellContentClick);
             // 
-            // idControlDataGridViewTextBoxColumn
-            // 
-            this.idControlDataGridViewTextBoxColumn.DataPropertyName = "idControl";
-            this.idControlDataGridViewTextBoxColumn.HeaderText = "idControl";
-            this.idControlDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idControlDataGridViewTextBoxColumn.Name = "idControlDataGridViewTextBoxColumn";
-            this.idControlDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // anioControlDataGridViewTextBoxColumn
-            // 
-            this.anioControlDataGridViewTextBoxColumn.DataPropertyName = "anioControl";
-            this.anioControlDataGridViewTextBoxColumn.HeaderText = "anioControl";
-            this.anioControlDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.anioControlDataGridViewTextBoxColumn.Name = "anioControlDataGridViewTextBoxColumn";
-            this.anioControlDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // codUniAdmDataGridViewTextBoxColumn
-            // 
-            this.codUniAdmDataGridViewTextBoxColumn.DataPropertyName = "CodUniAdm";
-            this.codUniAdmDataGridViewTextBoxColumn.HeaderText = "CodUniAdm";
-            this.codUniAdmDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.codUniAdmDataGridViewTextBoxColumn.Name = "codUniAdmDataGridViewTextBoxColumn";
-            this.codUniAdmDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nomUniAdmDataGridViewTextBoxColumn
-            // 
-            this.nomUniAdmDataGridViewTextBoxColumn.DataPropertyName = "nomUniAdm";
-            this.nomUniAdmDataGridViewTextBoxColumn.HeaderText = "nomUniAdm";
-            this.nomUniAdmDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nomUniAdmDataGridViewTextBoxColumn.Name = "nomUniAdmDataGridViewTextBoxColumn";
-            this.nomUniAdmDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // noExpedienteDataGridViewTextBoxColumn
-            // 
-            this.noExpedienteDataGridViewTextBoxColumn.DataPropertyName = "noExpediente";
-            this.noExpedienteDataGridViewTextBoxColumn.HeaderText = "noExpediente";
-            this.noExpedienteDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.noExpedienteDataGridViewTextBoxColumn.Name = "noExpedienteDataGridViewTextBoxColumn";
-            this.noExpedienteDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nExpedienteDataGridViewTextBoxColumn
-            // 
-            this.nExpedienteDataGridViewTextBoxColumn.DataPropertyName = "nExpediente";
-            this.nExpedienteDataGridViewTextBoxColumn.HeaderText = "nExpediente";
-            this.nExpedienteDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nExpedienteDataGridViewTextBoxColumn.Name = "nExpedienteDataGridViewTextBoxColumn";
-            this.nExpedienteDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // fAperturaDataGridViewTextBoxColumn
-            // 
-            this.fAperturaDataGridViewTextBoxColumn.DataPropertyName = "fApertura";
-            this.fAperturaDataGridViewTextBoxColumn.HeaderText = "fApertura";
-            this.fAperturaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.fAperturaDataGridViewTextBoxColumn.Name = "fAperturaDataGridViewTextBoxColumn";
-            this.fAperturaDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // fCierreDataGridViewTextBoxColumn
-            // 
-            this.fCierreDataGridViewTextBoxColumn.DataPropertyName = "fCierre";
-            this.fCierreDataGridViewTextBoxColumn.HeaderText = "fCierre";
-            this.fCierreDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.fCierreDataGridViewTextBoxColumn.Name = "fCierreDataGridViewTextBoxColumn";
-            this.fCierreDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nForjasDataGridViewTextBoxColumn
-            // 
-            this.nForjasDataGridViewTextBoxColumn.DataPropertyName = "nForjas";
-            this.nForjasDataGridViewTextBoxColumn.HeaderText = "nForjas";
-            this.nForjasDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nForjasDataGridViewTextBoxColumn.Name = "nForjasDataGridViewTextBoxColumn";
-            this.nForjasDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nLegajosDataGridViewTextBoxColumn
-            // 
-            this.nLegajosDataGridViewTextBoxColumn.DataPropertyName = "nLegajos";
-            this.nLegajosDataGridViewTextBoxColumn.HeaderText = "nLegajos";
-            this.nLegajosDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nLegajosDataGridViewTextBoxColumn.Name = "nLegajosDataGridViewTextBoxColumn";
-            this.nLegajosDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idSeccionDataGridViewTextBoxColumn
-            // 
-            this.idSeccionDataGridViewTextBoxColumn.DataPropertyName = "idSeccion";
-            this.idSeccionDataGridViewTextBoxColumn.HeaderText = "idSeccion";
-            this.idSeccionDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idSeccionDataGridViewTextBoxColumn.Name = "idSeccionDataGridViewTextBoxColumn";
-            this.idSeccionDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idSubSeccionDataGridViewTextBoxColumn
-            // 
-            this.idSubSeccionDataGridViewTextBoxColumn.DataPropertyName = "idSubSeccion";
-            this.idSubSeccionDataGridViewTextBoxColumn.HeaderText = "idSubSeccion";
-            this.idSubSeccionDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idSubSeccionDataGridViewTextBoxColumn.Name = "idSubSeccionDataGridViewTextBoxColumn";
-            this.idSubSeccionDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idInstitutoDataGridViewTextBoxColumn
-            // 
-            this.idInstitutoDataGridViewTextBoxColumn.DataPropertyName = "idInstituto";
-            this.idInstitutoDataGridViewTextBoxColumn.HeaderText = "idInstituto";
-            this.idInstitutoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idInstitutoDataGridViewTextBoxColumn.Name = "idInstitutoDataGridViewTextBoxColumn";
-            this.idInstitutoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // formClasificatoriaDataGridViewTextBoxColumn
-            // 
-            this.formClasificatoriaDataGridViewTextBoxColumn.DataPropertyName = "formClasificatoria";
-            this.formClasificatoriaDataGridViewTextBoxColumn.HeaderText = "formClasificatoria";
-            this.formClasificatoriaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.formClasificatoriaDataGridViewTextBoxColumn.Name = "formClasificatoriaDataGridViewTextBoxColumn";
-            this.formClasificatoriaDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idUbicacionDataGridViewTextBoxColumn
-            // 
-            this.idUbicacionDataGridViewTextBoxColumn.DataPropertyName = "idUbicacion";
-            this.idUbicacionDataGridViewTextBoxColumn.HeaderText = "idUbicacion";
-            this.idUbicacionDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idUbicacionDataGridViewTextBoxColumn.Name = "idUbicacionDataGridViewTextBoxColumn";
-            this.idUbicacionDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // observacionesDataGridViewTextBoxColumn
-            // 
-            this.observacionesDataGridViewTextBoxColumn.DataPropertyName = "Observaciones";
-            this.observacionesDataGridViewTextBoxColumn.HeaderText = "Observaciones";
-            this.observacionesDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.observacionesDataGridViewTextBoxColumn.Name = "observacionesDataGridViewTextBoxColumn";
-            this.observacionesDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idEstatusDataGridViewTextBoxColumn
-            // 
-            this.idEstatusDataGridViewTextBoxColumn.DataPropertyName = "idEstatus";
-            this.idEstatusDataGridViewTextBoxColumn.HeaderText = "idEstatus";
-            this.idEstatusDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idEstatusDataGridViewTextBoxColumn.Name = "idEstatusDataGridViewTextBoxColumn";
-            this.idEstatusDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idClasificacionDataGridViewTextBoxColumn
-            // 
-            this.idClasificacionDataGridViewTextBoxColumn.DataPropertyName = "idClasificacion";
-            this.idClasificacionDataGridViewTextBoxColumn.HeaderText = "idClasificacion";
-            this.idClasificacionDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idClasificacionDataGridViewTextBoxColumn.Name = "idClasificacionDataGridViewTextBoxColumn";
-            this.idClasificacionDataGridViewTextBoxColumn.Width = 125;
-            // 
             // controlBindingSource3
             // 
             this.controlBindingSource3.DataMember = "Control";
-            this.controlBindingSource3.DataSource = this.dBCONTRALORIADataSet7;
-            // 
-            // dBCONTRALORIADataSet7
-            // 
-            this.dBCONTRALORIADataSet7.DataSetName = "DBCONTRALORIADataSet7";
-            this.dBCONTRALORIADataSet7.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // controlBindingSource2
             // 
             this.controlBindingSource2.DataMember = "Control";
-            this.controlBindingSource2.DataSource = this.dBCONTRALORIADataSet6;
-            // 
-            // dBCONTRALORIADataSet6
-            // 
-            this.dBCONTRALORIADataSet6.DataSetName = "DBCONTRALORIADataSet6";
-            this.dBCONTRALORIADataSet6.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // controlBindingSource1
             // 
             this.controlBindingSource1.DataMember = "Control";
-            this.controlBindingSource1.DataSource = this.dBCONTRALORIADataSet2;
-            // 
-            // dBCONTRALORIADataSet2
-            // 
-            this.dBCONTRALORIADataSet2.DataSetName = "DBCONTRALORIADataSet2";
-            this.dBCONTRALORIADataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // controlBindingSource
             // 
             this.controlBindingSource.DataMember = "Control";
-            this.controlBindingSource.DataSource = this.sGCTESCHIDataSet2;
-            // 
-            // sGCTESCHIDataSet2
-            // 
-            this.sGCTESCHIDataSet2.DataSetName = "SGCTESCHIDataSet2";
-            this.sGCTESCHIDataSet2.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // controlTableAdapter
-            // 
-            this.controlTableAdapter.ClearBeforeFill = true;
-            // 
-            // controlTableAdapter1
-            // 
-            this.controlTableAdapter1.ClearBeforeFill = true;
-            // 
-            // controlTableAdapter2
-            // 
-            this.controlTableAdapter2.ClearBeforeFill = true;
-            // 
-            // controlTableAdapter3
-            // 
-            this.controlTableAdapter3.ClearBeforeFill = true;
             // 
             // CArchivos
             // 
@@ -791,13 +556,9 @@
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet7)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.controlBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -806,15 +567,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dgvControl;
         private System.Windows.Forms.BindingSource controlBindingSource;
-        private SGCTESCHIDataSet2 sGCTESCHIDataSet2;
-        private SGCTESCHIDataSet2TableAdapters.ControlTableAdapter controlTableAdapter;
         private System.Windows.Forms.BindingSource controlBindingSource1;
-        private DBCONTRALORIADataSet2 dBCONTRALORIADataSet2;
-        private DBCONTRALORIADataSet2TableAdapters.ControlTableAdapter controlTableAdapter1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.BindingSource controlBindingSource2;
-        private DBCONTRALORIADataSet6 dBCONTRALORIADataSet6;
-        private DBCONTRALORIADataSet6TableAdapters.ControlTableAdapter controlTableAdapter2;
         private System.Windows.Forms.ComboBox cboAño;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
@@ -871,7 +626,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn idEstatusDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idClasificacionDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource controlBindingSource3;
-        private DBCONTRALORIADataSet7 dBCONTRALORIADataSet7;
-        private DBCONTRALORIADataSet7TableAdapters.ControlTableAdapter controlTableAdapter3;
     }
 }

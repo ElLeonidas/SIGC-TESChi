@@ -1,31 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
 
 namespace SIGC_TESChi
 {
     public partial class Ubicaciones : UserControl
     {
-        // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
         public Ubicaciones()
         {
             InitializeComponent();
+
+            //EVENTO LOAD
             Load += Ubicaciones_Load;
 
-            // <-- Muy importante: enlazar el evento CellClick para que se ejecute el manejador
+            //TABLA
+            tablaUbicaciones.AutoGenerateColumns = true;
             tablaUbicaciones.CellClick += tablaUbicaciones_CellClick;
+
+            //BLOQUEO TOTAL DEL TXT ID
+            txtID.ReadOnly = true;
+            txtID.Enabled = false;
+            txtID.TabStop = false;
+
+            //BOTONES CONECTADOS CORRECTAMENTE
+            btnAgregar.Click += btnAgregar_Click;
+            btnModificar.Click += btnModificar_Click;
+            btnEliminar.Click += btnEliminar_Click;
+            btnBuscar.Click += btnBuscar_Click;
+            btnLimpiar.Click += btnLimpiar_Click;
         }
 
         private void Ubicaciones_Load(object sender, EventArgs e)
@@ -33,6 +41,7 @@ namespace SIGC_TESChi
             CargarUbicaciones();
         }
 
+        // ✅ CARGAR
         private void CargarUbicaciones()
         {
             try
@@ -40,12 +49,10 @@ namespace SIGC_TESChi
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
-
-                    string query = "SELECT * FROM Ubicacion ORDER BY idUbicacion ASC";
+                    string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion ORDER BY idUbicacion";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     tablaUbicaciones.DataSource = dt;
                 }
             }
@@ -55,18 +62,27 @@ namespace SIGC_TESChi
             }
         }
 
+        // ✅ LIMPIAR CAMPOS
         private void LimpiarCampos()
         {
-            txtID.Clear();
-            txtUbicacion.Clear();
-            txtID.Focus();
+            txtID.Text = "";
+            txtUbicacion.Text = "";
+            txtUbicacion.Focus();
         }
 
+        // ✅ BOTÓN LIMPIAR ✅✅✅
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+            CargarUbicaciones();
+        }
+
+        // ✅ AGREGAR
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtUbicacion.Text))
+            if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
             {
-                MessageBox.Show("Por favor ingresa un ID y una ubicación.");
+                MessageBox.Show("Por favor ingresa una ubicación.");
                 return;
             }
 
@@ -81,63 +97,34 @@ namespace SIGC_TESChi
                     checkCmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
 
                     int existe = (int)checkCmd.ExecuteScalar();
-
                     if (existe > 0)
                     {
-                        MessageBox.Show("⚠️ Esta ubicación ya está registrada. Ingresa una diferente.",
-                                        "Ubicación duplicada", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("⚠️ Esta ubicación ya está registrada.");
                         return;
                     }
 
-                    string query = "INSERT INTO Ubicacion (idUbicacion, dUbicacion) VALUES (@idUbicacion, @dUbicacion)";
+                    string query = "INSERT INTO Ubicacion (dUbicacion) VALUES (@dUbicacion)";
                     SqlCommand cmd = new SqlCommand(query, conn);
-
-                    cmd.Parameters.AddWithValue("@idUbicacion", Convert.ToInt32(txtID.Text));
                     cmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
-
                     cmd.ExecuteNonQuery();
-
-                    // ✅ Registrar en HistorialCambios
-                    HistorialHelper.RegistrarCambio(
-                        "Ubicacion",                        // Nombre de la tabla
-                        $"idUbicacion={txtID.Text}",        // Llave primaria del registro
-                        "INSERT",                           // Tipo de acción
-                        "",                                 // Datos anteriores (vacío en un INSERT)
-                        $"{{dUbicacion:'{txtUbicacion.Text}'}}" // Datos nuevos
-
-                        );
                 }
 
-                MessageBox.Show("✅ Ubicación agregada correctamente.");
+                MessageBox.Show("✅ Ubicación agregada.");
                 CargarUbicaciones();
-                txtID.Clear();
-                txtUbicacion.Clear();
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Number == 2627 || ex.Number == 2601)
-                {
-                    MessageBox.Show("⚠️ El ID ingresado ya existe. Por favor ingresa un ID diferente.",
-                                    "ID Duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    MessageBox.Show("Error SQL al agregar ubicación:\n" + ex.Message,
-                                    "Error de SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error general: " + ex.Message,
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al agregar ubicación:\n" + ex.Message);
             }
         }
 
+        // ✅ MODIFICAR
         private void btnModificar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtUbicacion.Text))
+            if (txtID.Text == "" || txtUbicacion.Text == "")
             {
-                MessageBox.Show("Por favor selecciona una ubicación y realiza los cambios.");
+                MessageBox.Show("Selecciona una ubicación y modifícala.");
                 return;
             }
 
@@ -146,25 +133,17 @@ namespace SIGC_TESChi
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    string query = "UPDATE Ubicacion SET dUbicacion = @dUbicacion WHERE idUbicacion = @idUbicacion";
+                    string query = "UPDATE Ubicacion SET dUbicacion = @dUbicacion WHERE idUbicacion = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
-                    cmd.Parameters.AddWithValue("@idUbicacion", Convert.ToInt32(txtID.Text));
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
 
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ Ubicación actualizada correctamente.");
-                        CargarUbicaciones();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("⚠️ No se encontró el registro que deseas modificar.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                MessageBox.Show("✅ Ubicación actualizada.");
+                CargarUbicaciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
@@ -172,47 +151,32 @@ namespace SIGC_TESChi
             }
         }
 
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarCampos();
-        }
-
+        // ✅ ELIMINAR
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text))
+            if (txtID.Text == "")
             {
-                MessageBox.Show("Por favor selecciona una ubicación para eliminar.");
+                MessageBox.Show("Selecciona una ubicación.");
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Seguro que deseas eliminar esta ubicación?",
-                                                   "Confirmar eliminación",
-                                                   MessageBoxButtons.YesNo,
-                                                   MessageBoxIcon.Warning);
-
-            if (confirm == DialogResult.Yes)
+            if (MessageBox.Show("¿Seguro de eliminar?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 try
                 {
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-                        string query = "DELETE FROM Ubicacion WHERE idUbicacion = @idUbicacion";
+                        string query = "DELETE FROM Ubicacion WHERE idUbicacion = @id";
                         SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@idUbicacion", Convert.ToInt32(txtID.Text));
-                        int filas = cmd.ExecuteNonQuery();
-
-                        if (filas > 0)
-                        {
-                            MessageBox.Show("✅ Ubicación eliminada correctamente.");
-                            CargarUbicaciones();
-                            LimpiarCampos();
-                        }
-                        else
-                        {
-                            MessageBox.Show("⚠️ No se encontró la ubicación especificada.");
-                        }
+                        cmd.Parameters.AddWithValue("@id", txtID.Text);
+                        cmd.ExecuteNonQuery();
                     }
+
+                    MessageBox.Show("✅ Ubicación eliminada.");
+                    CargarUbicaciones();
+                    LimpiarCampos();
                 }
                 catch (Exception ex)
                 {
@@ -221,241 +185,75 @@ namespace SIGC_TESChi
             }
         }
 
-        // Manejador robusto: busca las columnas por DataPropertyName/Name/HeaderText y cae a índices seguros
+        // ✅ SELECCIÓN
         private void tablaUbicaciones_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-                return;
+            if (e.RowIndex < 0) return;
 
-            try
-            {
-                DataGridViewRow fila = tablaUbicaciones.Rows[e.RowIndex];
-
-                // Nombre esperados de columnas en la fuente de datos
-                string colIdNames = "idUbicacion";
-                string colDescNames = "dUbicacion";
-
-                // Helper local para buscar el índice real de la columna por varios atributos
-                int FindColumnIndex(string expectedName)
-                {
-                    // 1) Buscar por DataPropertyName (DataBinding)
-                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
-                    {
-                        var col = tablaUbicaciones.Columns[i];
-                        if (!string.IsNullOrEmpty(col.DataPropertyName) &&
-                            string.Equals(col.DataPropertyName, expectedName, StringComparison.OrdinalIgnoreCase))
-                            return i;
-                    }
-
-                    // 2) Buscar por Name
-                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
-                    {
-                        var col = tablaUbicaciones.Columns[i];
-                        if (!string.IsNullOrEmpty(col.Name) &&
-                            string.Equals(col.Name, expectedName, StringComparison.OrdinalIgnoreCase))
-                            return i;
-                    }
-
-                    // 3) Buscar por HeaderText (lo que ve el usuario)
-                    for (int i = 0; i < tablaUbicaciones.Columns.Count; i++)
-                    {
-                        var col = tablaUbicaciones.Columns[i];
-                        if (!string.IsNullOrEmpty(col.HeaderText) &&
-                            string.Equals(col.HeaderText, expectedName, StringComparison.OrdinalIgnoreCase))
-                            return i;
-                    }
-
-                    // 4) Si no se encontró, devolver -1
-                    return -1;
-                }
-
-                int idxId = FindColumnIndex(colIdNames);
-                int idxDesc = FindColumnIndex(colDescNames);
-
-                // Si no encontró por nombre, intentar suponer posiciones comunes:
-                if (idxId == -1 || idxDesc == -1)
-                {
-                    // Intentar por índices: (caso: columna extra 'Número' en la posición 0)
-                    if (tablaUbicaciones.Columns.Count >= 3)
-                    {
-                        // suposición típica: 0 = Numero, 1 = id, 2 = descripcion
-                        idxId = idxId == -1 ? 1 : idxId;
-                        idxDesc = idxDesc == -1 ? 2 : idxDesc;
-                    }
-                    else if (tablaUbicaciones.Columns.Count == 2)
-                    {
-                        idxId = idxId == -1 ? 0 : idxId;
-                        idxDesc = idxDesc == -1 ? 1 : idxDesc;
-                    }
-                }
-
-                // Finalmente asignar (comprobando que existan esos índices)
-                if (idxId >= 0 && idxId < fila.Cells.Count)
-                    txtID.Text = fila.Cells[idxId].Value?.ToString() ?? "";
-                else
-                    txtID.Text = ""; // no encontrado, limpiar
-
-                if (idxDesc >= 0 && idxDesc < fila.Cells.Count)
-                    txtUbicacion.Text = fila.Cells[idxDesc].Value?.ToString() ?? "";
-                else
-                    txtUbicacion.Text = ""; // no encontrado, limpiar
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar los datos en los campos: " + ex.Message);
-            }
+            DataGridViewRow fila = tablaUbicaciones.Rows[e.RowIndex];
+            txtID.Text = fila.Cells["idUbicacion"].Value.ToString();
+            txtUbicacion.Text = fila.Cells["dUbicacion"].Value.ToString();
         }
 
-        // BUSCAR UBICACIONES (FILTRO FLEXIBLE)
-        private void BuscarUbicaciones()
+        // ✅ BOTÓN BUSCAR ✅✅✅
+        private void btnBuscar_Click(object sender, EventArgs e)
         {
+            if (txtUbicacion.Text == "")
+            {
+                CargarUbicaciones();
+                return;
+            }
+
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
+                    string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion WHERE dUbicacion LIKE @busqueda";
+                    SqlDataAdapter da = new SqlDataAdapter(query, con);
+                    da.SelectCommand.Parameters.AddWithValue("@busqueda", "%" + txtUbicacion.Text + "%");
 
-                    string query = "SELECT * FROM Ubicacion WHERE 1=1";
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = con;
-
-                    // FILTRAR POR ID
-                    if (!string.IsNullOrWhiteSpace(txtID.Text))
-                    {
-                        query += " AND idUbicacion = @id";
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    }
-
-                    // FILTRAR POR UBICACIÓN
-                    if (!string.IsNullOrWhiteSpace(txtUbicacion.Text))
-                    {
-                        query += " AND dUbicacion LIKE @ubicacion";
-                        cmd.Parameters.AddWithValue("@ubicacion", "%" + txtUbicacion.Text + "%");
-                    }
-
-                    cmd.CommandText = query;
-
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     tablaUbicaciones.DataSource = dt;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al buscar ubicaciones: " + ex.Message);
+                MessageBox.Show("Error en búsqueda: " + ex.Message);
             }
         }
 
-        private DataTable ObtenerUbicaciones()
-        {
-            string connectionString =
-                @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
-
-            string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion";
-
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlCommand cmd = new SqlCommand(query, conn))
-            using (SqlDataAdapter da = new SqlDataAdapter(cmd))
-            {
-                conn.Open();
-                da.Fill(dt);
-            }
-
-            return dt;
-        }
-
-        private DataTable DataGridViewFiltradoToDataTable(DataGridView dgv)
-        {
-            DataTable dt = new DataTable();
-
-            // Crear columnas con los mismos encabezados que el DataGridView
-            foreach (DataGridViewColumn col in dgv.Columns)
-            {
-                dt.Columns.Add(col.HeaderText);
-            }
-
-            // Recorrer solo filas visibles (es decir, el resultado de tu búsqueda/filtro)
-            foreach (DataGridViewRow row in dgv.Rows)
-            {
-                if (!row.IsNewRow && row.Visible) // <-- clave: solo las visibles
-                {
-                    DataRow dr = dt.NewRow();
-                    for (int i = 0; i < dgv.Columns.Count; i++)
-                    {
-                        dr[i] = row.Cells[i].Value ?? DBNull.Value;
-                    }
-                    dt.Rows.Add(dr);
-                }
-            }
-
-            return dt;
-        }
-
-
-
-        private void ExportarFiltradoACSV()
-        {
-            // Aquí usamos el DataGridView ya filtrado
-            DataTable dt = DataGridViewFiltradoToDataTable(tablaUbicaciones);
-
-            if (dt.Rows.Count == 0)
-            {
-                MessageBox.Show("No hay datos para exportar (revisa tu búsqueda).");
-                return;
-            }
-
-            using (SaveFileDialog sfd = new SaveFileDialog())
-            {
-                sfd.Filter = "Archivos CSV (*.csv)|*.csv";
-                sfd.FileName = "Ubicaciones.csv";
-
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    StringBuilder sb = new StringBuilder();
-
-                    // Encabezados
-                    for (int i = 0; i < dt.Columns.Count; i++)
-                    {
-                        sb.Append(dt.Columns[i].ColumnName);
-                        if (i < dt.Columns.Count - 1)
-                            sb.Append(";");
-                    }
-                    sb.AppendLine();
-
-                    // Filas (solo lo filtrado)
-                    foreach (DataRow row in dt.Rows)
-                    {
-                        for (int i = 0; i < dt.Columns.Count; i++)
-                        {
-                            string value = row[i]?.ToString() ?? "";
-                            value = value.Replace(";", ",");
-                            sb.Append(value);
-                            if (i < dt.Columns.Count - 1)
-                                sb.Append(";");
-                        }
-                        sb.AppendLine();
-                    }
-
-                    File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
-
-                    MessageBox.Show("Archivo CSV generado .\nPuedes abrirlo con Excel.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
+        // ✅ EXPORTAR CSV
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
-            ExportarFiltradoACSV();
-        }
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Archivos CSV (*.csv)|*.csv";
+            sfd.FileName = "Ubicaciones.csv";
 
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                StringBuilder sb = new StringBuilder();
 
+                foreach (DataGridViewColumn col in tablaUbicaciones.Columns)
+                    sb.Append(col.HeaderText + ";");
+
+                sb.AppendLine();
+
+                foreach (DataGridViewRow row in tablaUbicaciones.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                            sb.Append(cell.Value + ";");
+
+                        sb.AppendLine();
+                    }
+                }
+
+                File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+                MessageBox.Show("✅ Archivo CSV generado.");
+            }
         }
     }
 }

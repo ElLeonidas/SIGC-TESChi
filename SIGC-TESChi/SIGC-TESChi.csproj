@@ -57,6 +57,9 @@
     <Reference Include="Azure.Identity, Version=1.14.2.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
       <HintPath>..\packages\Azure.Identity.1.14.2\lib\netstandard2.0\Azure.Identity.dll</HintPath>
     </Reference>
+    <Reference Include="DayPilot, Version=5.0.303.0, Culture=neutral, PublicKeyToken=ce5d34538e20ef65, processorArchitecture=MSIL">
+      <HintPath>..\packages\DayPilot.5.0.303\lib\DayPilot.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -216,61 +219,6 @@
     <Compile Include="CArchivos.Designer.cs">
       <DependentUpon>CArchivos.cs</DependentUpon>
     </Compile>
-    <Compile Include="DBCONTRALORIADataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet2.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet31.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet31.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet4.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet4.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet5.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet5.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet6.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIADataSet7.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIADataSet7.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIASecciones.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIASubseccion.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="DBCONTRALORIAUnidadAdministrativa.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBCONTRALORIAUnidadAdministrativa.xsd</DependentUpon>
-    </Compile>
     <Compile Include="DetallesCambio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -321,61 +269,6 @@
       <DependentUpon>Secciones.cs</DependentUpon>
     </Compile>
     <Compile Include="SessionData.cs" />
-    <Compile Include="SGCTESCHIDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet1.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet10.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet10.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet2.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet3.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet3.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet4.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet5.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet6.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet7.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet8.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="SGCTESCHIDataSet9.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SGCTESCHIDataSet9.xsd</DependentUpon>
-    </Compile>
     <Compile Include="SplashScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -462,127 +355,6 @@
     <EmbeddedResource Include="UnidadA.resx">
       <DependentUpon>UnidadA.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DBCONTRALORIADataSet.xsc">
-      <DependentUpon>DBCONTRALORIADataSet.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet.xss">
-      <DependentUpon>DBCONTRALORIADataSet.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet1.xsc">
-      <DependentUpon>DBCONTRALORIADataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet1.xss">
-      <DependentUpon>DBCONTRALORIADataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet2.xsc">
-      <DependentUpon>DBCONTRALORIADataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet2.xss">
-      <DependentUpon>DBCONTRALORIADataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet31.xsc">
-      <DependentUpon>DBCONTRALORIADataSet31.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet31.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet31.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet31.xss">
-      <DependentUpon>DBCONTRALORIADataSet31.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet4.xsc">
-      <DependentUpon>DBCONTRALORIADataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet4.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet4.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet4.xss">
-      <DependentUpon>DBCONTRALORIADataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet5.xsc">
-      <DependentUpon>DBCONTRALORIADataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet5.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet5.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet5.xss">
-      <DependentUpon>DBCONTRALORIADataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet6.xsc">
-      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet6.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet6.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet6.xss">
-      <DependentUpon>DBCONTRALORIADataSet6.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet7.xsc">
-      <DependentUpon>DBCONTRALORIADataSet7.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIADataSet7.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIADataSet7.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIADataSet7.xss">
-      <DependentUpon>DBCONTRALORIADataSet7.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIASecciones.xsc">
-      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIASecciones.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIASecciones.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIASecciones.xss">
-      <DependentUpon>DBCONTRALORIASecciones.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIASubseccion.xsc">
-      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIASubseccion.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIASubseccion.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIASubseccion.xss">
-      <DependentUpon>DBCONTRALORIASubseccion.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIAUnidadAdministrativa.xsc">
-      <DependentUpon>DBCONTRALORIAUnidadAdministrativa.xsd</DependentUpon>
-    </None>
-    <None Include="DBCONTRALORIAUnidadAdministrativa.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBCONTRALORIAUnidadAdministrativa.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="DBCONTRALORIAUnidadAdministrativa.xss">
-      <DependentUpon>DBCONTRALORIAUnidadAdministrativa.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\SIGC_TESChi.SGCTESCHIDataSet4TableAdapters.TipoUsuarioTableAdapter.datasource" />
     <None Include="Properties\Settings.settings">
@@ -594,127 +366,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="SGCTESCHIDataSet.xsc">
-      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet.xss">
-      <DependentUpon>SGCTESCHIDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet1.xsc">
-      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet1.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet1.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet1.xss">
-      <DependentUpon>SGCTESCHIDataSet1.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet10.xsc">
-      <DependentUpon>SGCTESCHIDataSet10.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet10.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet10.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet10.xss">
-      <DependentUpon>SGCTESCHIDataSet10.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet2.xsc">
-      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet2.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet2.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet2.xss">
-      <DependentUpon>SGCTESCHIDataSet2.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet3.xsc">
-      <DependentUpon>SGCTESCHIDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet3.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet3.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet3.xss">
-      <DependentUpon>SGCTESCHIDataSet3.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet4.xsc">
-      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet4.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet4.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet4.xss">
-      <DependentUpon>SGCTESCHIDataSet4.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet5.xsc">
-      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet5.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet5.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet5.xss">
-      <DependentUpon>SGCTESCHIDataSet5.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet6.xsc">
-      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet6.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet6.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet6.xss">
-      <DependentUpon>SGCTESCHIDataSet6.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet7.xsc">
-      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet7.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet7.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet7.xss">
-      <DependentUpon>SGCTESCHIDataSet7.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet8.xsc">
-      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet8.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet8.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet8.xss">
-      <DependentUpon>SGCTESCHIDataSet8.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet9.xsc">
-      <DependentUpon>SGCTESCHIDataSet9.xsd</DependentUpon>
-    </None>
-    <None Include="SGCTESCHIDataSet9.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>SGCTESCHIDataSet9.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="SGCTESCHIDataSet9.xss">
-      <DependentUpon>SGCTESCHIDataSet9.xsd</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -733,15 +384,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="DBCONTRALORIA.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DBCONTRALORIA_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>DBCONTRALORIA.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

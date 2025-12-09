@@ -15,30 +15,35 @@ namespace SIGC_TESChi
         public UnidadA()
         {
             InitializeComponent();
+
+            //EVENTO LOAD DEL USER CONTROL
             Load += UnidadA_Load;
 
+            //CONFIGURACIÓN DE LA TABLA
             tablaUnidadA.AutoGenerateColumns = true;
+            tablaUnidadA.CellClick += tablaUnidadA_CellClick;
 
-            // 🔹 txtID no editable
+            //txtID solo lectura pero SÍ se llena al seleccionar
             txtID.ReadOnly = true;
             txtID.Enabled = false;
 
+            //TOOLTIP INICIALIZADO
             toolTip = new ToolTip();
 
-            // Eventos de botones
+            //EVENTOS DE BOTONES CONECTADOS
             btnAgregar.Click += btnAgregar_Click;
             btnModificar.Click += btnModificar_Click;
             btnEliminar.Click += btnEliminar_Click;
             btnBuscar.Click += btnBuscar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
 
+            //TOOLTIP'S DE LOS BOTONES
             ConfigurarTooltip(btnAgregar, "Agregar Unidad");
             ConfigurarTooltip(btnModificar, "Modificar Datos");
             ConfigurarTooltip(btnEliminar, "Eliminar Unidad");
             ConfigurarTooltip(btnBuscar, "Buscar Unidad");
             ConfigurarTooltip(btnLimpiar, "Limpiar Campos");
 
-            tablaUnidadA.CellClick += tablaUnidadA_CellClick;
         }
 
         private void ConfigurarTooltip(Button boton, string mensaje)
@@ -52,7 +57,7 @@ namespace SIGC_TESChi
             CargarUnidadA();
         }
 
-        // 🔹 CARGAR TABLA
+        // ✅ CARGAR TABLA
         private void CargarUnidadA()
         {
             try
@@ -60,12 +65,10 @@ namespace SIGC_TESChi
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
-
-                    string query = "SELECT idUniAdmin, cUniAdmin, nUniAdmin FROM UnidadAdministrativa ORDER BY idUniAdmin ASC";
+                    string query = "SELECT idUniAdmin, cUniAdmin, nUniAdmin FROM UnidadAdministrativa ORDER BY idUniAdmin";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     tablaUnidadA.DataSource = dt;
                 }
             }
@@ -83,7 +86,7 @@ namespace SIGC_TESChi
             tablaUnidadA.ClearSelection();
         }
 
-        // 🔹 AGREGAR
+        // ✅ AGREGAR
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtClaveUnidad.Text) ||
@@ -99,11 +102,9 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    // Verificar si clave ya existe
                     string checkQuery = "SELECT COUNT(*) FROM UnidadAdministrativa WHERE cUniAdmin = @clave";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                     checkCmd.Parameters.AddWithValue("@clave", txtClaveUnidad.Text);
-
                     int existe = (int)checkCmd.ExecuteScalar();
 
                     if (existe > 0)
@@ -112,13 +113,10 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    // INSERT SIN ID (IDENTITY)
                     string query = "INSERT INTO UnidadAdministrativa (cUniAdmin, nUniAdmin) VALUES (@c, @n)";
                     SqlCommand cmd = new SqlCommand(query, conn);
-
                     cmd.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
                     cmd.Parameters.AddWithValue("@n", txtNombreUnidad.Text);
-
                     cmd.ExecuteNonQuery();
                 }
 
@@ -132,7 +130,7 @@ namespace SIGC_TESChi
             }
         }
 
-        // 🔹 MODIFICAR
+        // ✅ MODIFICAR
         private void btnModificar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
@@ -149,7 +147,6 @@ namespace SIGC_TESChi
 
                     string query = "UPDATE UnidadAdministrativa SET cUniAdmin = @c, nUniAdmin = @n WHERE idUniAdmin = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
-
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
                     cmd.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
                     cmd.Parameters.AddWithValue("@n", txtNombreUnidad.Text);
@@ -174,7 +171,7 @@ namespace SIGC_TESChi
             }
         }
 
-        // 🔹 ELIMINAR
+        // ✅ ELIMINAR
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
@@ -183,10 +180,8 @@ namespace SIGC_TESChi
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Eliminar esta unidad?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-
-            if (confirm == DialogResult.Yes)
+            if (MessageBox.Show("¿Eliminar esta unidad?", "Confirmar",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
                 try
                 {
@@ -196,7 +191,6 @@ namespace SIGC_TESChi
 
                         string query = "DELETE FROM UnidadAdministrativa WHERE idUniAdmin = @id";
                         SqlCommand cmd = new SqlCommand(query, conn);
-
                         cmd.Parameters.AddWithValue("@id", txtID.Text);
 
                         int filas = cmd.ExecuteNonQuery();
@@ -220,35 +214,25 @@ namespace SIGC_TESChi
             }
         }
 
-        // 🔹 CLICK EN TABLA
+        // ✅ CLICK EN TABLA (AQUÍ SE CARGA EL txtID AUNQUE ESTÉ BLOQUEADO)
         private void tablaUnidadA_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0)
-                return;
+            if (e.RowIndex < 0) return;
 
             DataGridViewRow fila = tablaUnidadA.Rows[e.RowIndex];
 
-            try
-            {
-                txtID.Text = fila.Cells["idUniAdmin"].Value?.ToString() ?? "";
-                txtClaveUnidad.Text = fila.Cells["cUniAdmin"].Value?.ToString() ?? "";
-                txtNombreUnidad.Text = fila.Cells["nUniAdmin"].Value?.ToString() ?? "";
-            }
-            catch
-            {
-                txtID.Text = fila.Cells[0].Value?.ToString() ?? "";
-                txtClaveUnidad.Text = fila.Cells[1].Value?.ToString() ?? "";
-                txtNombreUnidad.Text = fila.Cells[2].Value?.ToString() ?? "";
-            }
+            txtID.Text = fila.Cells["idUniAdmin"].Value.ToString();
+            txtClaveUnidad.Text = fila.Cells["cUniAdmin"].Value.ToString();
+            txtNombreUnidad.Text = fila.Cells["nUniAdmin"].Value.ToString();
         }
 
-        // 🔹 LIMPIAR
+        // ✅ LIMPIAR
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
         }
 
-        // 🔹 BUSCAR
+        // ✅ BUSCAR
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             try
@@ -284,7 +268,6 @@ namespace SIGC_TESChi
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     tablaUnidadA.DataSource = dt;
                 }
             }

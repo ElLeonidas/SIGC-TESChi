@@ -31,33 +31,27 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Institucion));
             this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaInstitucion = new System.Windows.Forms.DataGridView();
-            this.dBCONTRALORIADataSet5 = new SIGC_TESChi.DBCONTRALORIADataSet5();
             this.institutoBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.institutoTableAdapter = new SIGC_TESChi.DBCONTRALORIADataSet5TableAdapters.InstitutoTableAdapter();
-            this.idInstitutoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.claveInstitutoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dInstitutoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtID = new System.Windows.Forms.TextBox();
-            this.txtAbreviatura = new System.Windows.Forms.TextBox();
-            this.txtNombre = new System.Windows.Forms.TextBox();
-            this.btnAgregar = new System.Windows.Forms.Button();
-            this.btnEliminar = new System.Windows.Forms.Button();
-            this.btnBuscar = new System.Windows.Forms.Button();
-            this.btnModificar = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
+            this.txtNombre = new System.Windows.Forms.TextBox();
+            this.txtAbreviatura = new System.Windows.Forms.TextBox();
+            this.txtID = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInstitucion)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -69,6 +63,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1249, 838);
             this.panel1.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.tablaInstitucion);
+            this.panel3.Location = new System.Drawing.Point(3, 235);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1239, 596);
+            this.panel3.TabIndex = 2;
+            // 
+            // tablaInstitucion
+            // 
+            this.tablaInstitucion.AllowUserToAddRows = false;
+            this.tablaInstitucion.AllowUserToDeleteRows = false;
+            this.tablaInstitucion.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablaInstitucion.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaInstitucion.Location = new System.Drawing.Point(0, 0);
+            this.tablaInstitucion.Name = "tablaInstitucion";
+            this.tablaInstitucion.ReadOnly = true;
+            this.tablaInstitucion.RowHeadersWidth = 51;
+            this.tablaInstitucion.RowTemplate.Height = 24;
+            this.tablaInstitucion.Size = new System.Drawing.Size(1235, 592);
+            this.tablaInstitucion.TabIndex = 0;
+            // 
+            // institutoBindingSource
+            // 
+            this.institutoBindingSource.DataMember = "Instituto";
             // 
             // panel2
             // 
@@ -90,166 +111,15 @@
             this.panel2.Size = new System.Drawing.Size(1237, 203);
             this.panel2.TabIndex = 1;
             // 
-            // panel3
+            // btnLimpiar
             // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.tablaInstitucion);
-            this.panel3.Location = new System.Drawing.Point(3, 235);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1239, 596);
-            this.panel3.TabIndex = 2;
-            // 
-            // tablaInstitucion
-            // 
-            this.tablaInstitucion.AllowUserToAddRows = false;
-            this.tablaInstitucion.AllowUserToDeleteRows = false;
-            this.tablaInstitucion.AutoGenerateColumns = false;
-            this.tablaInstitucion.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tablaInstitucion.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idInstitutoDataGridViewTextBoxColumn,
-            this.claveInstitutoDataGridViewTextBoxColumn,
-            this.dInstitutoDataGridViewTextBoxColumn});
-            this.tablaInstitucion.DataSource = this.institutoBindingSource;
-            this.tablaInstitucion.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablaInstitucion.Location = new System.Drawing.Point(0, 0);
-            this.tablaInstitucion.Name = "tablaInstitucion";
-            this.tablaInstitucion.ReadOnly = true;
-            this.tablaInstitucion.RowHeadersWidth = 51;
-            this.tablaInstitucion.RowTemplate.Height = 24;
-            this.tablaInstitucion.Size = new System.Drawing.Size(1235, 592);
-            this.tablaInstitucion.TabIndex = 0;
-            // 
-            // dBCONTRALORIADataSet5
-            // 
-            this.dBCONTRALORIADataSet5.DataSetName = "DBCONTRALORIADataSet5";
-            this.dBCONTRALORIADataSet5.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // institutoBindingSource
-            // 
-            this.institutoBindingSource.DataMember = "Instituto";
-            this.institutoBindingSource.DataSource = this.dBCONTRALORIADataSet5;
-            // 
-            // institutoTableAdapter
-            // 
-            this.institutoTableAdapter.ClearBeforeFill = true;
-            // 
-            // idInstitutoDataGridViewTextBoxColumn
-            // 
-            this.idInstitutoDataGridViewTextBoxColumn.DataPropertyName = "idInstituto";
-            this.idInstitutoDataGridViewTextBoxColumn.HeaderText = "idInstituto";
-            this.idInstitutoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idInstitutoDataGridViewTextBoxColumn.Name = "idInstitutoDataGridViewTextBoxColumn";
-            this.idInstitutoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idInstitutoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // claveInstitutoDataGridViewTextBoxColumn
-            // 
-            this.claveInstitutoDataGridViewTextBoxColumn.DataPropertyName = "claveInstituto";
-            this.claveInstitutoDataGridViewTextBoxColumn.HeaderText = "claveInstituto";
-            this.claveInstitutoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.claveInstitutoDataGridViewTextBoxColumn.Name = "claveInstitutoDataGridViewTextBoxColumn";
-            this.claveInstitutoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.claveInstitutoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // dInstitutoDataGridViewTextBoxColumn
-            // 
-            this.dInstitutoDataGridViewTextBoxColumn.DataPropertyName = "dInstituto";
-            this.dInstitutoDataGridViewTextBoxColumn.HeaderText = "dInstituto";
-            this.dInstitutoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.dInstitutoDataGridViewTextBoxColumn.Name = "dInstitutoDataGridViewTextBoxColumn";
-            this.dInstitutoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.dInstitutoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Georgia", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(-2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(281, 24);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Registro de  Instrucciones";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(93, 61);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(223, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Identificador de Institucion:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(93, 99);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(205, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "Abreviatura Institucional:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(93, 144);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(203, 20);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "Nombre de la Institucion:";
-            // 
-            // txtID
-            // 
-            this.txtID.Location = new System.Drawing.Point(344, 59);
-            this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(357, 22);
-            this.txtID.TabIndex = 4;
-            // 
-            // txtAbreviatura
-            // 
-            this.txtAbreviatura.Location = new System.Drawing.Point(344, 99);
-            this.txtAbreviatura.Name = "txtAbreviatura";
-            this.txtAbreviatura.Size = new System.Drawing.Size(357, 22);
-            this.txtAbreviatura.TabIndex = 5;
-            // 
-            // txtNombre
-            // 
-            this.txtNombre.Location = new System.Drawing.Point(344, 142);
-            this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(357, 22);
-            this.txtNombre.TabIndex = 6;
-            // 
-            // btnAgregar
-            // 
-            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
-            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAgregar.Location = new System.Drawing.Point(782, 80);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(60, 60);
-            this.btnAgregar.TabIndex = 7;
-            this.btnAgregar.UseVisualStyleBackColor = true;
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
-            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEliminar.Location = new System.Drawing.Point(848, 80);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(60, 60);
-            this.btnEliminar.TabIndex = 8;
-            this.btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
-            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(914, 80);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(60, 60);
-            this.btnBuscar.TabIndex = 9;
-            this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
+            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLimpiar.Location = new System.Drawing.Point(1046, 80);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(60, 60);
+            this.btnLimpiar.TabIndex = 11;
+            this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
             // btnModificar
             // 
@@ -261,15 +131,96 @@
             this.btnModificar.TabIndex = 10;
             this.btnModificar.UseVisualStyleBackColor = true;
             // 
-            // btnLimpiar
+            // btnBuscar
             // 
-            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
-            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLimpiar.Location = new System.Drawing.Point(1046, 80);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(60, 60);
-            this.btnLimpiar.TabIndex = 11;
-            this.btnLimpiar.UseVisualStyleBackColor = true;
+            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
+            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBuscar.Location = new System.Drawing.Point(914, 80);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(60, 60);
+            this.btnBuscar.TabIndex = 9;
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
+            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEliminar.Location = new System.Drawing.Point(848, 80);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(60, 60);
+            this.btnEliminar.TabIndex = 8;
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
+            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAgregar.Location = new System.Drawing.Point(782, 80);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(60, 60);
+            this.btnAgregar.TabIndex = 7;
+            this.btnAgregar.UseVisualStyleBackColor = true;
+            // 
+            // txtNombre
+            // 
+            this.txtNombre.Location = new System.Drawing.Point(344, 142);
+            this.txtNombre.Name = "txtNombre";
+            this.txtNombre.Size = new System.Drawing.Size(357, 22);
+            this.txtNombre.TabIndex = 6;
+            // 
+            // txtAbreviatura
+            // 
+            this.txtAbreviatura.Location = new System.Drawing.Point(344, 99);
+            this.txtAbreviatura.Name = "txtAbreviatura";
+            this.txtAbreviatura.Size = new System.Drawing.Size(357, 22);
+            this.txtAbreviatura.TabIndex = 5;
+            // 
+            // txtID
+            // 
+            this.txtID.Location = new System.Drawing.Point(344, 59);
+            this.txtID.Name = "txtID";
+            this.txtID.Size = new System.Drawing.Size(357, 22);
+            this.txtID.TabIndex = 4;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(93, 144);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(203, 20);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "Nombre de la Institucion:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(93, 99);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(205, 20);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Abreviatura Institucional:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(93, 61);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(223, 20);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Identificador de Institucion:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Georgia", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(-2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(281, 24);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Registro de  Instrucciones";
             // 
             // Institucion
             // 
@@ -279,12 +230,11 @@
             this.Name = "Institucion";
             this.Size = new System.Drawing.Size(1249, 838);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaInstitucion)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -299,8 +249,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn claveInstitutoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dInstitutoDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource institutoBindingSource;
-        private DBCONTRALORIADataSet5 dBCONTRALORIADataSet5;
-        private DBCONTRALORIADataSet5TableAdapters.InstitutoTableAdapter institutoTableAdapter;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

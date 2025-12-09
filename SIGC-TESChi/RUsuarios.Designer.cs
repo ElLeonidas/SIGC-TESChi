@@ -32,15 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RUsuarios));
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.TablaUsuarios = new System.Windows.Forms.DataGridView();
-            this.idUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nombreDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.apaternoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.amaternoDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idTipoUsuarioDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.contrasenaDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.usuarioBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
-            this.dBCONTRALORIADataSet1 = new SIGC_TESChi.DBCONTRALORIADataSet1();
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtIdentificador = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -63,31 +57,19 @@
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.comboTipoUsuario = new System.Windows.Forms.ComboBox();
             this.usuarioBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.sGCTESCHIDataSet1 = new SIGC_TESChi.SGCTESCHIDataSet1();
             this.dataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.usuarioTableAdapter = new SIGC_TESChi.SGCTESCHIDataSet1TableAdapters.UsuarioTableAdapter();
-            this.dBCONTRALORIADataSet = new SIGC_TESChi.DBCONTRALORIADataSet();
             this.usuarioBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.usuarioTableAdapter1 = new SIGC_TESChi.DBCONTRALORIADataSetTableAdapters.UsuarioTableAdapter();
-            this.usuarioTableAdapter2 = new SIGC_TESChi.DBCONTRALORIADataSet1TableAdapters.UsuarioTableAdapter();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.dBCONTRALORIADataSet4 = new SIGC_TESChi.DBCONTRALORIADataSet4();
             this.usuarioBindingSource3 = new System.Windows.Forms.BindingSource(this.components);
-            this.usuarioTableAdapter3 = new SIGC_TESChi.DBCONTRALORIADataSet4TableAdapters.UsuarioTableAdapter();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
+            this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet1)).BeginInit();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource3)).BeginInit();
-            this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -109,20 +91,20 @@
             this.panel1.Size = new System.Drawing.Size(1255, 850);
             this.panel1.TabIndex = 1;
             // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.TablaUsuarios);
+            this.panel3.Location = new System.Drawing.Point(3, 306);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1245, 537);
+            this.panel3.TabIndex = 2;
+            // 
             // TablaUsuarios
             // 
             this.TablaUsuarios.AllowUserToAddRows = false;
             this.TablaUsuarios.AllowUserToDeleteRows = false;
-            this.TablaUsuarios.AutoGenerateColumns = false;
             this.TablaUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.TablaUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idUsuarioDataGridViewTextBoxColumn,
-            this.nombreDataGridViewTextBoxColumn,
-            this.apaternoDataGridViewTextBoxColumn,
-            this.amaternoDataGridViewTextBoxColumn,
-            this.idTipoUsuarioDataGridViewTextBoxColumn,
-            this.contrasenaDataGridViewTextBoxColumn});
-            this.TablaUsuarios.DataSource = this.usuarioBindingSource2;
             this.TablaUsuarios.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TablaUsuarios.Location = new System.Drawing.Point(0, 0);
             this.TablaUsuarios.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -133,69 +115,9 @@
             this.TablaUsuarios.Size = new System.Drawing.Size(1241, 533);
             this.TablaUsuarios.TabIndex = 0;
             // 
-            // idUsuarioDataGridViewTextBoxColumn
-            // 
-            this.idUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idUsuario";
-            this.idUsuarioDataGridViewTextBoxColumn.HeaderText = "idUsuario";
-            this.idUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idUsuarioDataGridViewTextBoxColumn.Name = "idUsuarioDataGridViewTextBoxColumn";
-            this.idUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nombreDataGridViewTextBoxColumn
-            // 
-            this.nombreDataGridViewTextBoxColumn.DataPropertyName = "Nombre";
-            this.nombreDataGridViewTextBoxColumn.HeaderText = "Nombre";
-            this.nombreDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nombreDataGridViewTextBoxColumn.Name = "nombreDataGridViewTextBoxColumn";
-            this.nombreDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nombreDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // apaternoDataGridViewTextBoxColumn
-            // 
-            this.apaternoDataGridViewTextBoxColumn.DataPropertyName = "Apaterno";
-            this.apaternoDataGridViewTextBoxColumn.HeaderText = "Apaterno";
-            this.apaternoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.apaternoDataGridViewTextBoxColumn.Name = "apaternoDataGridViewTextBoxColumn";
-            this.apaternoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.apaternoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // amaternoDataGridViewTextBoxColumn
-            // 
-            this.amaternoDataGridViewTextBoxColumn.DataPropertyName = "Amaterno";
-            this.amaternoDataGridViewTextBoxColumn.HeaderText = "Amaterno";
-            this.amaternoDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.amaternoDataGridViewTextBoxColumn.Name = "amaternoDataGridViewTextBoxColumn";
-            this.amaternoDataGridViewTextBoxColumn.ReadOnly = true;
-            this.amaternoDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // idTipoUsuarioDataGridViewTextBoxColumn
-            // 
-            this.idTipoUsuarioDataGridViewTextBoxColumn.DataPropertyName = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.HeaderText = "idTipoUsuario";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Name = "idTipoUsuarioDataGridViewTextBoxColumn";
-            this.idTipoUsuarioDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idTipoUsuarioDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // contrasenaDataGridViewTextBoxColumn
-            // 
-            this.contrasenaDataGridViewTextBoxColumn.DataPropertyName = "contrasena";
-            this.contrasenaDataGridViewTextBoxColumn.HeaderText = "contrasena";
-            this.contrasenaDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.contrasenaDataGridViewTextBoxColumn.Name = "contrasenaDataGridViewTextBoxColumn";
-            this.contrasenaDataGridViewTextBoxColumn.ReadOnly = true;
-            this.contrasenaDataGridViewTextBoxColumn.Width = 125;
-            // 
             // usuarioBindingSource2
             // 
             this.usuarioBindingSource2.DataMember = "Usuario";
-            this.usuarioBindingSource2.DataSource = this.dBCONTRALORIADataSet1;
-            // 
-            // dBCONTRALORIADataSet1
-            // 
-            this.dBCONTRALORIADataSet1.DataSetName = "DBCONTRALORIADataSet1";
-            this.dBCONTRALORIADataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // panel2
             // 
@@ -248,7 +170,7 @@
             // 
             // txtNombreAcceso
             // 
-            this.txtNombreAcceso.Location = new System.Drawing.Point(224, 90);
+            this.txtNombreAcceso.Location = new System.Drawing.Point(207, 90);
             this.txtNombreAcceso.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtNombreAcceso.Name = "txtNombreAcceso";
             this.txtNombreAcceso.Size = new System.Drawing.Size(199, 22);
@@ -258,7 +180,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(64, 90);
+            this.label8.Location = new System.Drawing.Point(39, 90);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(151, 20);
             this.label8.TabIndex = 17;
@@ -278,7 +200,7 @@
             // 
             // txtAmaterno
             // 
-            this.txtAmaterno.Location = new System.Drawing.Point(589, 128);
+            this.txtAmaterno.Location = new System.Drawing.Point(581, 128);
             this.txtAmaterno.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtAmaterno.Name = "txtAmaterno";
             this.txtAmaterno.Size = new System.Drawing.Size(199, 22);
@@ -286,7 +208,7 @@
             // 
             // txtApaterno
             // 
-            this.txtApaterno.Location = new System.Drawing.Point(589, 90);
+            this.txtApaterno.Location = new System.Drawing.Point(581, 90);
             this.txtApaterno.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtApaterno.Name = "txtApaterno";
             this.txtApaterno.Size = new System.Drawing.Size(199, 22);
@@ -296,7 +218,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(437, 90);
+            this.label7.Location = new System.Drawing.Point(420, 90);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(140, 20);
             this.label7.TabIndex = 13;
@@ -306,7 +228,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(437, 128);
+            this.label6.Location = new System.Drawing.Point(420, 128);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(146, 20);
             this.label6.TabIndex = 12;
@@ -326,7 +248,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(807, 130);
+            this.label4.Location = new System.Drawing.Point(799, 130);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(100, 20);
             this.label4.TabIndex = 10;
@@ -336,7 +258,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(807, 92);
+            this.label3.Location = new System.Drawing.Point(799, 92);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(135, 20);
             this.label3.TabIndex = 9;
@@ -346,7 +268,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(48, 128);
+            this.label2.Location = new System.Drawing.Point(23, 128);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(167, 20);
             this.label2.TabIndex = 8;
@@ -399,7 +321,7 @@
             // 
             // txtContrasena
             // 
-            this.txtContrasena.Location = new System.Drawing.Point(948, 130);
+            this.txtContrasena.Location = new System.Drawing.Point(951, 128);
             this.txtContrasena.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtContrasena.Name = "txtContrasena";
             this.txtContrasena.Size = new System.Drawing.Size(199, 22);
@@ -407,7 +329,7 @@
             // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(224, 126);
+            this.txtUsuario.Location = new System.Drawing.Point(207, 126);
             this.txtUsuario.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(199, 22);
@@ -416,7 +338,7 @@
             // comboTipoUsuario
             // 
             this.comboTipoUsuario.FormattingEnabled = true;
-            this.comboTipoUsuario.Location = new System.Drawing.Point(948, 92);
+            this.comboTipoUsuario.Location = new System.Drawing.Point(951, 90);
             this.comboTipoUsuario.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboTipoUsuario.Name = "comboTipoUsuario";
             this.comboTipoUsuario.Size = new System.Drawing.Size(199, 24);
@@ -425,34 +347,10 @@
             // usuarioBindingSource
             // 
             this.usuarioBindingSource.DataMember = "Usuario";
-            this.usuarioBindingSource.DataSource = this.sGCTESCHIDataSet1;
-            // 
-            // sGCTESCHIDataSet1
-            // 
-            this.sGCTESCHIDataSet1.DataSetName = "SGCTESCHIDataSet1";
-            this.sGCTESCHIDataSet1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // usuarioTableAdapter
-            // 
-            this.usuarioTableAdapter.ClearBeforeFill = true;
-            // 
-            // dBCONTRALORIADataSet
-            // 
-            this.dBCONTRALORIADataSet.DataSetName = "DBCONTRALORIADataSet";
-            this.dBCONTRALORIADataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // usuarioBindingSource1
             // 
             this.usuarioBindingSource1.DataMember = "Usuario";
-            this.usuarioBindingSource1.DataSource = this.dBCONTRALORIADataSet;
-            // 
-            // usuarioTableAdapter1
-            // 
-            this.usuarioTableAdapter1.ClearBeforeFill = true;
-            // 
-            // usuarioTableAdapter2
-            // 
-            this.usuarioTableAdapter2.ClearBeforeFill = true;
             // 
             // contextMenuStrip1
             // 
@@ -460,28 +358,9 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // dBCONTRALORIADataSet4
-            // 
-            this.dBCONTRALORIADataSet4.DataSetName = "DBCONTRALORIADataSet4";
-            this.dBCONTRALORIADataSet4.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // usuarioBindingSource3
             // 
             this.usuarioBindingSource3.DataMember = "Usuario";
-            this.usuarioBindingSource3.DataSource = this.dBCONTRALORIADataSet4;
-            // 
-            // usuarioTableAdapter3
-            // 
-            this.usuarioTableAdapter3.ClearBeforeFill = true;
-            // 
-            // panel3
-            // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.TablaUsuarios);
-            this.panel3.Location = new System.Drawing.Point(3, 306);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1245, 537);
-            this.panel3.TabIndex = 2;
             // 
             // RUsuarios
             // 
@@ -492,19 +371,15 @@
             this.Name = "RUsuarios";
             this.Size = new System.Drawing.Size(1255, 849);
             this.panel1.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet1)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sGCTESCHIDataSet1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource3)).EndInit();
-            this.panel3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -516,9 +391,7 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.DataGridView TablaUsuarios;
         private System.Windows.Forms.BindingSource usuarioBindingSource;
-        private SGCTESCHIDataSet1 sGCTESCHIDataSet1;
         private System.Windows.Forms.BindingSource dataSet1BindingSource;
-        private SGCTESCHIDataSet1TableAdapters.UsuarioTableAdapter usuarioTableAdapter;
         private System.Windows.Forms.ComboBox comboTipoUsuario;
         private System.Windows.Forms.TextBox txtContrasena;
         private System.Windows.Forms.TextBox txtUsuario;
@@ -531,11 +404,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.BindingSource usuarioBindingSource1;
-        private DBCONTRALORIADataSet dBCONTRALORIADataSet;
-        private DBCONTRALORIADataSetTableAdapters.UsuarioTableAdapter usuarioTableAdapter1;
         private System.Windows.Forms.BindingSource usuarioBindingSource2;
-        private DBCONTRALORIADataSet1 dBCONTRALORIADataSet1;
-        private DBCONTRALORIADataSet1TableAdapters.UsuarioTableAdapter usuarioTableAdapter2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtAmaterno;
@@ -552,9 +421,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn amaternoDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn idTipoUsuarioDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn contrasenaDataGridViewTextBoxColumn;
-        private DBCONTRALORIADataSet4 dBCONTRALORIADataSet4;
         private System.Windows.Forms.BindingSource usuarioBindingSource3;
-        private DBCONTRALORIADataSet4TableAdapters.UsuarioTableAdapter usuarioTableAdapter3;
         private System.Windows.Forms.Panel panel3;
     }
 }

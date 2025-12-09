@@ -34,7 +34,6 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.historialCambiosBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dBCONTRALORIADataSet3 = new SIGC_TESChi.DBCONTRALORIADataSet3();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnActualizar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -45,12 +44,10 @@
             this.cmbTabla = new System.Windows.Forms.ComboBox();
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
-            this.historialCambiosTableAdapter = new SIGC_TESChi.DBCONTRALORIADataSet3TableAdapters.HistorialCambiosTableAdapter();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.historialCambiosBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet3)).BeginInit();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,12 +90,9 @@
             // historialCambiosBindingSource
             // 
             this.historialCambiosBindingSource.DataMember = "HistorialCambios";
-            this.historialCambiosBindingSource.DataSource = this.dBCONTRALORIADataSet3;
             // 
             // dBCONTRALORIADataSet3
             // 
-            this.dBCONTRALORIADataSet3.DataSetName = "DBCONTRALORIADataSet3";
-            this.dBCONTRALORIADataSet3.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // panel2
             // 
@@ -211,7 +205,6 @@
             // 
             // historialCambiosTableAdapter
             // 
-            this.historialCambiosTableAdapter.ClearBeforeFill = true;
             // 
             // Historial
             // 
@@ -226,7 +219,6 @@
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.historialCambiosBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIADataSet3)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
@@ -249,7 +241,5 @@
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.DataGridView dgvHistorial;
         private System.Windows.Forms.BindingSource historialCambiosBindingSource;
-        private DBCONTRALORIADataSet3 dBCONTRALORIADataSet3;
-        private DBCONTRALORIADataSet3TableAdapters.HistorialCambiosTableAdapter historialCambiosTableAdapter;
     }
 }

@@ -31,7 +31,15 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UnidadA));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tablaUnidadA = new System.Windows.Forms.DataGridView();
+            this.unidadAdministrativaBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnLimpiar = new System.Windows.Forms.Button();
+            this.btnBuscar = new System.Windows.Forms.Button();
+            this.btnModificar = new System.Windows.Forms.Button();
+            this.btnEliminar = new System.Windows.Forms.Button();
+            this.btnAgregar = new System.Windows.Forms.Button();
             this.txtNombreUnidad = new System.Windows.Forms.TextBox();
             this.txtClaveUnidad = new System.Windows.Forms.TextBox();
             this.txtID = new System.Windows.Forms.TextBox();
@@ -39,25 +47,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnAgregar = new System.Windows.Forms.Button();
-            this.btnEliminar = new System.Windows.Forms.Button();
-            this.btnBuscar = new System.Windows.Forms.Button();
-            this.btnModificar = new System.Windows.Forms.Button();
-            this.btnLimpiar = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.tablaUnidadA = new System.Windows.Forms.DataGridView();
-            this.dBCONTRALORIAUnidadAdministrativa = new SIGC_TESChi.DBCONTRALORIAUnidadAdministrativa();
-            this.unidadAdministrativaBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.unidadAdministrativaTableAdapter = new SIGC_TESChi.DBCONTRALORIAUnidadAdministrativaTableAdapters.UnidadAdministrativaTableAdapter();
-            this.idUniAdminDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cUniAdminDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nUniAdminDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaUnidadA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIAUnidadAdministrativa)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
@@ -69,6 +63,33 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1249, 838);
             this.panel1.TabIndex = 0;
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel3.Controls.Add(this.tablaUnidadA);
+            this.panel3.Location = new System.Drawing.Point(3, 232);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1239, 599);
+            this.panel3.TabIndex = 1;
+            // 
+            // tablaUnidadA
+            // 
+            this.tablaUnidadA.AllowUserToAddRows = false;
+            this.tablaUnidadA.AllowUserToDeleteRows = false;
+            this.tablaUnidadA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablaUnidadA.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablaUnidadA.Location = new System.Drawing.Point(0, 0);
+            this.tablaUnidadA.Name = "tablaUnidadA";
+            this.tablaUnidadA.ReadOnly = true;
+            this.tablaUnidadA.RowHeadersWidth = 51;
+            this.tablaUnidadA.RowTemplate.Height = 24;
+            this.tablaUnidadA.Size = new System.Drawing.Size(1235, 595);
+            this.tablaUnidadA.TabIndex = 0;
+            // 
+            // unidadAdministrativaBindingSource
+            // 
+            this.unidadAdministrativaBindingSource.DataMember = "UnidadAdministrativa";
             // 
             // panel2
             // 
@@ -89,6 +110,56 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1239, 203);
             this.panel2.TabIndex = 0;
+            // 
+            // btnLimpiar
+            // 
+            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
+            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnLimpiar.Location = new System.Drawing.Point(1109, 82);
+            this.btnLimpiar.Name = "btnLimpiar";
+            this.btnLimpiar.Size = new System.Drawing.Size(60, 60);
+            this.btnLimpiar.TabIndex = 2;
+            this.btnLimpiar.UseVisualStyleBackColor = true;
+            // 
+            // btnBuscar
+            // 
+            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
+            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnBuscar.Location = new System.Drawing.Point(977, 81);
+            this.btnBuscar.Name = "btnBuscar";
+            this.btnBuscar.Size = new System.Drawing.Size(60, 60);
+            this.btnBuscar.TabIndex = 9;
+            this.btnBuscar.UseVisualStyleBackColor = true;
+            // 
+            // btnModificar
+            // 
+            this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
+            this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnModificar.Location = new System.Drawing.Point(1043, 81);
+            this.btnModificar.Name = "btnModificar";
+            this.btnModificar.Size = new System.Drawing.Size(60, 60);
+            this.btnModificar.TabIndex = 1;
+            this.btnModificar.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminar
+            // 
+            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
+            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnEliminar.Location = new System.Drawing.Point(911, 82);
+            this.btnEliminar.Name = "btnEliminar";
+            this.btnEliminar.Size = new System.Drawing.Size(60, 60);
+            this.btnEliminar.TabIndex = 8;
+            this.btnEliminar.UseVisualStyleBackColor = true;
+            // 
+            // btnAgregar
+            // 
+            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
+            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnAgregar.Location = new System.Drawing.Point(845, 81);
+            this.btnAgregar.Name = "btnAgregar";
+            this.btnAgregar.Size = new System.Drawing.Size(60, 60);
+            this.btnAgregar.TabIndex = 7;
+            this.btnAgregar.UseVisualStyleBackColor = true;
             // 
             // txtNombreUnidad
             // 
@@ -151,126 +222,6 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Registro de  Unidad Administrativa";
             // 
-            // btnAgregar
-            // 
-            this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
-            this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAgregar.Location = new System.Drawing.Point(845, 81);
-            this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(60, 60);
-            this.btnAgregar.TabIndex = 7;
-            this.btnAgregar.UseVisualStyleBackColor = true;
-            // 
-            // btnEliminar
-            // 
-            this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
-            this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEliminar.Location = new System.Drawing.Point(911, 82);
-            this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(60, 60);
-            this.btnEliminar.TabIndex = 8;
-            this.btnEliminar.UseVisualStyleBackColor = true;
-            // 
-            // btnBuscar
-            // 
-            this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
-            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(977, 81);
-            this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(60, 60);
-            this.btnBuscar.TabIndex = 9;
-            this.btnBuscar.UseVisualStyleBackColor = true;
-            // 
-            // btnModificar
-            // 
-            this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
-            this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnModificar.Location = new System.Drawing.Point(1043, 81);
-            this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(60, 60);
-            this.btnModificar.TabIndex = 1;
-            this.btnModificar.UseVisualStyleBackColor = true;
-            // 
-            // btnLimpiar
-            // 
-            this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
-            this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLimpiar.Location = new System.Drawing.Point(1109, 82);
-            this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(60, 60);
-            this.btnLimpiar.TabIndex = 2;
-            this.btnLimpiar.UseVisualStyleBackColor = true;
-            // 
-            // panel3
-            // 
-            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel3.Controls.Add(this.tablaUnidadA);
-            this.panel3.Location = new System.Drawing.Point(3, 232);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1239, 599);
-            this.panel3.TabIndex = 1;
-            // 
-            // tablaUnidadA
-            // 
-            this.tablaUnidadA.AllowUserToAddRows = false;
-            this.tablaUnidadA.AllowUserToDeleteRows = false;
-            this.tablaUnidadA.AutoGenerateColumns = false;
-            this.tablaUnidadA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.tablaUnidadA.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idUniAdminDataGridViewTextBoxColumn,
-            this.cUniAdminDataGridViewTextBoxColumn,
-            this.nUniAdminDataGridViewTextBoxColumn});
-            this.tablaUnidadA.DataSource = this.unidadAdministrativaBindingSource;
-            this.tablaUnidadA.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tablaUnidadA.Location = new System.Drawing.Point(0, 0);
-            this.tablaUnidadA.Name = "tablaUnidadA";
-            this.tablaUnidadA.ReadOnly = true;
-            this.tablaUnidadA.RowHeadersWidth = 51;
-            this.tablaUnidadA.RowTemplate.Height = 24;
-            this.tablaUnidadA.Size = new System.Drawing.Size(1235, 595);
-            this.tablaUnidadA.TabIndex = 0;
-            // 
-            // dBCONTRALORIAUnidadAdministrativa
-            // 
-            this.dBCONTRALORIAUnidadAdministrativa.DataSetName = "DBCONTRALORIAUnidadAdministrativa";
-            this.dBCONTRALORIAUnidadAdministrativa.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
-            // unidadAdministrativaBindingSource
-            // 
-            this.unidadAdministrativaBindingSource.DataMember = "UnidadAdministrativa";
-            this.unidadAdministrativaBindingSource.DataSource = this.dBCONTRALORIAUnidadAdministrativa;
-            // 
-            // unidadAdministrativaTableAdapter
-            // 
-            this.unidadAdministrativaTableAdapter.ClearBeforeFill = true;
-            // 
-            // idUniAdminDataGridViewTextBoxColumn
-            // 
-            this.idUniAdminDataGridViewTextBoxColumn.DataPropertyName = "idUniAdmin";
-            this.idUniAdminDataGridViewTextBoxColumn.HeaderText = "idUniAdmin";
-            this.idUniAdminDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.idUniAdminDataGridViewTextBoxColumn.Name = "idUniAdminDataGridViewTextBoxColumn";
-            this.idUniAdminDataGridViewTextBoxColumn.ReadOnly = true;
-            this.idUniAdminDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // cUniAdminDataGridViewTextBoxColumn
-            // 
-            this.cUniAdminDataGridViewTextBoxColumn.DataPropertyName = "cUniAdmin";
-            this.cUniAdminDataGridViewTextBoxColumn.HeaderText = "cUniAdmin";
-            this.cUniAdminDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.cUniAdminDataGridViewTextBoxColumn.Name = "cUniAdminDataGridViewTextBoxColumn";
-            this.cUniAdminDataGridViewTextBoxColumn.ReadOnly = true;
-            this.cUniAdminDataGridViewTextBoxColumn.Width = 125;
-            // 
-            // nUniAdminDataGridViewTextBoxColumn
-            // 
-            this.nUniAdminDataGridViewTextBoxColumn.DataPropertyName = "nUniAdmin";
-            this.nUniAdminDataGridViewTextBoxColumn.HeaderText = "nUniAdmin";
-            this.nUniAdminDataGridViewTextBoxColumn.MinimumWidth = 6;
-            this.nUniAdminDataGridViewTextBoxColumn.Name = "nUniAdminDataGridViewTextBoxColumn";
-            this.nUniAdminDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nUniAdminDataGridViewTextBoxColumn.Width = 125;
-            // 
             // UnidadA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -279,12 +230,11 @@
             this.Name = "UnidadA";
             this.Size = new System.Drawing.Size(1249, 838);
             this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaUnidadA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dBCONTRALORIAUnidadAdministrativa)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -311,7 +261,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn cUniAdminDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn nUniAdminDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource unidadAdministrativaBindingSource;
-        private DBCONTRALORIAUnidadAdministrativa dBCONTRALORIAUnidadAdministrativa;
-        private DBCONTRALORIAUnidadAdministrativaTableAdapters.UnidadAdministrativaTableAdapter unidadAdministrativaTableAdapter;
     }
 }
