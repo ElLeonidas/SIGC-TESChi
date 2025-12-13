@@ -13,6 +13,12 @@ namespace SIGC_TESChi
         public Historial()
         {
             InitializeComponent();
+
+            dgvHistorial.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvHistorial.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvHistorial.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvHistorial.Dock = DockStyle.Fill;
+
         }
 
         private void Historial_Load(object sender, EventArgs e)
@@ -67,49 +73,83 @@ namespace SIGC_TESChi
                     conn.Open();
 
                     string sql = @"
-    SELECT h.idHistorial,
-           h.Tabla,
-           h.Llave,
-           h.TipoAccion,
-           h.UsuarioBD,
-           h.FechaAccion,
-           u.Nombre + ' ' + u.Apaterno + ' ' + u.Amaterno AS UsuarioApp
-    FROM HistorialCambios h
-    LEFT JOIN Usuario u ON h.idUsuarioApp = u.idUsuario
-    WHERE (@tabla = 'TODAS' OR h.Tabla = @tabla)
-    ORDER BY h.FechaAccion DESC";
+                SELECT 
+                    h.idHistorial,
+                    h.Tabla,
+                    h.Llave,
+                    h.TipoAccion,
+                    h.UsuarioBD,
+                    h.FechaAccion,
+                    h.DatosAnteriores,
+                    h.DatosNuevos,
+                    h.idUsuarioApp,
+                    u.Nombre + ' ' + u.Apaterno + ' ' + u.Amaterno AS UsuarioApp
+                FROM HistorialCambios h
+                LEFT JOIN Usuario u 
+                    ON h.idUsuarioApp = u.idUsuario
+                ORDER BY h.FechaAccion DESC;";
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
-                        string tablaSeleccionada = (cmbTabla.SelectedItem != null)
-                            ? cmbTabla.SelectedItem.ToString()
-                            : "TODAS";
-
-                        cmd.Parameters.AddWithValue("@tabla", tablaSeleccionada);
-
                         DataTable dt = new DataTable();
-                        SqlDataAdapter da = new SqlDataAdapter(cmd);
-                        da.Fill(dt);
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            da.Fill(dt);
+                        }
 
                         dgvHistorial.DataSource = dt;
 
-                        // Ocultar columnas internas
+                        // 🔒 Columnas técnicas (opcional ocultarlas)
                         if (dgvHistorial.Columns["idHistorial"] != null)
                             dgvHistorial.Columns["idHistorial"].Visible = false;
+
+                        if (dgvHistorial.Columns["idUsuarioApp"] != null)
+                            dgvHistorial.Columns["idUsuarioApp"].Visible = false;
+
                         if (dgvHistorial.Columns["Llave"] != null)
                             dgvHistorial.Columns["Llave"].Visible = false;
+
+                        // 🎨 Estética recomendada
+                        dgvHistorial.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                        dgvHistorial.ReadOnly = true;
+                        dgvHistorial.AllowUserToAddRows = false;
+                        dgvHistorial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                        dgvHistorial.MultiSelect = false;
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar historial: " + ex.Message);
+                MessageBox.Show(
+                    "Error al cargar el historial:\n" + ex.Message,
+                    "Historial de cambios",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
+
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             CargarHistorial();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            HistorialHelper.RegistrarCambio(
+    "PRUEBA",
+    "1",
+    "TEST",
+    "antes",
+    "despues"
+);
         }
     }
 }

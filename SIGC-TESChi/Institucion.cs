@@ -14,6 +14,13 @@ namespace SIGC_TESChi
         public Institucion()
         {
             InitializeComponent();
+
+            tablaInstitucion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaInstitucion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaInstitucion.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaInstitucion.Dock = DockStyle.Fill;
+
+
             Load += Institucion_Load;
 
             // Inicializamos el ToolTip

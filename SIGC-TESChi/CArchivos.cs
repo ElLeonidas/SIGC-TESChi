@@ -17,6 +17,14 @@ namespace SIGC_TESChi
         public CArchivos()
         {
             InitializeComponent();
+
+
+            dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvControl.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvControl.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvControl.Dock = DockStyle.Fill;
+
+
             Load += CArchivos_Load;
 
             this.cboSubSeccion.SelectedIndexChanged += new System.EventHandler(this.cboSubSeccion_SelectedIndexChanged);

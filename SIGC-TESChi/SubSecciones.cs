@@ -14,6 +14,12 @@ namespace SIGC_TESChi
         public SubSecciones()
         {
             InitializeComponent();
+
+            tablaSubsecciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaSubsecciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaSubsecciones.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaSubsecciones.Dock = DockStyle.Fill;
+
             Load += SubSecciones_Load;
 
             // Inicializamos el ToolTip

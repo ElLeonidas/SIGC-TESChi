@@ -16,6 +16,11 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            tablaUnidadA.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaUnidadA.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaUnidadA.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaUnidadA.Dock = DockStyle.Fill;
+
             // EVENTO LOAD
             Load += UnidadA_Load;
 

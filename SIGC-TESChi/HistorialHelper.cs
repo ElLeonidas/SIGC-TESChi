@@ -13,12 +13,29 @@ namespace SIGC_TESChi
         /// Registra un cambio en la tabla HistorialCambios.
         /// </summary>
         public static void RegistrarCambio(
-            string tabla,
-            string llave,
-            string tipoAccion,
-            string datosAnteriores,
-            string datosNuevos)
+                string tabla,
+                string llave,
+                string tipoAccion,
+                string datosAnteriores,
+                string datosNuevos)
+
+            MessageBox.Show(
+    $"ID Usuario sesión: {SessionData.IdUsuario}\nUsuario: {SessionData.Username}"
+);
+
+
         {
+            if (SessionData.IdUsuario <= 0)
+            {
+                MessageBox.Show(
+                    "No hay sesión activa. No se puede registrar el historial.",
+                    "Error de auditoría",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+                return;
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -26,10 +43,10 @@ namespace SIGC_TESChi
                     conn.Open();
 
                     string sql = @"
-                        INSERT INTO HistorialCambios
-                        (Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, DatosAnteriores, DatosNuevos, idUsuarioApp)
-                        VALUES
-                        (@tabla, @llave, @tipo, @usuarioBD, @fecha, @datosAnt, @datosNuevos, @idUsuarioApp)";
+                INSERT INTO HistorialCambios
+                (Tabla, Llave, TipoAccion, UsuarioBD, FechaAccion, DatosAnteriores, DatosNuevos, idUsuarioApp)
+                VALUES
+                (@tabla, @llave, @tipo, @usuarioBD, @fecha, @datosAnt, @datosNuevos, @idUsuarioApp)";
 
                     using (SqlCommand cmd = new SqlCommand(sql, conn))
                     {
@@ -48,9 +65,9 @@ namespace SIGC_TESChi
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al registrar cambio: " + ex.Message,
-                    "Historial", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al registrar cambio: " + ex.Message);
             }
         }
+
     }
 }

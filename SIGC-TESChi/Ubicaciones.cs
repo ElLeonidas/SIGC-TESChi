@@ -17,6 +17,12 @@ namespace SIGC_TESChi
         public Ubicaciones()
         {
             InitializeComponent();
+
+            tablaUbicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaUbicaciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaUbicaciones.ColumnHeadersDefaultCellStyle.Alignment =DataGridViewContentAlignment.MiddleCenter;
+            tablaUbicaciones.Dock = DockStyle.Fill;
+
             Load += Ubicaciones_Load;
 
             // Inicializamos el ToolTip
@@ -148,6 +154,10 @@ namespace SIGC_TESChi
                     cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
                     cmd.ExecuteNonQuery();
                 }
+
+                MessageBox.Show(
+    $"Usuario en sesión: {SessionData.Username}\nID: {SessionData.IdUsuario}"
+);
 
                 MessageBox.Show("✅ Ubicación agregada.");
                 CargarUbicaciones();

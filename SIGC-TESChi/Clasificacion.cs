@@ -15,6 +15,11 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            tablaClasificacion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaClasificacion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaClasificacion.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaClasificacion.Dock = DockStyle.Fill;
+
             Load += Clasificacion_Load;
 
             tablaClasificacion.AutoGenerateColumns = true;

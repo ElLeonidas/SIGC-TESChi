@@ -14,6 +14,12 @@ namespace SIGC_TESChi
         public Secciones()
         {
             InitializeComponent();
+
+            tablaSecciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaSecciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaSecciones.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaSecciones.Dock = DockStyle.Fill;
+
             Load += Secciones_Load;
             toolTip = new ToolTip();
 

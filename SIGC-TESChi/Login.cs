@@ -16,6 +16,8 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            SessionData.IdUsuario = reader.GetInt32("idUsuario");
+
             // === FORM ===
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
