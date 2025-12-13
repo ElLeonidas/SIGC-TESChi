@@ -48,6 +48,9 @@ namespace SIGC_TESChi
             btnUnidadA.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Unidad Administrativa", btnUnidadA);
             btnUnidadA.MouseLeave += (s, e) => toolTip.Hide(btnUnidadA);
 
+            btnClasificacion.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Clasificaciones", btnClasificacion);
+            btnClasificacion.MouseLeave += (s, e) => toolTip.Hide(btnClasificacion);
+
             btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar archivos del sistema", btnCArchivos);
             btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
 
@@ -56,6 +59,12 @@ namespace SIGC_TESChi
 
             btnFormato.MouseEnter += (s, e) => toolTip.Show("Captura e Impresion de Portadas", btnFormato);
             btnFormato.MouseLeave += (s, e) => toolTip.Hide(btnFormato);
+
+            btnEstadistica.MouseEnter += (s, e) => toolTip.Show("Consulta y Visualizar Graficas", btnEstadistica);
+            btnEstadistica.MouseLeave += (s, e) => toolTip.Hide(btnEstadistica);
+
+            btnInfo.MouseEnter += (s, e) => toolTip.Show("Consulta Informacion Extra del Programa", btnInfo);
+            btnInfo.MouseLeave += (s, e) => toolTip.Hide(btnInfo);
 
             btnCerrarSesion.MouseEnter += (s, e) => toolTip.Show("Cerrar sesión", btnCerrarSesion);
             btnCerrarSesion.MouseLeave += (s, e) => toolTip.Hide(btnCerrarSesion);
@@ -109,7 +118,7 @@ namespace SIGC_TESChi
 
         private void btnEstadistica_Click(object sender, EventArgs e)
         {
-
+            LoadPanel(new Graficas());
         }
         private void btnTipoUsuarios_Click(object sender, EventArgs e)
         {
@@ -139,6 +148,16 @@ namespace SIGC_TESChi
         private void btnUnidadA_Click(object sender, EventArgs e)
         {
             LoadPanel(new UnidadA());
+        }
+
+        private void btnClasificacion_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new Clasificacion());
+        }
+
+        private void btnInfo_Click(object sender, EventArgs e)
+        {
+            LoadPanel(new Info());
         }
     }
 }

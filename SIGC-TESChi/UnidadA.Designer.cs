@@ -33,7 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaUnidadA = new System.Windows.Forms.DataGridView();
-            this.unidadAdministrativaBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -47,11 +46,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.unidadAdministrativaBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaUnidadA)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -86,10 +86,6 @@
             this.tablaUnidadA.RowTemplate.Height = 24;
             this.tablaUnidadA.Size = new System.Drawing.Size(1235, 595);
             this.tablaUnidadA.TabIndex = 0;
-            // 
-            // unidadAdministrativaBindingSource
-            // 
-            this.unidadAdministrativaBindingSource.DataMember = "UnidadAdministrativa";
             // 
             // panel2
             // 
@@ -177,6 +173,7 @@
             // 
             // txtID
             // 
+            this.txtID.Enabled = false;
             this.txtID.Location = new System.Drawing.Point(417, 54);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(357, 22);
@@ -222,6 +219,10 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Registro de  Unidad Administrativa";
             // 
+            // unidadAdministrativaBindingSource
+            // 
+            this.unidadAdministrativaBindingSource.DataMember = "UnidadAdministrativa";
+            // 
             // UnidadA
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -232,9 +233,9 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaUnidadA)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.unidadAdministrativaBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

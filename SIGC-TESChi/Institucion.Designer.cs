@@ -33,7 +33,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaInstitucion = new System.Windows.Forms.DataGridView();
-            this.institutoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
@@ -47,11 +46,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.institutoBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaInstitucion)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -86,10 +86,6 @@
             this.tablaInstitucion.RowTemplate.Height = 24;
             this.tablaInstitucion.Size = new System.Drawing.Size(1235, 592);
             this.tablaInstitucion.TabIndex = 0;
-            // 
-            // institutoBindingSource
-            // 
-            this.institutoBindingSource.DataMember = "Instituto";
             // 
             // panel2
             // 
@@ -177,6 +173,7 @@
             // 
             // txtID
             // 
+            this.txtID.Enabled = false;
             this.txtID.Location = new System.Drawing.Point(344, 59);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(357, 22);
@@ -222,6 +219,10 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Registro de  Instrucciones";
             // 
+            // institutoBindingSource
+            // 
+            this.institutoBindingSource.DataMember = "Instituto";
+            // 
             // Institucion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -232,9 +233,9 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaInstitucion)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.institutoBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

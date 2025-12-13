@@ -12,28 +12,49 @@ namespace SIGC_TESChi
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
+        private ToolTip toolTip;
+
         public Ubicaciones()
         {
             InitializeComponent();
-
-            //EVENTO LOAD
             Load += Ubicaciones_Load;
 
-            //TABLA
-            tablaUbicaciones.AutoGenerateColumns = true;
-            tablaUbicaciones.CellClick += tablaUbicaciones_CellClick;
+            // Inicializamos el ToolTip
+            toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 200;
+            toolTip.ReshowDelay = 100;
+            toolTip.ShowAlways = true;
 
-            //BLOQUEO TOTAL DEL TXT ID
-            txtID.ReadOnly = true;
-            txtID.Enabled = false;
-            txtID.TabStop = false;
+            // ToolTips
+            btnExportarPDF.MouseEnter += (s, e) => toolTip.Show("Boton para Exportar a CSV", btnExportarPDF);
+            btnExportarPDF.MouseLeave += (s, e) => toolTip.Hide(btnExportarPDF);
+            btnAgregar.MouseEnter += (s, e) => toolTip.Show("Boton para Agregar Nueva Ubicación", btnAgregar);
+            btnAgregar.MouseLeave += (s, e) => toolTip.Hide(btnAgregar);
+            btnModificar.MouseEnter += (s, e) => toolTip.Show("Boton para Modificar Ubicación", btnModificar);
+            btnModificar.MouseLeave += (s, e) => toolTip.Hide(btnModificar);
+            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Boton para Eliminar Ubicación", btnEliminar);
+            btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
+            btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar Ubicación", btnBuscar);
+            btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
+            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Boton para Limpiar Campos", btnLimpiar);
+            btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
 
-            //BOTONES CONECTADOS CORRECTAMENTE
+            // Eventos
             btnAgregar.Click += btnAgregar_Click;
             btnModificar.Click += btnModificar_Click;
             btnEliminar.Click += btnEliminar_Click;
             btnBuscar.Click += btnBuscar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
+            btnExportarPDF.Click += btnExportarPDF_Click;
+
+            tablaUbicaciones.AutoGenerateColumns = true;
+            tablaUbicaciones.CellClick += tablaUbicaciones_CellClick;
+
+            // Bloqueo total del ID
+            txtID.ReadOnly = true;
+            txtID.Enabled = false;
+            txtID.TabStop = false;
         }
 
         private void Ubicaciones_Load(object sender, EventArgs e)
@@ -41,14 +62,42 @@ namespace SIGC_TESChi
             CargarUbicaciones();
         }
 
-        // ✅ CARGAR
+        // EVENTOS
+
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            AgregarUbicacion();
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            ModificarUbicacion();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            EliminarUbicacion();
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            BuscarUbicacion();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+            CargarUbicaciones();
+        }
+
+        //MÉTODOS 
+
         private void CargarUbicaciones()
         {
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    con.Open();
                     string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion ORDER BY idUbicacion";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
@@ -62,23 +111,14 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ LIMPIAR CAMPOS
         private void LimpiarCampos()
         {
-            txtID.Text = "";
-            txtUbicacion.Text = "";
+            txtID.Clear();
+            txtUbicacion.Clear();
             txtUbicacion.Focus();
         }
 
-        // ✅ BOTÓN LIMPIAR ✅✅✅
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarCampos();
-            CargarUbicaciones();
-        }
-
-        // ✅ AGREGAR
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void AgregarUbicacion()
         {
             if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
             {
@@ -92,9 +132,9 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    string checkQuery = "SELECT COUNT(*) FROM Ubicacion WHERE dUbicacion = @dUbicacion";
+                    string checkQuery = "SELECT COUNT(*) FROM Ubicacion WHERE dUbicacion = @ubicacion";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
+                    checkCmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
 
                     int existe = (int)checkCmd.ExecuteScalar();
                     if (existe > 0)
@@ -103,9 +143,9 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    string query = "INSERT INTO Ubicacion (dUbicacion) VALUES (@dUbicacion)";
+                    string query = "INSERT INTO Ubicacion (dUbicacion) VALUES (@ubicacion)";
                     SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
+                    cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -119,10 +159,9 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ MODIFICAR
-        private void btnModificar_Click(object sender, EventArgs e)
+        private void ModificarUbicacion()
         {
-            if (txtID.Text == "" || txtUbicacion.Text == "")
+            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtUbicacion.Text))
             {
                 MessageBox.Show("Selecciona una ubicación y modifícala.");
                 return;
@@ -133,11 +172,11 @@ namespace SIGC_TESChi
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    string query = "UPDATE Ubicacion SET dUbicacion = @dUbicacion WHERE idUbicacion = @id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@dUbicacion", txtUbicacion.Text);
-                    cmd.Parameters.AddWithValue("@id", txtID.Text);
 
+                    string query = "UPDATE Ubicacion SET dUbicacion = @ubicacion WHERE idUbicacion = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -151,54 +190,43 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ ELIMINAR
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void EliminarUbicacion()
         {
-            if (txtID.Text == "")
+            if (string.IsNullOrWhiteSpace(txtID.Text))
             {
                 MessageBox.Show("Selecciona una ubicación.");
                 return;
             }
 
             if (MessageBox.Show("¿Seguro de eliminar?", "Confirmar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        conn.Open();
-                        string query = "DELETE FROM Ubicacion WHERE idUbicacion = @id";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                        cmd.ExecuteNonQuery();
-                    }
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
 
-                    MessageBox.Show("✅ Ubicación eliminada.");
-                    CargarUbicaciones();
-                    LimpiarCampos();
-                }
-                catch (Exception ex)
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Error al eliminar ubicación: " + ex.Message);
+                    conn.Open();
+
+                    string query = "DELETE FROM Ubicacion WHERE idUbicacion = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    cmd.ExecuteNonQuery();
                 }
+
+                MessageBox.Show("✅ Ubicación eliminada.");
+                CargarUbicaciones();
+                LimpiarCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar ubicación: " + ex.Message);
             }
         }
 
-        // ✅ SELECCIÓN
-        private void tablaUbicaciones_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void BuscarUbicacion()
         {
-            if (e.RowIndex < 0) return;
-
-            DataGridViewRow fila = tablaUbicaciones.Rows[e.RowIndex];
-            txtID.Text = fila.Cells["idUbicacion"].Value.ToString();
-            txtUbicacion.Text = fila.Cells["dUbicacion"].Value.ToString();
-        }
-
-        // ✅ BOTÓN BUSCAR ✅✅✅
-        private void btnBuscar_Click(object sender, EventArgs e)
-        {
-            if (txtUbicacion.Text == "")
+            if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
             {
                 CargarUbicaciones();
                 return;
@@ -208,10 +236,9 @@ namespace SIGC_TESChi
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    con.Open();
-                    string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion WHERE dUbicacion LIKE @busqueda";
+                    string query = "SELECT idUbicacion, dUbicacion FROM Ubicacion WHERE dUbicacion LIKE @buscar";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
-                    da.SelectCommand.Parameters.AddWithValue("@busqueda", "%" + txtUbicacion.Text + "%");
+                    da.SelectCommand.Parameters.AddWithValue("@buscar", "%" + txtUbicacion.Text + "%");
 
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -224,7 +251,17 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ EXPORTAR CSV
+        private void tablaUbicaciones_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow fila = tablaUbicaciones.Rows[e.RowIndex];
+            txtID.Text = fila.Cells["idUbicacion"].Value.ToString();
+            txtUbicacion.Text = fila.Cells["dUbicacion"].Value.ToString();
+        }
+
+        //EXPORTAR CSV
+
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
             SaveFileDialog sfd = new SaveFileDialog();
@@ -255,5 +292,7 @@ namespace SIGC_TESChi
                 MessageBox.Show("✅ Archivo CSV generado.");
             }
         }
+
     }
 }
+

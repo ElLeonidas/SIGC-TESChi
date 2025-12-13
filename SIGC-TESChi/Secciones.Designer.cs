@@ -33,8 +33,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaSecciones = new System.Windows.Forms.DataGridView();
-            this.seccionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
+            this.txtClaveSeccion = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.btnLimpiar = new System.Windows.Forms.Button();
             this.btnModificar = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
@@ -45,11 +46,12 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.seccionBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaSecciones)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -85,12 +87,11 @@
             this.tablaSecciones.Size = new System.Drawing.Size(1235, 596);
             this.tablaSecciones.TabIndex = 0;
             // 
-            // seccionBindingSource
-            // 
-            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.txtClaveSeccion);
+            this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.btnLimpiar);
             this.panel2.Controls.Add(this.btnModificar);
             this.panel2.Controls.Add(this.btnBuscar);
@@ -105,6 +106,23 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1239, 203);
             this.panel2.TabIndex = 2;
+            // 
+            // txtClaveSeccion
+            // 
+            this.txtClaveSeccion.Location = new System.Drawing.Point(284, 95);
+            this.txtClaveSeccion.Name = "txtClaveSeccion";
+            this.txtClaveSeccion.Size = new System.Drawing.Size(357, 22);
+            this.txtClaveSeccion.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(123, 97);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(139, 20);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Clave de Seccion:";
             // 
             // btnLimpiar
             // 
@@ -159,14 +177,15 @@
             // 
             // txtSeccion
             // 
-            this.txtSeccion.Location = new System.Drawing.Point(284, 113);
+            this.txtSeccion.Location = new System.Drawing.Point(284, 141);
             this.txtSeccion.Name = "txtSeccion";
             this.txtSeccion.Size = new System.Drawing.Size(357, 22);
             this.txtSeccion.TabIndex = 4;
             // 
             // txtID
             // 
-            this.txtID.Location = new System.Drawing.Point(284, 71);
+            this.txtID.Enabled = false;
+            this.txtID.Location = new System.Drawing.Point(284, 50);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(357, 22);
             this.txtID.TabIndex = 3;
@@ -175,7 +194,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(49, 73);
+            this.label3.Location = new System.Drawing.Point(49, 52);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(213, 20);
             this.label3.TabIndex = 2;
@@ -185,7 +204,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(74, 113);
+            this.label2.Location = new System.Drawing.Point(74, 141);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(188, 20);
             this.label2.TabIndex = 1;
@@ -211,9 +230,9 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaSecciones)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.seccionBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -235,5 +254,7 @@
         private System.Windows.Forms.DataGridView tablaSecciones;
         private System.Windows.Forms.BindingSource seccionBindingSource;
         private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.TextBox txtClaveSeccion;
+        private System.Windows.Forms.Label label4;
     }
 }

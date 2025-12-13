@@ -16,49 +16,53 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
-            //EVENTO LOAD DEL USER CONTROL
+            // EVENTO LOAD
             Load += UnidadA_Load;
 
-            //CONFIGURACIÓN DE LA TABLA
+            // CONFIGURACIÓN TABLA
             tablaUnidadA.AutoGenerateColumns = true;
             tablaUnidadA.CellClick += tablaUnidadA_CellClick;
 
-            //txtID solo lectura pero SÍ se llena al seleccionar
+            // txtID BLOQUEADO
             txtID.ReadOnly = true;
             txtID.Enabled = false;
+            txtID.TabStop = false;
 
-            //TOOLTIP INICIALIZADO
+            // Inicializamos el ToolTip
             toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 200;
+            toolTip.ReshowDelay = 100;
+            toolTip.ShowAlways = true;
 
-            //EVENTOS DE BOTONES CONECTADOS
+            // ToolTips
+            btnAgregar.MouseEnter += (s, e) => toolTip.Show("Boton para Agregar Nueva Unidad Administrativa", btnAgregar);
+            btnAgregar.MouseLeave += (s, e) => toolTip.Hide(btnAgregar);
+            btnModificar.MouseEnter += (s, e) => toolTip.Show("Boton para Modificar Unidad Administrativa", btnModificar);
+            btnModificar.MouseLeave += (s, e) => toolTip.Hide(btnModificar);
+            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Boton para Eliminar Unidad Administrativa", btnEliminar);
+            btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
+            btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar Unidad Administrativa", btnBuscar);
+            btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
+            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Boton para Limpiar Campos", btnLimpiar);
+            btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
+
+            // EVENTOS DE BOTONES
             btnAgregar.Click += btnAgregar_Click;
             btnModificar.Click += btnModificar_Click;
             btnEliminar.Click += btnEliminar_Click;
             btnBuscar.Click += btnBuscar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
-
-            //TOOLTIP'S DE LOS BOTONES
-            ConfigurarTooltip(btnAgregar, "Agregar Unidad");
-            ConfigurarTooltip(btnModificar, "Modificar Datos");
-            ConfigurarTooltip(btnEliminar, "Eliminar Unidad");
-            ConfigurarTooltip(btnBuscar, "Buscar Unidad");
-            ConfigurarTooltip(btnLimpiar, "Limpiar Campos");
-
         }
 
-        private void ConfigurarTooltip(Button boton, string mensaje)
-        {
-            boton.MouseEnter += (s, e) => toolTip.Show(mensaje, boton);
-            boton.MouseLeave += (s, e) => toolTip.Hide(boton);
-        }
-
+        // LOAD
         private void UnidadA_Load(object sender, EventArgs e)
         {
-            CargarUnidadA();
+            CargarUnidades();
         }
 
-        // ✅ CARGAR TABLA
-        private void CargarUnidadA()
+        //MÉTODOS 
+        private void CargarUnidades()
         {
             try
             {
@@ -74,7 +78,7 @@ namespace SIGC_TESChi
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cargar: " + ex.Message);
+                MessageBox.Show("Error al cargar unidades: " + ex.Message);
             }
         }
 
@@ -86,8 +90,7 @@ namespace SIGC_TESChi
             tablaUnidadA.ClearSelection();
         }
 
-        // ✅ AGREGAR
-        private void btnAgregar_Click(object sender, EventArgs e)
+        private void AgregarUnidad()
         {
             if (string.IsNullOrWhiteSpace(txtClaveUnidad.Text) ||
                 string.IsNullOrWhiteSpace(txtNombreUnidad.Text))
@@ -102,12 +105,11 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    string checkQuery = "SELECT COUNT(*) FROM UnidadAdministrativa WHERE cUniAdmin = @clave";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@clave", txtClaveUnidad.Text);
-                    int existe = (int)checkCmd.ExecuteScalar();
+                    string check = "SELECT COUNT(*) FROM UnidadAdministrativa WHERE cUniAdmin = @c";
+                    SqlCommand chk = new SqlCommand(check, conn);
+                    chk.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
 
-                    if (existe > 0)
+                    if ((int)chk.ExecuteScalar() > 0)
                     {
                         MessageBox.Show("⚠️ Esta clave ya existe.");
                         return;
@@ -121,21 +123,20 @@ namespace SIGC_TESChi
                 }
 
                 MessageBox.Show("✅ Unidad agregada correctamente.");
-                CargarUnidadA();
+                CargarUnidades();
                 LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error SQL: " + ex.Message);
+                MessageBox.Show("Error al agregar: " + ex.Message);
             }
         }
 
-        // ✅ MODIFICAR
-        private void btnModificar_Click(object sender, EventArgs e)
+        private void ModificarUnidad()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Selecciona un registro primero.");
+                MessageBox.Show("Selecciona un registro.");
                 return;
             }
 
@@ -145,25 +146,21 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    string query = "UPDATE UnidadAdministrativa SET cUniAdmin = @c, nUniAdmin = @n WHERE idUniAdmin = @id";
+                    string query = @"UPDATE UnidadAdministrativa 
+                                     SET cUniAdmin = @c, nUniAdmin = @n 
+                                     WHERE idUniAdmin = @id";
+
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
                     cmd.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
                     cmd.Parameters.AddWithValue("@n", txtNombreUnidad.Text);
 
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ Unidad actualizada.");
-                        CargarUnidadA();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("⚠️ No se encontró el registro.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                MessageBox.Show("✅ Unidad actualizada.");
+                CargarUnidades();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
@@ -171,12 +168,11 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ ELIMINAR
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void EliminarUnidad()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Selecciona un registro primero.");
+                MessageBox.Show("Selecciona un registro.");
                 return;
             }
 
@@ -188,24 +184,15 @@ namespace SIGC_TESChi
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-
                         string query = "DELETE FROM UnidadAdministrativa WHERE idUniAdmin = @id";
                         SqlCommand cmd = new SqlCommand(query, conn);
                         cmd.Parameters.AddWithValue("@id", txtID.Text);
-
-                        int filas = cmd.ExecuteNonQuery();
-
-                        if (filas > 0)
-                        {
-                            MessageBox.Show("✅ Unidad eliminada.");
-                            CargarUnidadA();
-                            LimpiarCampos();
-                        }
-                        else
-                        {
-                            MessageBox.Show("⚠️ La unidad no existe.");
-                        }
+                        cmd.ExecuteNonQuery();
                     }
+
+                    MessageBox.Show("✅ Unidad eliminada.");
+                    CargarUnidades();
+                    LimpiarCampos();
                 }
                 catch (Exception ex)
                 {
@@ -214,42 +201,16 @@ namespace SIGC_TESChi
             }
         }
 
-        // ✅ CLICK EN TABLA (AQUÍ SE CARGA EL txtID AUNQUE ESTÉ BLOQUEADO)
-        private void tablaUnidadA_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-
-            DataGridViewRow fila = tablaUnidadA.Rows[e.RowIndex];
-
-            txtID.Text = fila.Cells["idUniAdmin"].Value.ToString();
-            txtClaveUnidad.Text = fila.Cells["cUniAdmin"].Value.ToString();
-            txtNombreUnidad.Text = fila.Cells["nUniAdmin"].Value.ToString();
-        }
-
-        // ✅ LIMPIAR
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarCampos();
-        }
-
-        // ✅ BUSCAR
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private void BuscarUnidad()
         {
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
-
                     string query = "SELECT * FROM UnidadAdministrativa WHERE 1=1";
                     SqlCommand cmd = new SqlCommand();
                     cmd.Connection = con;
-
-                    if (!string.IsNullOrWhiteSpace(txtID.Text))
-                    {
-                        query += " AND idUniAdmin = @id";
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    }
 
                     if (!string.IsNullOrWhiteSpace(txtClaveUnidad.Text))
                     {
@@ -264,7 +225,6 @@ namespace SIGC_TESChi
                     }
 
                     cmd.CommandText = query;
-
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
@@ -275,6 +235,48 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al buscar: " + ex.Message);
             }
+        }
+
+        //EVENTOS
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            AgregarUnidad();
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            ModificarUnidad();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            EliminarUnidad();
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            BuscarUnidad();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+            CargarUnidades();
+        }
+
+        private void tablaUnidadA_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow fila = tablaUnidadA.Rows[e.RowIndex];
+            txtID.Text = fila.Cells["idUniAdmin"].Value.ToString();
+            txtClaveUnidad.Text = fila.Cells["cUniAdmin"].Value.ToString();
+            txtNombreUnidad.Text = fila.Cells["nUniAdmin"].Value.ToString();
+        }
+
+        private void btnExportarPDF_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Función de exportar pendiente.");
         }
     }
 }

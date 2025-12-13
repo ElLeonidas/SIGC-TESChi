@@ -34,7 +34,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.TablaUsuarios = new System.Windows.Forms.DataGridView();
-            this.usuarioBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.panel2 = new System.Windows.Forms.Panel();
             this.txtIdentificador = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -56,6 +55,7 @@
             this.txtContrasena = new System.Windows.Forms.TextBox();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.comboTipoUsuario = new System.Windows.Forms.ComboBox();
+            this.usuarioBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.usuarioBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataSet1BindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.usuarioBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -64,8 +64,8 @@
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).BeginInit();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource1)).BeginInit();
@@ -115,10 +115,6 @@
             this.TablaUsuarios.Size = new System.Drawing.Size(1241, 533);
             this.TablaUsuarios.TabIndex = 0;
             // 
-            // usuarioBindingSource2
-            // 
-            this.usuarioBindingSource2.DataMember = "Usuario";
-            // 
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
@@ -152,7 +148,7 @@
             // txtIdentificador
             // 
             this.txtIdentificador.Enabled = false;
-            this.txtIdentificador.Location = new System.Drawing.Point(589, 53);
+            this.txtIdentificador.Location = new System.Drawing.Point(581, 53);
             this.txtIdentificador.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtIdentificador.Name = "txtIdentificador";
             this.txtIdentificador.Size = new System.Drawing.Size(199, 22);
@@ -190,7 +186,7 @@
             // 
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(715, 190);
+            this.btnBuscar.Location = new System.Drawing.Point(571, 190);
             this.btnBuscar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(65, 65);
@@ -278,7 +274,7 @@
             // 
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLimpiar.Location = new System.Drawing.Point(643, 190);
+            this.btnLimpiar.Location = new System.Drawing.Point(713, 190);
             this.btnLimpiar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(65, 65);
@@ -290,7 +286,7 @@
             // 
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEliminar.Location = new System.Drawing.Point(572, 190);
+            this.btnEliminar.Location = new System.Drawing.Point(500, 190);
             this.btnEliminar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(65, 65);
@@ -301,7 +297,7 @@
             // 
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnModificar.Location = new System.Drawing.Point(501, 190);
+            this.btnModificar.Location = new System.Drawing.Point(642, 190);
             this.btnModificar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(65, 65);
@@ -344,6 +340,10 @@
             this.comboTipoUsuario.Size = new System.Drawing.Size(199, 24);
             this.comboTipoUsuario.TabIndex = 1;
             // 
+            // usuarioBindingSource2
+            // 
+            this.usuarioBindingSource2.DataMember = "Usuario";
+            // 
             // usuarioBindingSource
             // 
             this.usuarioBindingSource.DataMember = "Usuario";
@@ -373,9 +373,9 @@
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.TablaUsuarios)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataSet1BindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usuarioBindingSource1)).EndInit();

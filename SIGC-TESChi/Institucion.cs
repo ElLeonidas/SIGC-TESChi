@@ -9,7 +9,6 @@ namespace SIGC_TESChi
     {
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
-
         private ToolTip toolTip;
 
         public Institucion()
@@ -17,29 +16,35 @@ namespace SIGC_TESChi
             InitializeComponent();
             Load += Institucion_Load;
 
+            // Inicializamos el ToolTip
             toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;  // Visible 5 segundos
+            toolTip.InitialDelay = 200;   // Aparece tras 0.2 segundos
+            toolTip.ReshowDelay = 100;    // Retardo entre botones
+            toolTip.ShowAlways = true;    // Siempre visible
 
-            // Eventos
+            // Asignar eventos de mouse para mostrar tooltips
+            btnAgregar.MouseEnter += (s, e) => toolTip.Show("Boton para Agregar Nueva Institución", btnAgregar);
+            btnAgregar.MouseLeave += (s, e) => toolTip.Hide(btnAgregar);
+            btnModificar.MouseEnter += (s, e) => toolTip.Show("Boton para Modificar Institución", btnModificar);
+            btnModificar.MouseLeave += (s, e) => toolTip.Hide(btnModificar);
+            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Boton para Eliminar Institución", btnEliminar);
+            btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
+            btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar Institución", btnBuscar);
+            btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
+            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Boton para Limpiar Campos", btnLimpiar);
+            btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
+            txtID.ReadOnly = true; // ID no editable
+
+            // Eventos de botones
             btnAgregar.Click += btnAgregar_Click;
             btnModificar.Click += btnModificar_Click;
             btnEliminar.Click += btnEliminar_Click;
             btnBuscar.Click += btnBuscar_Click;
             btnLimpiar.Click += btnLimpiar_Click;
 
+            // Evento de selección en la tabla
             tablaInstitucion.CellClick += tablaInstitucion_CellClick;
-
-            // Tooltip
-            ConfigurarTooltip(btnAgregar, "Agregar Institución");
-            ConfigurarTooltip(btnModificar, "Modificar Institución");
-            ConfigurarTooltip(btnEliminar, "Eliminar Institución");
-            ConfigurarTooltip(btnBuscar, "Buscar Institución");
-            ConfigurarTooltip(btnLimpiar, "Limpiar Campos");
-        }
-
-        private void ConfigurarTooltip(Button boton, string mensaje)
-        {
-            boton.MouseEnter += (s, e) => toolTip.Show(mensaje, boton);
-            boton.MouseLeave += (s, e) => toolTip.Hide(boton);
         }
 
         private void Institucion_Load(object sender, EventArgs e)
@@ -47,7 +52,7 @@ namespace SIGC_TESChi
             CargarInstituciones();
         }
 
-        //             CARGAR DATOS
+        // MÉTODOS PRINCIPALES
         private void CargarInstituciones()
         {
             try
@@ -55,12 +60,10 @@ namespace SIGC_TESChi
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
-
                     string query = "SELECT * FROM Instituto ORDER BY idInstituto ASC";
                     SqlDataAdapter da = new SqlDataAdapter(query, con);
                     DataTable dt = new DataTable();
                     da.Fill(dt);
-
                     tablaInstitucion.DataSource = dt;
                 }
             }
@@ -75,15 +78,41 @@ namespace SIGC_TESChi
             txtID.Clear();
             txtAbreviatura.Clear();
             txtNombre.Clear();
-            txtID.Focus();
+            txtAbreviatura.Focus();
+            CargarInstituciones();
         }
 
-        //                  AGREGAR
+        // EVENTOS DE BOTONES
         private void btnAgregar_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text) ||
-                string.IsNullOrWhiteSpace(txtAbreviatura.Text) ||
-                string.IsNullOrWhiteSpace(txtNombre.Text))
+            AgregarInstitucion();
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            ModificarInstitucion();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            EliminarInstitucion();
+        }
+
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+            CargarInstituciones();
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            BuscarInstitucion();
+        }
+
+        // MÉTODOS AUXILIARES
+        private void AgregarInstitucion()
+        {
+            if (string.IsNullOrWhiteSpace(txtAbreviatura.Text) || string.IsNullOrWhiteSpace(txtNombre.Text))
             {
                 MessageBox.Show("Completa todos los campos.");
                 return;
@@ -95,10 +124,10 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
+                    // Verificar si la clave ya existe
                     string checkQuery = "SELECT COUNT(*) FROM Instituto WHERE claveInstituto = @clave";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                     checkCmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
-
                     int existe = (int)checkCmd.ExecuteScalar();
 
                     if (existe > 0)
@@ -107,14 +136,11 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    string query = "INSERT INTO Instituto (idInstituto, claveInstituto, dInstituto) " +
-                                   "VALUES (@id, @clave, @nombre)";
+                    // Insertar nuevo registro (ID autonumérico)
+                    string query = "INSERT INTO Instituto (claveInstituto, dInstituto) VALUES (@clave, @nombre)";
                     SqlCommand cmd = new SqlCommand(query, conn);
-
-                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text)); // ID INT
                     cmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
                     cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
-
                     cmd.ExecuteNonQuery();
                 }
 
@@ -122,25 +148,13 @@ namespace SIGC_TESChi
                 CargarInstituciones();
                 LimpiarCampos();
             }
-            catch (FormatException)
-            {
-                MessageBox.Show("El ID debe ser un número entero.");
-            }
-            catch (SqlException ex)
-            {
-                if (ex.Number == 2627 || ex.Number == 2601)
-                    MessageBox.Show("El ID ya existe.");
-                else
-                    MessageBox.Show("Error SQL: " + ex.Message);
-            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Error al agregar institución: " + ex.Message);
             }
         }
 
-        //                  MODIFICAR
-        private void btnModificar_Click(object sender, EventArgs e)
+        private void ModificarInstitucion()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
@@ -153,17 +167,13 @@ namespace SIGC_TESChi
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    string query = "UPDATE Instituto SET claveInstituto = @clave, dInstituto = @nombre " +
-                                   "WHERE idInstituto = @id";
-
+                    string query = "UPDATE Instituto SET claveInstituto = @clave, dInstituto = @nombre WHERE idInstituto = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
                     cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
                     cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
 
                     int filas = cmd.ExecuteNonQuery();
-
                     if (filas > 0)
                     {
                         MessageBox.Show("Institución modificada.");
@@ -172,7 +182,7 @@ namespace SIGC_TESChi
                     }
                     else
                     {
-                        MessageBox.Show("La institución no existe.");
+                        MessageBox.Show("No se pudo modificar, la institución no existe.");
                     }
                 }
             }
@@ -182,8 +192,7 @@ namespace SIGC_TESChi
             }
         }
 
-        //                  ELIMINAR
-        private void btnEliminar_Click(object sender, EventArgs e)
+        private void EliminarInstitucion()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
@@ -191,83 +200,46 @@ namespace SIGC_TESChi
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Eliminar esta institución?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult confirm = MessageBox.Show("¿Eliminar esta institución?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            if (confirm != DialogResult.Yes) return;
 
-            if (confirm == DialogResult.Yes)
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    conn.Open();
+                    string query = "DELETE FROM Instituto WHERE idInstituto = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
+
+                    int filas = cmd.ExecuteNonQuery();
+                    if (filas > 0)
                     {
-                        conn.Open();
-
-                        string query = "DELETE FROM Instituto WHERE idInstituto = @id";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-
-                        cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
-
-                        int filas = cmd.ExecuteNonQuery();
-
-                        if (filas > 0)
-                        {
-                            MessageBox.Show("Institución eliminada.");
-                            CargarInstituciones();
-                            LimpiarCampos();
-                        }
-                        else
-                        {
-                            MessageBox.Show("No existe la institución.");
-                        }
+                        MessageBox.Show("Institución eliminada.");
+                        CargarInstituciones();
+                        LimpiarCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("No existe la institución.");
                     }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al eliminar: " + ex.Message);
-                }
             }
-        }
-
-        //        CARGAR DATOS AL SELECCIONAR FILA
-        private void tablaInstitucion_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0)
-                return;
-
-            try
+            catch (Exception ex)
             {
-                DataGridViewRow fila = tablaInstitucion.Rows[e.RowIndex];
-
-                txtID.Text = fila.Cells["idInstituto"].Value?.ToString() ?? "";
-                txtAbreviatura.Text = fila.Cells["claveInstituto"].Value?.ToString() ?? "";
-                txtNombre.Text = fila.Cells["dInstituto"].Value?.ToString() ?? "";
-            }
-            catch
-            {
-                txtID.Text = tablaInstitucion.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
-                txtAbreviatura.Text = tablaInstitucion.Rows[e.RowIndex].Cells[1].Value?.ToString() ?? "";
-                txtNombre.Text = tablaInstitucion.Rows[e.RowIndex].Cells[2].Value?.ToString() ?? "";
+                MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
 
-        //                   LIMPIAR
-        private void btnLimpiar_Click(object sender, EventArgs e)
-        {
-            LimpiarCampos();
-        }
-
-        //                    BUSCAR
-        private void btnBuscar_Click(object sender, EventArgs e)
+        private void BuscarInstitucion()
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    con.Open();
-
+                    conn.Open();
                     string query = "SELECT * FROM Instituto WHERE 1=1";
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = con;
+                    SqlCommand cmd = new SqlCommand { Connection = conn };
 
                     if (!string.IsNullOrWhiteSpace(txtID.Text))
                     {
@@ -300,6 +272,16 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al buscar: " + ex.Message);
             }
+        }
+
+        private void tablaInstitucion_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            DataGridViewRow fila = tablaInstitucion.Rows[e.RowIndex];
+            txtID.Text = fila.Cells["idInstituto"].Value?.ToString() ?? "";
+            txtAbreviatura.Text = fila.Cells["claveInstituto"].Value?.ToString() ?? "";
+            txtNombre.Text = fila.Cells["dInstituto"].Value?.ToString() ?? "";
         }
     }
 }
