@@ -32,6 +32,7 @@
             this.MenuControl = new System.Windows.Forms.Panel();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.btnFormato = new System.Windows.Forms.Button();
+            this.btnInfo = new System.Windows.Forms.Button();
             this.btnHistorial = new System.Windows.Forms.Button();
             this.btnCArchivos = new System.Windows.Forms.Button();
             this.btnEstadistica = new System.Windows.Forms.Button();
@@ -45,7 +46,6 @@
             this.btnUbicaciones = new System.Windows.Forms.Button();
             this.btnRUsuarios = new System.Windows.Forms.Button();
             this.btnLobby = new System.Windows.Forms.Button();
-            this.btnInfo = new System.Windows.Forms.Button();
             this.MenuControl.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -97,6 +97,17 @@
             this.btnFormato.TabIndex = 0;
             this.btnFormato.UseVisualStyleBackColor = true;
             this.btnFormato.Click += new System.EventHandler(this.btnFormato_Click);
+            // 
+            // btnInfo
+            // 
+            this.btnInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInfo.BackgroundImage")));
+            this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnInfo.Location = new System.Drawing.Point(8, 722);
+            this.btnInfo.Name = "btnInfo";
+            this.btnInfo.Size = new System.Drawing.Size(51, 50);
+            this.btnInfo.TabIndex = 0;
+            this.btnInfo.UseVisualStyleBackColor = true;
+            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // btnHistorial
             // 
@@ -250,17 +261,6 @@
             this.btnLobby.TabIndex = 0;
             this.btnLobby.UseVisualStyleBackColor = true;
             this.btnLobby.Click += new System.EventHandler(this.btnLobby_Click);
-            // 
-            // btnInfo
-            // 
-            this.btnInfo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInfo.BackgroundImage")));
-            this.btnInfo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnInfo.Location = new System.Drawing.Point(8, 722);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(51, 50);
-            this.btnInfo.TabIndex = 0;
-            this.btnInfo.UseVisualStyleBackColor = true;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
             // 
             // Menu
             // 
