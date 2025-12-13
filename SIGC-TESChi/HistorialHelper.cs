@@ -19,9 +19,7 @@ namespace SIGC_TESChi
                 string datosAnteriores,
                 string datosNuevos)
 
-            MessageBox.Show(
-    $"ID Usuario sesión: {SessionData.IdUsuario}\nUsuario: {SessionData.Username}"
-);
+           
 
 
         {
@@ -31,8 +29,11 @@ namespace SIGC_TESChi
                     "No hay sesión activa. No se puede registrar el historial.",
                     "Error de auditoría",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
+                    MessageBoxIcon.Error 
                 );
+                MessageBox.Show(
+    $"ID Usuario sesión: {SessionData.IdUsuario}\nUsuario: {SessionData.Username}"
+);
                 return;
             }
 

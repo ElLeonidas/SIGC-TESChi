@@ -16,7 +16,7 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
-            SessionData.IdUsuario = reader.GetInt32("idUsuario");
+            
 
             // === FORM ===
             this.FormBorderStyle = FormBorderStyle.None;
@@ -35,13 +35,15 @@ namespace SIGC_TESChi
             pnlCard.BackgroundImageLayout = ImageLayout.Stretch;
 
             // === PANEL LOGIN (glass) ===
-            pnlLogin.BackColor = Color.FromArgb(200, 255, 255, 255); // blanco translúcido suave
+            pnlLogin.BackColor = Color.FromArgb(235, 255, 255, 255); // menos transparencia
 
             // === BOTÓN LOGIN ===
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.BackColor = Color.FromArgb(88, 63, 149);
             btnLogin.ForeColor = Color.White;
+            btnLogin.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
 
             // === TEXTBOX PASSWORD ===
             txtPassword.UseSystemPasswordChar = true;
@@ -206,6 +208,35 @@ namespace SIGC_TESChi
             // HabilitarBlur();
         }
 
+        private void txtUsuario_Enter(object sender, EventArgs e)
+        {
+            if (txtUsuario.Text == "Usuario")
+            {
+                txtUsuario.Text = "";
+                txtUsuario.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtUsuario_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text))
+            {
+                txtUsuario.Text = "Usuario";
+                txtUsuario.ForeColor = Color.Gray;
+            }
+        }
+
+
+        private void txtPassword_Enter(object sender, EventArgs e)
+        {
+            if (txtPassword.Text == "Contraseña")
+            {
+                txtPassword.Text = "";
+                txtPassword.ForeColor = Color.Black;
+                txtPassword.UseSystemPasswordChar = true;
+            }
+        }
+
         private void HabilitarBlur()
         {
             var accent = new AccentPolicy();
@@ -226,6 +257,74 @@ namespace SIGC_TESChi
         }
 
         private void FrmLogin_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLogin_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnlLogin_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtUsuario_DragEnter(object sender, DragEventArgs e)
+        {
+            if (txtUsuario.Text == "Usuario")
+            {
+                txtUsuario.Text = "";
+                txtUsuario.ForeColor = Color.Black;
+            }
+        }
+
+        private void txtUsuario_DragLeave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text))
+            {
+                txtUsuario.Text = "Usuario";
+                txtUsuario.ForeColor = Color.Gray;
+            }
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
         {
 
         }

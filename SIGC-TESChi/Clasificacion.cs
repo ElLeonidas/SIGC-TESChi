@@ -109,7 +109,6 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    // Verificar duplicado
                     string dupQuery = "SELECT COUNT(*) FROM Clasificacion WHERE dClasificacion = @d";
                     SqlCommand dupCmd = new SqlCommand(dupQuery, conn);
                     dupCmd.Parameters.AddWithValue("@d", txtClasificacion.Text);
@@ -126,6 +125,16 @@ namespace SIGC_TESChi
                     cmd.ExecuteNonQuery();
                 }
 
+                // 🔴 HISTORIAL (INSERT)
+                string datosNuevos = $"Clasificacion={txtClasificacion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Clasificacion",
+                    txtClasificacion.Text,
+                    "INSERT",
+                    null,
+                    datosNuevos
+                );
+
                 MessageBox.Show("✅ Clasificación agregada.");
                 CargarClasificacion();
                 LimpiarCampos();
@@ -136,11 +145,8 @@ namespace SIGC_TESChi
             }
         }
 
+
         //MODIFICAR
-        private void btnModificar_Click(object sender, EventArgs e)
-        {
-            ModificarClasificacion();
-        }
 
         private void ModificarClasificacion()
         {
@@ -152,18 +158,41 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAnteriores = "";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
+                    // 🔴 OBTENER DATOS ANTERIORES
+                    string selectQuery = "SELECT dClasificacion FROM Clasificacion WHERE idClasificacion = @id";
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, conn);
+                    selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            datosAnteriores = $"Clasificacion={reader["dClasificacion"]}";
+                        }
+                    }
+
                     string sql = "UPDATE Clasificacion SET dClasificacion = @d WHERE idClasificacion = @id";
                     SqlCommand cmd = new SqlCommand(sql, conn);
-
                     cmd.Parameters.AddWithValue("@d", txtClasificacion.Text);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
-
                     cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos = $"Clasificacion={txtClasificacion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Clasificacion",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAnteriores,
+                    datosNuevos
+                );
 
                 MessageBox.Show("✅ Clasificación actualizada.");
                 CargarClasificacion();
@@ -175,12 +204,8 @@ namespace SIGC_TESChi
             }
         }
 
-        //ELIMINAR
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            EliminarClasificacion();
-        }
 
+        //ELIMINAR
         private void EliminarClasificacion()
         {
             if (txtID.Text == "")
@@ -189,31 +214,46 @@ namespace SIGC_TESChi
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar definitivamente?", "Confirmación",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            if (MessageBox.Show(
+                "¿Eliminar definitivamente?",
+                "Confirmación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
+
+            try
             {
-                try
-                {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        conn.Open();
+                string datosAnteriores = $"Clasificacion={txtClasificacion.Text}";
 
-                        string sql = "DELETE FROM Clasificacion WHERE idClasificacion = @id";
-                        SqlCommand cmd = new SqlCommand(sql, conn);
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    MessageBox.Show("✅ Clasificación eliminada.");
-                    CargarClasificacion();
-                    LimpiarCampos();
-                }
-                catch (Exception ex)
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Error al eliminar: " + ex.Message);
+                    conn.Open();
+
+                    string sql = "DELETE FROM Clasificacion WHERE idClasificacion = @id";
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "Clasificacion",
+                    txtID.Text,
+                    "DELETE",
+                    datosAnteriores,
+                    null
+                );
+
+                MessageBox.Show("✅ Clasificación eliminada.");
+                CargarClasificacion();
+                LimpiarCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
+
 
         //BUSCAR
         private void btnBuscar_Click(object sender, EventArgs e)

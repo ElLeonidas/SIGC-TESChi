@@ -113,12 +113,6 @@ namespace SIGC_TESChi
             }
         }
 
-        //AGREGAR 
-        private void btnAgregar_Click(object sender, EventArgs e)
-        {
-            AgregarUsuario();
-        }
-
         private void AgregarUsuario()
         {
             if (CamposVacios())
@@ -138,10 +132,11 @@ namespace SIGC_TESChi
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
+
                 string q = @"
-                INSERT INTO Usuario
-                (Username, Nombre, Apaterno, Amaterno, Contrasena, idTipoUsuario)
-                VALUES (@u,@n,@ap,@am,@c,@t)";
+        INSERT INTO Usuario
+        (Username, Nombre, Apaterno, Amaterno, Contrasena, idTipoUsuario)
+        VALUES (@u,@n,@ap,@am,@c,@t)";
 
                 SqlCommand cmd = new SqlCommand(q, con);
                 cmd.Parameters.AddWithValue("@u", txtNombreAcceso.Text.Trim());
@@ -153,16 +148,24 @@ namespace SIGC_TESChi
                 cmd.ExecuteNonQuery();
             }
 
+            // 🔴 HISTORIAL (INSERT)
+            string datosNuevos =
+                $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
+                $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}, Tipo={tipo}";
+
+            HistorialHelper.RegistrarCambio(
+                "Usuario",
+                txtNombreAcceso.Text.Trim(),
+                "INSERT",
+                null,
+                datosNuevos
+            );
+
             MessageBox.Show("✅ Usuario agregado.");
             CargarUsuarios();
             LimpiarCampos();
         }
 
-        //MODIFICAR 
-        private void btnModificar_Click(object sender, EventArgs e)
-        {
-            ModificarUsuario();
-        }
 
         private void ModificarUsuario()
         {
@@ -173,18 +176,37 @@ namespace SIGC_TESChi
             }
 
             string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
+            string datosAnteriores = "";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
+                // 🔴 DATOS ANTERIORES
+                string select = @"
+        SELECT Username, Nombre, Apaterno, Amaterno, idTipoUsuario
+        FROM Usuario WHERE idUsuario=@id";
+
+                SqlCommand selCmd = new SqlCommand(select, con);
+                selCmd.Parameters.AddWithValue("@id", txtIdentificador.Text);
+
+                using (SqlDataReader dr = selCmd.ExecuteReader())
+                {
+                    if (dr.Read())
+                    {
+                        datosAnteriores =
+                            $"Username={dr["Username"]}, Nombre={dr["Nombre"]}, " +
+                            $"Apaterno={dr["Apaterno"]}, Amaterno={dr["Amaterno"]}, Tipo={dr["idTipoUsuario"]}";
+                    }
+                }
+
                 string q = @"
-                UPDATE Usuario SET
-                    Username=@u,
-                    Nombre=@n,
-                    Apaterno=@ap,
-                    Amaterno=@am,
-                    idTipoUsuario=@t" +
+        UPDATE Usuario SET
+            Username=@u,
+            Nombre=@n,
+            Apaterno=@ap,
+            Amaterno=@am,
+            idTipoUsuario=@t" +
                     (string.IsNullOrWhiteSpace(txtContrasena.Text)
                         ? ""
                         : ", Contrasena=@c") +
@@ -204,16 +226,24 @@ namespace SIGC_TESChi
                 cmd.ExecuteNonQuery();
             }
 
+            // 🔴 HISTORIAL (UPDATE)
+            string datosNuevos =
+                $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
+                $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}, Tipo={tipo}";
+
+            HistorialHelper.RegistrarCambio(
+                "Usuario",
+                txtIdentificador.Text,
+                "UPDATE",
+                datosAnteriores,
+                datosNuevos
+            );
+
             MessageBox.Show("✅ Usuario modificado.");
             CargarUsuarios();
             LimpiarCampos();
         }
 
-        // ELIMINAR 
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            EliminarUsuario();
-        }
 
         private void EliminarUsuario()
         {
@@ -227,19 +257,53 @@ namespace SIGC_TESChi
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
 
+            string datosAnteriores =
+                $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
+                $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}";
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
+
                 SqlCommand cmd = new SqlCommand(
                     "DELETE FROM Usuario WHERE idUsuario=@id", con);
                 cmd.Parameters.AddWithValue("@id", txtIdentificador.Text);
                 cmd.ExecuteNonQuery();
             }
 
+            // 🔴 HISTORIAL (DELETE)
+            HistorialHelper.RegistrarCambio(
+                "Usuario",
+                txtIdentificador.Text,
+                "DELETE",
+                datosAnteriores,
+                null
+            );
+
             MessageBox.Show("✅ Usuario eliminado.");
             CargarUsuarios();
             LimpiarCampos();
         }
+
+
+
+        //AGREGAR 
+        private void btnAgregar_Click(object sender, EventArgs e)
+        {
+            AgregarUsuario();
+        }       
+
+        //MODIFICAR 
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            ModificarUsuario();
+        }
+         
+        // ELIMINAR 
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            EliminarUsuario();
+        }      
 
         // BUSCAR 
         private void btnBuscar_Click(object sender, EventArgs e)

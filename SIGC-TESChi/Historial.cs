@@ -143,13 +143,7 @@ namespace SIGC_TESChi
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            HistorialHelper.RegistrarCambio(
-    "PRUEBA",
-    "1",
-    "TEST",
-    "antes",
-    "despues"
-);
+           
         }
     }
 }

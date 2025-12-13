@@ -138,28 +138,49 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
+                    // 1️⃣ Verificar duplicados
                     string checkQuery = "SELECT COUNT(*) FROM Ubicacion WHERE dUbicacion = @ubicacion";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
-
-                    int existe = (int)checkCmd.ExecuteScalar();
-                    if (existe > 0)
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
-                        MessageBox.Show("⚠️ Esta ubicación ya está registrada.");
-                        return;
+                        checkCmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+
+                        int existe = (int)checkCmd.ExecuteScalar();
+                        if (existe > 0)
+                        {
+                            MessageBox.Show("⚠️ Esta ubicación ya está registrada.");
+                            return;
+                        }
                     }
 
-                    string query = "INSERT INTO Ubicacion (dUbicacion) VALUES (@ubicacion)";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
-                    cmd.ExecuteNonQuery();
+                    // 2️⃣ INSERT + obtener ID generado
+                    string query = @"
+                INSERT INTO Ubicacion (dUbicacion)
+                VALUES (@ubicacion);
+                SELECT SCOPE_IDENTITY();";
+
+                    int idUbicacion;
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+                        idUbicacion = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+
+                    // 🔴🔴🔴 CORRECCIÓN CLAVE 🔴🔴🔴
+                    // 3️⃣ Registrar historial DESPUÉS del INSERT
+                    HistorialHelper.RegistrarCambio(
+                        "Ubicacion",                 // Tabla afectada
+                        idUbicacion.ToString(),      // Llave primaria
+                        "INSERT",                    // Tipo de acción
+                        null,                        // No hay datos anteriores
+                        $"Ubicación={txtUbicacion.Text}" // Datos nuevos
+                    );
+                    // 🔴🔴🔴 FIN DE LA CORRECCIÓN 🔴🔴🔴
                 }
 
-                MessageBox.Show(
-    $"Usuario en sesión: {SessionData.Username}\nID: {SessionData.IdUsuario}"
-);
-
                 MessageBox.Show("✅ Ubicación agregada.");
+                MessageBox.Show("Registrando historial INSERT");
+
                 CargarUbicaciones();
                 LimpiarCampos();
             }
@@ -179,15 +200,39 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAntes = "";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
+                    // 1️⃣ Obtener datos ANTERIORES
+                    string selectQuery = "SELECT dUbicacion FROM Ubicacion WHERE idUbicacion = @id";
+                    using (SqlCommand selectCmd = new SqlCommand(selectQuery, conn))
+                    {
+                        selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+                        datosAntes = selectCmd.ExecuteScalar()?.ToString();
+                    }
+
+                    // 2️⃣ UPDATE
                     string query = "UPDATE Ubicacion SET dUbicacion = @ubicacion WHERE idUbicacion = @id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
-                    cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    cmd.ExecuteNonQuery();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+                        cmd.Parameters.AddWithValue("@id", txtID.Text);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 🔴🔴🔴 CORRECCIÓN CLAVE 🔴🔴🔴
+                    // 3️⃣ Registrar historial
+                    HistorialHelper.RegistrarCambio(
+                        "Ubicacion",
+                        txtID.Text,
+                        "UPDATE",
+                        $"Ubicación={datosAntes}",
+                        $"Ubicación={txtUbicacion.Text}"
+                    );
+                    // 🔴🔴🔴 FIN DE LA CORRECCIÓN 🔴🔴🔴
                 }
 
                 MessageBox.Show("✅ Ubicación actualizada.");
@@ -198,6 +243,7 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al modificar ubicación: " + ex.Message);
             }
+
         }
 
         private void EliminarUbicacion()
@@ -214,14 +260,38 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAntes = "";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
+                    // 1️⃣ Obtener datos ANTERIORES
+                    string selectQuery = "SELECT dUbicacion FROM Ubicacion WHERE idUbicacion = @id";
+                    using (SqlCommand selectCmd = new SqlCommand(selectQuery, conn))
+                    {
+                        selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+                        datosAntes = selectCmd.ExecuteScalar()?.ToString();
+                    }
+
+                    // 2️⃣ DELETE
                     string query = "DELETE FROM Ubicacion WHERE idUbicacion = @id";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    cmd.ExecuteNonQuery();
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", txtID.Text);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // 🔴🔴🔴 CORRECCIÓN CLAVE 🔴🔴🔴
+                    // 3️⃣ Registrar historial
+                    HistorialHelper.RegistrarCambio(
+                        "Ubicacion",
+                        txtID.Text,
+                        "DELETE",
+                        $"Ubicación={datosAntes}",
+                        null
+                    );
+                    // 🔴🔴🔴 FIN DE LA CORRECCIÓN 🔴🔴🔴
                 }
 
                 MessageBox.Show("✅ Ubicación eliminada.");
@@ -232,6 +302,7 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al eliminar ubicación: " + ex.Message);
             }
+
         }
 
         private void BuscarUbicacion()
@@ -303,6 +374,8 @@ namespace SIGC_TESChi
             }
         }
 
+
     }
+
 }
 

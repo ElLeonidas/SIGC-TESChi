@@ -131,7 +131,6 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    // Verificar si la clave ya existe
                     string checkQuery = "SELECT COUNT(*) FROM Instituto WHERE claveInstituto = @clave";
                     SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
                     checkCmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
@@ -143,13 +142,22 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    // Insertar nuevo registro (ID autonumérico)
                     string query = "INSERT INTO Instituto (claveInstituto, dInstituto) VALUES (@clave, @nombre)";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
                     cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
                     cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (INSERT)
+                string datosNuevos = $"Clave={txtAbreviatura.Text}, Nombre={txtNombre.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Instituto",
+                    txtAbreviatura.Text,
+                    "INSERT",
+                    null,
+                    datosNuevos
+                );
 
                 MessageBox.Show("Institución agregada correctamente.");
                 CargarInstituciones();
@@ -159,6 +167,7 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show("Error al agregar institución: " + ex.Message);
             }
+
         }
 
         private void ModificarInstitucion()
@@ -171,27 +180,47 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAnteriores = $"Clave={txtAbreviatura.Text}, Nombre={txtNombre.Text}";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+
+                    // 🔴 OBTENER DATOS ANTERIORES REALES
+                    string selectQuery = "SELECT claveInstituto, dInstituto FROM Instituto WHERE idInstituto = @id";
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, conn);
+                    selectCmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            datosAnteriores =
+                                $"Clave={reader["claveInstituto"]}, Nombre={reader["dInstituto"]}";
+                        }
+                    }
+
                     string query = "UPDATE Instituto SET claveInstituto = @clave, dInstituto = @nombre WHERE idInstituto = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@clave", txtAbreviatura.Text);
                     cmd.Parameters.AddWithValue("@nombre", txtNombre.Text);
                     cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
-
-                    int filas = cmd.ExecuteNonQuery();
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("Institución modificada.");
-                        CargarInstituciones();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se pudo modificar, la institución no existe.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos = $"Clave={txtAbreviatura.Text}, Nombre={txtNombre.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Instituto",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAnteriores,
+                    datosNuevos
+                );
+
+                MessageBox.Show("Institución modificada.");
+                CargarInstituciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
@@ -207,35 +236,45 @@ namespace SIGC_TESChi
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Eliminar esta institución?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult confirm = MessageBox.Show(
+                "¿Eliminar esta institución?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
             if (confirm != DialogResult.Yes) return;
 
             try
             {
+                string datosAnteriores = $"Clave={txtAbreviatura.Text}, Nombre={txtNombre.Text}";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string query = "DELETE FROM Instituto WHERE idInstituto = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", Convert.ToInt32(txtID.Text));
-
-                    int filas = cmd.ExecuteNonQuery();
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("Institución eliminada.");
-                        CargarInstituciones();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("No existe la institución.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "Instituto",
+                    txtID.Text,
+                    "DELETE",
+                    datosAnteriores,
+                    null
+                );
+
+                MessageBox.Show("Institución eliminada.");
+                CargarInstituciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
+
         }
 
         private void BuscarInstitucion()

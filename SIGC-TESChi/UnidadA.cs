@@ -120,12 +120,25 @@ namespace SIGC_TESChi
                         return;
                     }
 
-                    string query = "INSERT INTO UnidadAdministrativa (cUniAdmin, nUniAdmin) VALUES (@c, @n)";
+                    string query = @"INSERT INTO UnidadAdministrativa (cUniAdmin, nUniAdmin) 
+                             VALUES (@c, @n)";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
                     cmd.Parameters.AddWithValue("@n", txtNombreUnidad.Text);
                     cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (INSERT)
+                string datosNuevos =
+                    $"Clave={txtClaveUnidad.Text}, Nombre={txtNombreUnidad.Text}";
+
+                HistorialHelper.RegistrarCambio(
+                    "UnidadAdministrativa",
+                    txtClaveUnidad.Text,
+                    "INSERT",
+                    null,
+                    datosNuevos
+                );
 
                 MessageBox.Show("✅ Unidad agregada correctamente.");
                 CargarUnidades();
@@ -137,6 +150,7 @@ namespace SIGC_TESChi
             }
         }
 
+
         private void ModificarUnidad()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
@@ -147,21 +161,51 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAnteriores = "";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
+                    // 🔴 DATOS ANTERIORES REALES
+                    string selectQuery = @"SELECT cUniAdmin, nUniAdmin
+                                   FROM UnidadAdministrativa
+                                   WHERE idUniAdmin = @id";
+
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, conn);
+                    selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            datosAnteriores =
+                                $"Clave={reader["cUniAdmin"]}, Nombre={reader["nUniAdmin"]}";
+                        }
+                    }
+
                     string query = @"UPDATE UnidadAdministrativa 
-                                     SET cUniAdmin = @c, nUniAdmin = @n 
-                                     WHERE idUniAdmin = @id";
+                             SET cUniAdmin = @c, nUniAdmin = @n 
+                             WHERE idUniAdmin = @id";
 
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
                     cmd.Parameters.AddWithValue("@c", txtClaveUnidad.Text);
                     cmd.Parameters.AddWithValue("@n", txtNombreUnidad.Text);
-
                     cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos =
+                    $"Clave={txtClaveUnidad.Text}, Nombre={txtNombreUnidad.Text}";
+
+                HistorialHelper.RegistrarCambio(
+                    "UnidadAdministrativa",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAnteriores,
+                    datosNuevos
+                );
 
                 MessageBox.Show("✅ Unidad actualizada.");
                 CargarUnidades();
@@ -173,6 +217,7 @@ namespace SIGC_TESChi
             }
         }
 
+
         private void EliminarUnidad()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
@@ -181,30 +226,47 @@ namespace SIGC_TESChi
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar esta unidad?", "Confirmar",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        conn.Open();
-                        string query = "DELETE FROM UnidadAdministrativa WHERE idUniAdmin = @id";
-                        SqlCommand cmd = new SqlCommand(query, conn);
-                        cmd.Parameters.AddWithValue("@id", txtID.Text);
-                        cmd.ExecuteNonQuery();
-                    }
+            if (MessageBox.Show("¿Eliminar esta unidad?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning) != DialogResult.Yes)
+                return;
 
-                    MessageBox.Show("✅ Unidad eliminada.");
-                    CargarUnidades();
-                    LimpiarCampos();
-                }
-                catch (Exception ex)
+            try
+            {
+                string datosAnteriores =
+                    $"Clave={txtClaveUnidad.Text}, Nombre={txtNombreUnidad.Text}";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    MessageBox.Show("Error al eliminar: " + ex.Message);
+                    conn.Open();
+
+                    string query = "DELETE FROM UnidadAdministrativa WHERE idUniAdmin = @id";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "UnidadAdministrativa",
+                    txtID.Text,
+                    "DELETE",
+                    datosAnteriores,
+                    null
+                );
+
+                MessageBox.Show("✅ Unidad eliminada.");
+                CargarUnidades();
+                LimpiarCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
+
+
 
         private void BuscarUnidad()
         {

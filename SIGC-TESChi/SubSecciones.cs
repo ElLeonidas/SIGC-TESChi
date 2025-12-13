@@ -149,6 +149,16 @@ namespace SIGC_TESChi
                     cmd.ExecuteNonQuery();
                 }
 
+                // 🔴 HISTORIAL (INSERT)
+                string datosNuevos = $"Clave={txtClaveSubseccion.Text}, SubSeccion={txtSubseccion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "SubSeccion",
+                    txtClaveSubseccion.Text,
+                    "INSERT",
+                    null,
+                    datosNuevos
+                );
+
                 MessageBox.Show("✅ SubSección agregada correctamente.");
                 CargarSubSecciones();
                 LimpiarCampos();
@@ -158,6 +168,7 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error: " + ex.Message);
             }
         }
+
 
         private void ModificarSubSeccion()
         {
@@ -169,36 +180,61 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAnteriores = "";
+
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
 
+                    // 🔴 OBTENER DATOS ANTERIORES REALES
+                    string selectQuery = @"SELECT claveSubSeccion, dSubSeccion
+                                   FROM SubSeccion
+                                   WHERE idSubSeccion = @id";
+
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, con);
+                    selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            datosAnteriores =
+                                $"Clave={reader["claveSubSeccion"]}, SubSeccion={reader["dSubSeccion"]}";
+                        }
+                    }
+
                     string query = @"UPDATE SubSeccion 
-                                     SET claveSubSeccion = @clave, dSubSeccion = @desc
-                                     WHERE idSubSeccion = @id";
+                             SET claveSubSeccion = @clave, dSubSeccion = @desc
+                             WHERE idSubSeccion = @id";
 
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@clave", txtClaveSubseccion.Text);
                     cmd.Parameters.AddWithValue("@desc", txtSubseccion.Text);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
 
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ SubSección modificada.");
-                        CargarSubSecciones();
-                        LimpiarCampos();
-                    }
-                    else
-                        MessageBox.Show("⚠️ La SubSección no existe.");
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos = $"Clave={txtClaveSubseccion.Text}, SubSeccion={txtSubseccion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "SubSeccion",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAnteriores,
+                    datosNuevos
+                );
+
+                MessageBox.Show("✅ SubSección modificada.");
+                CargarSubSecciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al modificar: " + ex.Message);
             }
         }
+
 
         private void EliminarSubSeccion()
         {
@@ -208,13 +244,19 @@ namespace SIGC_TESChi
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Eliminar esta SubSección?",
-                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult confirm = MessageBox.Show(
+                "¿Eliminar esta SubSección?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
 
             if (confirm != DialogResult.Yes) return;
 
             try
             {
+                string datosAnteriores =
+                    $"Clave={txtClaveSubseccion.Text}, SubSeccion={txtSubseccion.Text}";
+
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
@@ -222,24 +264,28 @@ namespace SIGC_TESChi
                     string query = "DELETE FROM SubSeccion WHERE idSubSeccion = @id";
                     SqlCommand cmd = new SqlCommand(query, con);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
-
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ SubSección eliminada.");
-                        CargarSubSecciones();
-                        LimpiarCampos();
-                    }
-                    else
-                        MessageBox.Show("⚠️ No existe la SubSección.");
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "SubSeccion",
+                    txtID.Text,
+                    "DELETE",
+                    datosAnteriores,
+                    null
+                );
+
+                MessageBox.Show("✅ SubSección eliminada.");
+                CargarSubSecciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
+
 
         private void BuscarSubSeccion()
         {

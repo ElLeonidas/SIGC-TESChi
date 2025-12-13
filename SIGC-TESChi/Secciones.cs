@@ -166,13 +166,19 @@ namespace SIGC_TESChi
                     cmd.ExecuteNonQuery();
                 }
 
+                // 🔴 HISTORIAL (INSERT)
+                string datosNuevos = $"Clave={txtClaveSeccion.Text}, Seccion={txtSeccion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Seccion",
+                    txtClaveSeccion.Text,
+                    "INSERT",
+                    null,
+                    datosNuevos
+                );
+
                 MessageBox.Show("✅ Sección agregada correctamente.");
                 CargarSecciones();
                 LimpiarCampos();
-            }
-            catch (SqlException ex)
-            {
-                MessageBox.Show("Error SQL: " + ex.Message);
             }
             catch (Exception ex)
             {
@@ -180,9 +186,12 @@ namespace SIGC_TESChi
             }
         }
 
+
         private void ModificarSeccion()
         {
-            if (string.IsNullOrWhiteSpace(txtID.Text) || string.IsNullOrWhiteSpace(txtClaveSeccion.Text) || string.IsNullOrWhiteSpace(txtSeccion.Text))
+            if (string.IsNullOrWhiteSpace(txtID.Text) ||
+                string.IsNullOrWhiteSpace(txtClaveSeccion.Text) ||
+                string.IsNullOrWhiteSpace(txtSeccion.Text))
             {
                 MessageBox.Show("Selecciona una sección para modificar y completa los campos.");
                 return;
@@ -190,33 +199,54 @@ namespace SIGC_TESChi
 
             try
             {
+                string datosAnteriores = "";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
+
+                    // 🔴 OBTENER DATOS ANTERIORES REALES
+                    string selectQuery = "SELECT claveSeccion, dSeccion FROM Seccion WHERE idSeccion = @id";
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, conn);
+                    selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    using (SqlDataReader reader = selectCmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            datosAnteriores =
+                                $"Clave={reader["claveSeccion"]}, Seccion={reader["dSeccion"]}";
+                        }
+                    }
+
                     string query = "UPDATE Seccion SET claveSeccion = @clave, dSeccion = @desc WHERE idSeccion = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@clave", txtClaveSeccion.Text);
                     cmd.Parameters.AddWithValue("@desc", txtSeccion.Text);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ Sección modificada correctamente.");
-                        CargarSecciones();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("⚠️ No se encontró la sección.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos = $"Clave={txtClaveSeccion.Text}, Seccion={txtSeccion.Text}";
+                HistorialHelper.RegistrarCambio(
+                    "Seccion",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAnteriores,
+                    datosNuevos
+                );
+
+                MessageBox.Show("✅ Sección modificada correctamente.");
+                CargarSecciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al modificar: " + ex.Message);
             }
         }
+
 
         private void EliminarSeccion()
         {
@@ -226,36 +256,46 @@ namespace SIGC_TESChi
                 return;
             }
 
-            DialogResult confirm = MessageBox.Show("¿Eliminar esta sección?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            DialogResult confirm = MessageBox.Show(
+                "¿Eliminar esta sección?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
             if (confirm != DialogResult.Yes) return;
 
             try
             {
+                string datosAnteriores = $"Clave={txtClaveSeccion.Text}, Seccion={txtSeccion.Text}";
+
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     string query = "DELETE FROM Seccion WHERE idSeccion = @id";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@id", txtID.Text);
-                    int filas = cmd.ExecuteNonQuery();
-
-                    if (filas > 0)
-                    {
-                        MessageBox.Show("✅ Sección eliminada.");
-                        CargarSecciones();
-                        LimpiarCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("⚠️ La sección no existe.");
-                    }
+                    cmd.ExecuteNonQuery();
                 }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "Seccion",
+                    txtID.Text,
+                    "DELETE",
+                    datosAnteriores,
+                    null
+                );
+
+                MessageBox.Show("✅ Sección eliminada.");
+                CargarSecciones();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error al eliminar: " + ex.Message);
             }
         }
+
 
         private void BuscarSeccion()
         {
