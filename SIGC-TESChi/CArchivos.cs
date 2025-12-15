@@ -19,10 +19,10 @@ namespace SIGC_TESChi
             InitializeComponent();
 
 
-            dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvControl.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvControl.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvControl.Dock = DockStyle.Fill;
+            //dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //dgvControl.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgvControl.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //dgvControl.Dock = DockStyle.Fill;
 
 
             Load += CArchivos_Load;
@@ -187,73 +187,47 @@ ORDER BY c.idControl DESC";
 
         private void CargarSecciones()
         {
-            string query = "SELECT idSeccion, dSeccion FROM Seccion ORDER BY idSeccion;";
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            using (SqlDataAdapter da = new SqlDataAdapter(
+                "SELECT idSeccion, claveSeccion FROM Seccion", cn))
             {
                 DataTable dt = new DataTable();
+                da.Fill(dt);
 
-                try
-                {
-                    da.Fill(dt);
-
-                    cboSeccion.DataSource = dt;
-                    cboSeccion.DisplayMember = "idSeccion";  // muestra 2C, 3C, 4C
-                    cboSeccion.ValueMember = "idSeccion";
-                    cboSeccion.SelectedIndex = -1;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al cargar Secciones: " + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                cboSeccion.DataSource = dt;
+                cboSeccion.DisplayMember = "claveSeccion"; // lo que VE el usuario (2C)
+                cboSeccion.ValueMember = "idSeccion";      // lo que VA a SQL (INT)
+                cboSeccion.SelectedIndex = -1;
             }
         }
 
 
 
-        private void CargarSubSeccionesPorSeccion(string idSeccion)
+
+        private void CargarSubSeccionesPorSeccion(int idSeccion)
         {
-            if (string.IsNullOrWhiteSpace(idSeccion)) return;
-
             string query = @"
-        SELECT idSubSeccion, dSubSeccion
+        SELECT idSubSeccion, claveSubSeccion, dSubSeccion
         FROM SubSeccion
-        WHERE idSubSeccion LIKE @prefijo + '%'
-        ORDER BY idSubSeccion;";
+        WHERE idSeccion = @idSeccion
+        ORDER BY claveSubSeccion";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             using (SqlDataAdapter da = new SqlDataAdapter(query, conn))
             {
-                da.SelectCommand.Parameters.AddWithValue("@prefijo", idSeccion + ".");
+                da.SelectCommand.Parameters.AddWithValue("@idSeccion", idSeccion);
+
                 DataTable dt = new DataTable();
+                da.Fill(dt);
 
-                try
-                {
-                    da.Fill(dt);
-
-                    cboSubSeccion.DataSource = dt;
-                    cboSubSeccion.DisplayMember = "idSubSeccion";
-                    cboSubSeccion.ValueMember = "idSubSeccion";
-                    cboSubSeccion.SelectedIndex = -1;
-
-                    if (dt.Rows.Count == 0)
-                    {
-                        // Mensaje más claro — muestra el id real (string), no el DataRowView
-                        MessageBox.Show($"No se encontraron subsecciones para {idSeccion}");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error al cargar SubSecciones: " + ex.Message,
-                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                cboSubSeccion.DataSource = dt;
+                cboSubSeccion.DisplayMember = "claveSubSeccion";
+                cboSubSeccion.ValueMember = "idSubSeccion";
+                cboSubSeccion.SelectedIndex = -1;
             }
-
-
-
         }
+
+
 
         private void CargarUbicaciones()
         {
@@ -394,20 +368,21 @@ ORDER BY c.idControl DESC";
 
         private void GenerarFormulaClasificatoria()
         {
-            if (cboInstituto.SelectedItem == null ||
-                cboSeccion.SelectedItem == null ||
-                cboSubSeccion.SelectedItem == null)
+            if (cboInstituto.SelectedValue == null ||
+                cboSeccion.SelectedValue == null ||
+                cboSubSeccion.SelectedValue == null)
                 return;
 
-            string claveInstituto = ((DataRowView)cboInstituto.SelectedItem)["ClaveInstituto"].ToString();
-            string idSeccion = ((DataRowView)cboSeccion.SelectedItem)["IDSeccion"].ToString();
-            string idSubSeccion = ((DataRowView)cboSubSeccion.SelectedItem)["IDSubSeccion"].ToString();
+            string claveInstituto = cboInstituto.Text;
+            string claveSeccion = cboSeccion.Text;
+            string claveSubSeccion = cboSubSeccion.Text;
 
-            // Incrementamos el número de expediente
-            string numeroExpediente = "E." + contadorExpediente.ToString();
+            string numeroExpediente = "E." + contadorExpediente.ToString("D3");
 
-            txtFormulaClasificatoria.Text = $"{claveInstituto}/{idSeccion}/{idSubSeccion}/{numeroExpediente}";
+            txtFormulaClasificatoria.Text =
+                $"{claveInstituto}/{claveSeccion}/{claveSubSeccion}/{numeroExpediente}";
         }
+
 
 
 
@@ -465,29 +440,13 @@ ORDER BY c.idControl DESC";
 
         private void cboSeccion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!combosListos) return;            // evita que se ejecute durante la carga
+            if (!combosListos) return;
             if (cboSeccion.SelectedValue == null) return;
 
-            // Obtén el idSeccion robustamente, aceptando DataRowView o valor directo
-            object val = cboSeccion.SelectedValue;
-            string idSeccion;
-
-            if (val is DataRowView drv)
-            {
-                // intenta primero la columna idSeccion, si no existe toma la primera columna
-                if (drv.DataView.Table.Columns.Contains("idSeccion"))
-                    idSeccion = drv["idSeccion"]?.ToString();
-                else
-                    idSeccion = drv[0]?.ToString();
-            }
-            else
-            {
-                idSeccion = val.ToString();
-            }
-
-            if (string.IsNullOrWhiteSpace(idSeccion)) return;
-
+            int idSeccion = Convert.ToInt32(cboSeccion.SelectedValue);
             CargarSubSeccionesPorSeccion(idSeccion);
+
+            GenerarFormulaClasificatoria();
         }
 
         private void cboSubSeccion_SelectedIndexChanged(object sender, EventArgs e)
@@ -580,86 +539,8 @@ ORDER BY c.idControl DESC";
         private void btnGuardar_Click(object sender, EventArgs e)
         {
 
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(
-                    @"INSERT INTO Control (
-                anioControl, CodUniAdm, nomUniAdm, noExpediente, nExpediente,
-                fApertura, fCierre, nForjas, nLegajos, idSeccion, idSubSeccion,
-                idUbicacion, idInstituto, formClasificatoria, Observaciones,
-                idEstatus, idClasificacion
-            )
-            VALUES (
-                @anio, @codAdm, @nomAdm, @noExp, @nExp,
-                @fApertura, @fCierre, @forjas, @legajos, @seccion, @subSeccion,
-                @ubicacion, @instituto, @formClasif, @obs,
-                @estatus, @clasif)", cn))
-                {
-                    cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
-                    cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue);
-                    cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
-                    cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
-                    cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
-                    cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
-                    cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
-                    cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
-                    cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
+            Insertar();
 
-                    cmd.Parameters.AddWithValue("@seccion",
-                        cboSeccion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@subSeccion",
-                        cboSubSeccion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@ubicacion",
-                        cboUbicacion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@instituto",
-                        cboInstituto.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@estatus",
-                        cboEstatus.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@clasif",
-                        cboClasificacion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@formClasif", txtFormulaClasificatoria.Text);
-                    cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
-
-                    cn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageBox.Show("Registro guardado correctamente.");
-                CargarTabla();
-                LimpiarCampos();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al guardar:\n" + ex.Message);
-            }
-
-        }
-
-        private void LimpiarCampos()
-        {
-            txtnExpediente.Clear();
-            txtnExpendiente.Clear();
-            txtFojas.Clear();
-            txtLegajos.Clear();
-            txtObservaciones.Clear();
-            txtFormulaClasificatoria.Clear();
-
-            cboAño.SelectedIndex = -1;
-            cboSeccion.SelectedIndex = -1;
-            cboSubSeccion.SelectedIndex = -1;
-            cboUbicacion.SelectedIndex = -1;
-            cboCodUnidAdmin.SelectedIndex = -1;
-            cboNombUniAdmin.SelectedIndex = -1;
-
-            dtpfApertura.Value = DateTime.Now;
-            dtpfCierre.Value = DateTime.Now;
         }
 
         private void cboInstituto_SelectedIndexChanged(object sender, EventArgs e)
@@ -669,86 +550,13 @@ ORDER BY c.idControl DESC";
 
         private void dgvControl_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-           
+
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
         {
 
-            if (string.IsNullOrWhiteSpace(txtID.Text))
-            {
-                MessageBox.Show("Selecciona un registro para editar.");
-                return;
-            }
-
-            try
-            {
-                using (SqlConnection cn = new SqlConnection(connectionString))
-                using (SqlCommand cmd = new SqlCommand(
-                    @"UPDATE Control SET
-                anioControl = @anio,
-                CodUniAdm = @codAdm,
-                nomUniAdm = @nomAdm,
-                noExpediente = @noExp,
-                nExpediente = @nExp,
-                fApertura = @fApertura,
-                fCierre = @fCierre,
-                nForjas = @forjas,
-                nLegajos = @legajos,
-                idSeccion = @seccion,
-                idSubSeccion = @subSeccion,
-                idUbicacion = @ubicacion,
-                idInstituto = @instituto,
-                formClasificatoria = @formClasif,
-                Observaciones = @obs,
-                idEstatus = @estatus,
-                idClasificacion = @clasif
-            WHERE idControl = @id", cn))
-                {
-                    cmd.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
-                    cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
-                    cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue?.ToString());
-                    cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
-                    cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
-                    cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
-                    cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
-                    cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
-                    cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
-                    cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
-
-                    cmd.Parameters.AddWithValue("@seccion",
-                        cboSeccion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@subSeccion",
-                        cboSubSeccion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@ubicacion",
-                        cboUbicacion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@instituto",
-                        cboInstituto.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@estatus",
-                        cboEstatus.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@clasif",
-                        cboClasificacion.SelectedValue ?? (object)DBNull.Value);
-
-                    cmd.Parameters.AddWithValue("@formClasif", txtFormulaClasificatoria.Text);
-                    cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
-
-                    cn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageBox.Show("Registro actualizado correctamente.");
-                CargarTabla();
-                //LimpiarCampos();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al editar:\n" + ex.Message);
-            }
+           Editar();
 
         }
 
@@ -783,7 +591,7 @@ ORDER BY c.idControl DESC";
             // SECCIÓN
             if (row.Cells["idSeccion"].Value != DBNull.Value)
                 cboSeccion.SelectedValue = row.Cells["idSeccion"].Value;
-            
+
 
             // SUBSECCIÓN
             if (row.Cells["idSubSeccion"].Value != DBNull.Value)
@@ -808,8 +616,304 @@ ORDER BY c.idControl DESC";
             // FORMULA Y OBSERVACIONES
             txtFormulaClasificatoria.Text = row.Cells["formClasificatoria"].Value.ToString();
             txtObservaciones.Text = row.Cells["Observaciones"].Value.ToString();
+
+        }
+
         
-    }
+        private void btnLimpiar_Click(object sender, EventArgs e)
+        {
+            LimpiarCampos();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            Eliminar();
+        }
+
+        private void Eliminar()
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Selecciona un registro para eliminar.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult confirm = MessageBox.Show(
+                "¿Estás seguro de eliminar este registro?\nEsta acción no se puede deshacer.",
+                "Confirmar eliminación",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (confirm != DialogResult.Yes)
+                return;
+
+            string datosAntes = "";
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    cn.Open();
+
+                    // 1️⃣ Datos antes
+                    using (SqlCommand cmdSelect = new SqlCommand(
+                        "SELECT anioControl, CodUniAdm, noExpediente FROM Control WHERE idControl = @id", cn))
+                    {
+                        cmdSelect.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+
+                        using (SqlDataReader dr = cmdSelect.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                datosAntes =
+                                    $"Año={dr["anioControl"]}, Unidad={dr["CodUniAdm"]}, Expediente={dr["noExpediente"]}";
+                            }
+                        }
+                    }
+
+                    // 2️⃣ Delete
+                    using (SqlCommand cmdDelete = new SqlCommand(
+                        "DELETE FROM Control WHERE idControl = @id", cn))
+                    {
+                        cmdDelete.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+                        cmdDelete.ExecuteNonQuery();
+                    }
+                }
+
+                // 🔴 HISTORIAL (DELETE)
+                HistorialHelper.RegistrarCambio(
+                    "Control",
+                    txtID.Text,
+                    "DELETE",
+                    datosAntes,
+                    null
+                );
+
+                MessageBox.Show("Registro eliminado correctamente.",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarTabla();
+                LimpiarCampos();
+                txtID.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar:\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void Insertar()
+        {
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                using (SqlCommand cmd = new SqlCommand(
+                    @"INSERT INTO Control (
+                anioControl, CodUniAdm, nomUniAdm, noExpediente, nExpediente,
+                fApertura, fCierre, nForjas, nLegajos,
+                idSeccion, idSubSeccion, idUbicacion, idInstituto,
+                formClasificatoria, Observaciones, idEstatus, idClasificacion
+            )
+            VALUES (
+                @anio, @codAdm, @nomAdm, @noExp, @nExp,
+                @fApertura, @fCierre, @forjas, @legajos,
+                @seccion, @subSeccion, @ubicacion, @instituto,
+                @formClasif, @obs, @estatus, @clasif
+            )", cn))
+                {
+                    // =====================
+                    // DATOS NORMALES
+                    // =====================
+                    cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
+                    cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue?.ToString());
+                    cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
+                    cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
+                    cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
+                    cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
+                    cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
+                    cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
+                    cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
+
+                    // =====================
+                    // 🔥 FOREIGN KEYS (INT)
+                    // =====================
+                    cmd.Parameters.AddWithValue("@seccion",
+                        cboSeccion.SelectedValue ?? (object)DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@subSeccion",
+                        cboSubSeccion.SelectedValue ?? (object)DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@ubicacion",
+                        cboUbicacion.SelectedValue ?? (object)DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@instituto",
+                        cboInstituto.SelectedValue ?? (object)DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@estatus",
+                        cboEstatus.SelectedValue ?? (object)DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@clasif",
+                        cboClasificacion.SelectedValue ?? (object)DBNull.Value);
+
+                    // =====================
+                    // EXTRA
+                    // =====================
+                    cmd.Parameters.AddWithValue("@formClasif", txtFormulaClasificatoria.Text);
+                    cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
+
+                    cn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+
+                // =====================
+                // 🔴 HISTORIAL (INSERT)
+                // =====================
+                HistorialHelper.RegistrarCambio(
+                    "Control",
+                    "NUEVO",
+                    "INSERT",
+                    null,
+                    $"Año={cboAño.Text}, Sección={cboSeccion.Text}, Expediente={txtnExpediente.Text}"
+                );
+
+                MessageBox.Show("Registro guardado correctamente.",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                CargarTabla();
+                LimpiarCampos();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar:\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+
+
+        private void Editar()
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Selecciona un registro para editar.");
+                return;
+            }
+
+            string datosAntes = "";
+
+            try
+            {
+                using (SqlConnection cn = new SqlConnection(connectionString))
+                {
+                    cn.Open();
+
+                    // 1️⃣ Obtener datos antes
+                    using (SqlCommand cmdSelect = new SqlCommand(
+                        "SELECT anioControl, CodUniAdm, noExpediente FROM Control WHERE idControl = @id", cn))
+                    {
+                        cmdSelect.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+
+                        using (SqlDataReader dr = cmdSelect.ExecuteReader())
+                        {
+                            if (dr.Read())
+                            {
+                                datosAntes =
+                                    $"Año={dr["anioControl"]}, Unidad={dr["CodUniAdm"]}, Expediente={dr["noExpediente"]}";
+                            }
+                        }
+                    }
+
+                    // 2️⃣ Update
+                    using (SqlCommand cmd = new SqlCommand(
+                        @"UPDATE Control SET
+                    anioControl = @anio,
+                    CodUniAdm = @codAdm,
+                    nomUniAdm = @nomAdm,
+                    noExpediente = @noExp,
+                    nExpediente = @nExp,
+                    fApertura = @fApertura,
+                    fCierre = @fCierre,
+                    nForjas = @forjas,
+                    nLegajos = @legajos,
+                    idSeccion = @seccion,
+                    idSubSeccion = @subSeccion,
+                    idUbicacion = @ubicacion,
+                    idInstituto = @instituto,
+                    formClasificatoria = @formClasif,
+                    Observaciones = @obs,
+                    idEstatus = @estatus,
+                    idClasificacion = @clasif
+                WHERE idControl = @id", cn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
+                        cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
+                        cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue);
+                        cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
+                        cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
+                        cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
+                        cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
+                        cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
+                        cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
+                        cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
+                        cmd.Parameters.AddWithValue("@seccion", cboSeccion.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@subSeccion", cboSubSeccion.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@ubicacion", cboUbicacion.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@instituto", cboInstituto.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@estatus", cboEstatus.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@clasif", cboClasificacion.SelectedValue ?? (object)DBNull.Value);
+                        cmd.Parameters.AddWithValue("@formClasif", txtFormulaClasificatoria.Text);
+                        cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                // 🔴 HISTORIAL (UPDATE)
+                HistorialHelper.RegistrarCambio(
+                    "Control",
+                    txtID.Text,
+                    "UPDATE",
+                    datosAntes,
+                    $"Año={cboAño.Text}, Unidad={cboCodUnidAdmin.Text}, Expediente={txtnExpediente.Text}"
+                );
+
+                MessageBox.Show("Registro actualizado correctamente.");
+                CargarTabla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al editar:\n" + ex.Message);
+            }
+        }
+
+
+        private void LimpiarCampos()
+        {
+            txtnExpediente.Clear();
+            txtnExpendiente.Clear();
+            txtFojas.Clear();
+            txtLegajos.Clear();
+            txtObservaciones.Clear();
+            txtFormulaClasificatoria.Clear();
+
+            cboAño.SelectedIndex = -1;
+            cboSeccion.SelectedIndex = -1;
+            cboSubSeccion.SelectedIndex = -1;
+            cboUbicacion.SelectedIndex = -1;
+            cboCodUnidAdmin.SelectedIndex = -1;
+            cboNombUniAdmin.SelectedIndex = -1;
+            cboEstatus.SelectedIndex = -1;
+            cboClasificacion.SelectedIndex = -1;
+
+            dtpfApertura.Value = DateTime.Now;
+            dtpfCierre.Value = DateTime.Now;
+        }
+
     }
 
     }
