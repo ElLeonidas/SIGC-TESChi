@@ -20,7 +20,13 @@ namespace SIGC_TESChi
         private PrintDocument printDocument1 = new PrintDocument();
         private Bitmap bmpCaratula; // aquí guardaremos la imagen del panel
 
-     
+        private Dictionary<Label, Color> backColorsLabels = new Dictionary<Label, Color>();
+        private Dictionary<Label, BorderStyle> borderLabels = new Dictionary<Label, BorderStyle>();
+        private Dictionary<Control, bool> estadoVisibilidad = new Dictionary<Control, bool>();
+
+
+
+
         string connectionString =
                @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
@@ -36,6 +42,34 @@ namespace SIGC_TESChi
             printDocument1.PrintPage += printDocument1_PrintPage;
 
         }
+
+        private void GuardarYOcultarControlesParaImpresion()
+        {
+            estadoVisibilidad.Clear();
+
+            foreach (Control c in pnlCaratula.Controls)
+            {
+                estadoVisibilidad[c] = c.Visible;
+
+                // SOLO ocultamos controles que YA tienen Label de impresión
+                if (c is ComboBox || c is DateTimePicker)
+                {
+                    c.Visible = false;
+                }
+            }
+        }
+
+
+        private void RestaurarControlesDespuesImpresion()
+        {
+            foreach (var item in estadoVisibilidad)
+            {
+                item.Key.Visible = item.Value;
+            }
+
+            estadoVisibilidad.Clear();
+        }
+
 
         private void label3_Click(object sender, EventArgs e)
         {
@@ -56,6 +90,9 @@ namespace SIGC_TESChi
         {
             CargarSecciones();
             CargarSubsecciones();
+            CargarCodigoUnidadAdministrativa();
+            CargarNombreUnidadAdministrativa();
+            CargarFondoDocumental();
         }
 
         private void label13_Click(object sender, EventArgs e)
@@ -116,7 +153,65 @@ namespace SIGC_TESChi
         private void FormCaratula_Load(object sender, EventArgs e)
         {
             CargarSecciones();
-            CargarSubsecciones(); // Si quieres todas juntas al inicio
+            CargarSubsecciones();
+        }
+
+        private void CargarCodigoUnidadAdministrativa()
+        {
+            try
+            {
+                cboCodigoUnidadAdministrativa.Items.Clear();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string q = "SELECT cUniAdmin FROM UnidadAdministrativa ORDER BY cUniAdmin";
+                    SqlCommand cmd = new SqlCommand(q, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        // Sólo el ID
+                        cboCodigoUnidadAdministrativa.Items.Add(dr["cUniAdmin"].ToString());
+                    }
+                }
+
+                cboCodigoUnidadAdministrativa.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar Codigo de Unidad Administrativa: " + ex.Message);
+            }
+        }
+
+        private void CargarNombreUnidadAdministrativa()
+        {
+            try
+            {
+                cboNombreUnidadAdministrativa.Items.Clear();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string q = "SELECT nUniAdmin FROM UnidadAdministrativa ORDER BY nUniAdmin";
+                    SqlCommand cmd = new SqlCommand(q, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        // Sólo el ID
+                        cboNombreUnidadAdministrativa.Items.Add(dr["nUniAdmin"].ToString());
+                    }
+                }
+
+                cboNombreUnidadAdministrativa.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar Nombre de Unidad Administrativa: " + ex.Message);
+            }
         }
 
         private void CargarSecciones()
@@ -129,14 +224,14 @@ namespace SIGC_TESChi
                 {
                     con.Open();
 
-                    string q = "SELECT idSeccion FROM Seccion ORDER BY idSeccion";
+                    string q = "SELECT claveSeccion FROM Seccion ORDER BY claveSeccion";
                     SqlCommand cmd = new SqlCommand(q, con);
                     SqlDataReader dr = cmd.ExecuteReader();
 
                     while (dr.Read())
                     {
                         // Sólo el ID
-                        cboSeccion.Items.Add(dr["idSeccion"].ToString());
+                        cboSeccion.Items.Add(dr["claveSeccion"].ToString());
                     }
                 }
 
@@ -160,14 +255,14 @@ namespace SIGC_TESChi
                 {
                     con.Open();
 
-                    string q = "SELECT idSubSeccion FROM SubSeccion ORDER BY idSubSeccion";
+                    string q = "SELECT claveSubSeccion FROM SubSeccion ORDER BY claveSubSeccion";
                     SqlCommand cmd = new SqlCommand(q, con);
                     SqlDataReader dr = cmd.ExecuteReader();
 
                     while (dr.Read())
                     {
                         // Sólo el ID
-                        cboSubSeccion.Items.Add(dr["idSubSeccion"].ToString());
+                        cboSubSeccion.Items.Add(dr["claveSubSeccion"].ToString());
                     }
                 }
 
@@ -176,6 +271,35 @@ namespace SIGC_TESChi
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar subsecciones: " + ex.Message);
+            }
+        }
+
+        private void CargarFondoDocumental()
+        {
+            try
+            {
+                cboFondoDocumental.Items.Clear();
+
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    con.Open();
+
+                    string q = "SELECT dInstituto FROM Instituto ORDER BY dInstituto";
+                    SqlCommand cmd = new SqlCommand(q, con);
+                    SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        // Sólo el ID
+                        cboFondoDocumental.Items.Add(dr["dInstituto"].ToString());
+                    }
+                }
+
+                cboFondoDocumental.SelectedIndex = -1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cargar Fondo Documental: " + ex.Message);
             }
         }
 
@@ -217,12 +341,14 @@ namespace SIGC_TESChi
         private void btnImprimir_Click(object sender, EventArgs e)
         {
             PrepararVistaParaImpresion();
-
-            // 2. Capturar el panel completo ya con labels en lugar de combos
+            PrepararLabelsParaImpresion();
+            GuardarYOcultarControlesParaImpresion();  
             CapturarPanelCompleto();
-
-            // 3. Restaurar vista normal para el usuario
+            RestaurarLabelsDespuesImpresion();
+            RestaurarControlesDespuesImpresion();      
             RestaurarVistaNormal();
+
+
 
             if (bmpCaratula == null)
             {
@@ -345,70 +471,171 @@ namespace SIGC_TESChi
 
         private void PrepararVistaParaImpresion()
         {
-            // ====== COMBOS ======
-            // Sección
-            if (cboSeccion.SelectedItem != null)
-                lblSeccionImpresion.Text = cboSeccion.SelectedItem.ToString();
-            else
-                lblSeccionImpresion.Text = "";
+            // ====== SECCIÓN ======
+            lblSeccionImpresion.Text = cboSeccion.SelectedItem != null
+                ? cboSeccion.SelectedItem.ToString()
+                : "";
 
             lblSeccionImpresion.Location = cboSeccion.Location;
             lblSeccionImpresion.Size = cboSeccion.Size;
+            lblSeccionImpresion.BackColor = Color.Transparent;
+            lblSeccionImpresion.BorderStyle = BorderStyle.None;
             lblSeccionImpresion.Visible = true;
             cboSeccion.Visible = false;
 
-            // Subsección
-            if (cboSubSeccion.SelectedItem != null)
-                lblSubSeccionImpresion.Text = cboSubSeccion.SelectedItem.ToString();
-            else
-                lblSubSeccionImpresion.Text = "";
+            // ====== SUBSECCIÓN ======
+            lblSubSeccionImpresion.Text = cboSubSeccion.SelectedItem != null
+                ? cboSubSeccion.SelectedItem.ToString()
+                : "";
 
             lblSubSeccionImpresion.Location = cboSubSeccion.Location;
             lblSubSeccionImpresion.Size = cboSubSeccion.Size;
+            lblSubSeccionImpresion.BackColor = Color.Transparent;
+            lblSubSeccionImpresion.BorderStyle = BorderStyle.None;
             lblSubSeccionImpresion.Visible = true;
             cboSubSeccion.Visible = false;
 
-            // ====== DATE TIME PICKERS ======
-            // Ejemplo: dtpFechaRecepcion
-            // Formato de fecha como la quieras ver en el formato
+            // ====== FECHA APERTURA ======
             lblFechaRecepcionImpresion.Text = dtpApertura.Value.ToString("dd/MM/yyyy");
             lblFechaRecepcionImpresion.Location = dtpApertura.Location;
             lblFechaRecepcionImpresion.Size = dtpApertura.Size;
+            lblFechaRecepcionImpresion.BackColor = Color.Transparent;
+            lblFechaRecepcionImpresion.BorderStyle = BorderStyle.None;
             lblFechaRecepcionImpresion.Visible = true;
             dtpApertura.Visible = false;
 
-            // Ejemplo: dtpFechaDocumento
+            // ====== FECHA CIERRE ======
             lblFechaDocumentoImpresion.Text = dtpCierre.Value.ToString("dd/MM/yyyy");
             lblFechaDocumentoImpresion.Location = dtpCierre.Location;
             lblFechaDocumentoImpresion.Size = dtpCierre.Size;
+            lblFechaDocumentoImpresion.BackColor = Color.Transparent;
+            lblFechaDocumentoImpresion.BorderStyle = BorderStyle.None;
             lblFechaDocumentoImpresion.Visible = true;
             dtpCierre.Visible = false;
-
-            // Si tienes más DateTimePicker, repites el mismo patrón
         }
+
+
 
 
         private void RestaurarVistaNormal()
         {
-            // Combos
+            // ===== LABELS DE IMPRESIÓN =====
             lblSeccionImpresion.Visible = false;
-            cboSeccion.Visible = true;
-
             lblSubSeccionImpresion.Visible = false;
+            lblFechaRecepcionImpresion.Visible = false;
+            lblFechaDocumentoImpresion.Visible = false;
+
+            // ===== COMBOS =====
+            cboSeccion.Visible = true;
             cboSubSeccion.Visible = true;
 
-            // DateTimePicker
-            lblFechaRecepcionImpresion.Visible = false;
+            cboFondoDocumental.Visible = true;
+            cboCodigoUnidadAdministrativa.Visible = true;
+            cboNombreUnidadAdministrativa.Visible = true;
+
+            // ===== TEXTBOX =====
+            txtNombreExpediente.Visible = true;
+            txtNoExpediente.Visible = true;
+            txtNoLegajo.Visible = true;
+            txtTLegajos.Visible = true;
+            txtAsunto.Visible = true;
+            txtTDocumentosCierre.Visible = true;
+            txtSubfondoDocumental.Visible = true;
+            txtSerieDocumental.Visible = true;
+            txtSubserieDocumental.Visible = true;
+            txtObservaciones.Visible = true;
+
+            // ===== CHECK / COMBO =====
+            cboxAdministrativo.Visible = true;
+            cboxJuridicoLegal.Visible = true;
+            cboContable.Visible = true;
+
+            cboxArchivoTramite.Visible = true;
+            cboxArchivoConcentracion.Visible = true;
+            cboxArchivoHistorico.Visible = true;
+
+            cboxReservada.Visible = true;
+            cboxConfidencial.Visible = true;
+
+            // ===== DATE =====
             dtpApertura.Visible = true;
-
-            lblFechaDocumentoImpresion.Visible = false;
             dtpCierre.Visible = true;
-
-            // Repite con los demás controles que “maquilles” para impresión
         }
 
 
+
+        private void PrepararLabelsParaImpresion()
+        {
+            backColorsLabels.Clear();
+            borderLabels.Clear();
+
+            foreach (Control c in pnlCaratula.Controls)
+            {
+                if (c is Label lbl)
+                {
+                    // Guardar estado original
+                    backColorsLabels[lbl] = lbl.BackColor;
+                    borderLabels[lbl] = lbl.BorderStyle;
+
+                    // Quitar cuadro
+                    lbl.BackColor = Color.Transparent;
+                    lbl.BorderStyle = BorderStyle.None;
+                }
+            }
+        }
+
+
+        private void RestaurarLabelsDespuesImpresion()
+        {
+            foreach (var lbl in backColorsLabels.Keys)
+            {
+                lbl.BackColor = Color.Transparent;
+                lbl.BorderStyle = BorderStyle.None;
+            }
+
+            backColorsLabels.Clear();
+            borderLabels.Clear();
+        }
+
+
+
+
         private void label35_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox7_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void maskedTextBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboxArchivoTramite_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtNombreExpediente_TextChanged(object sender, EventArgs e)
         {
 
         }
