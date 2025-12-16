@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Microsoft.VisualBasic.FileIO;
 
 namespace SIGC_TESChi
 {
@@ -13,10 +18,30 @@ namespace SIGC_TESChi
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
+        DataTable dtImportado;
+        DataTable dtValidos;
+        DataTable dtErrores;
+
+        Dictionary<string, int> dicSeccion;
+        Dictionary<string, int> dicSubSeccion;
+        Dictionary<string, int> dicInstituto;
+        Dictionary<string, int> dicUbicacion;
+        Dictionary<string, int> dicEstatus;
+        Dictionary<string, int> dicClasificacion;
+
+        HashSet<string> expedientesBD;
+
+        HashSet<string> expedientesCSV = new HashSet<string>();
+
+        int totalRegistros = 0;
+        int validos = 0;
+        int errores = 0;
+        int duplicadosCSV = 0;
+        int duplicadosBD = 0;
 
         public CArchivos()
         {
-            InitializeComponent();
+                InitializeComponent();
 
 
             //dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -51,6 +76,297 @@ namespace SIGC_TESChi
 
         }
 
+        
+
+
+
+        private void InicializarTablas()
+        {
+            dtValidos = new DataTable();
+            dtErrores = new DataTable();
+
+            foreach (DataGridViewColumn col in dgvControl.Columns)
+            {
+                dtValidos.Columns.Add(col.HeaderText);
+                dtErrores.Columns.Add(col.HeaderText);
+            }
+
+            dtErrores.Columns.Add("MotivoError");
+        }
+
+
+        private void InicializarContadores()
+        {
+            totalRegistros = validos = errores = duplicadosCSV = duplicadosBD = 0;
+        }
+
+
+        private void CargarExpedientesBD()
+        {
+            expedientesBD = new HashSet<string>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(
+                    "SELECT NumeroExpediente FROM Expediente", con);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                    expedientesBD.Add(dr[0].ToString().Trim());
+            }
+        }
+
+
+
+        private void MostrarResumen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("📊 RESUMEN DE IMPORTACIÓN\n");
+            sb.AppendLine($"📄 Total de registros leídos: {totalRegistros}");
+            sb.AppendLine($"✅ Registros válidos: {validos}");
+            sb.AppendLine($"❌ Registros con error: {errores}");
+            sb.AppendLine($"🚫 Duplicados en archivo: {duplicadosCSV}");
+            sb.AppendLine($"🚫 Duplicados en base de datos: {duplicadosBD}");
+
+            if (errores > 0)
+                sb.AppendLine("\n📁 Se generó un archivo CSV con los errores.");
+
+            MessageBox.Show(
+                sb.ToString(),
+                "Resultado de la importación",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+        }
+
+
+        private void InsertarDatos()
+        {
+            if (dtValidos.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay registros válidos.");
+                return;
+            }
+
+            if (MessageBox.Show(
+                $"Se insertarán {dtValidos.Rows.Count} registros.\n¿Desea continuar?",
+                "Confirmar",
+                MessageBoxButtons.YesNo) != DialogResult.Yes)
+                return;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlTransaction tx = con.BeginTransaction();
+
+                try
+                {
+                    foreach (DataRow row in dtValidos.Rows)
+                    {
+                        SqlCommand cmd = new SqlCommand("SP_InsertarExpediente", con, tx);
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue("@NumeroExpediente", row[3]);
+                        cmd.Parameters.AddWithValue("@idSeccion", dicSeccion[row[9].ToString().Trim()]);
+                        cmd.Parameters.AddWithValue("@idSubSeccion", dicSubSeccion[row[10].ToString().Trim()]);
+                        cmd.Parameters.AddWithValue("@idInstitucion", dicInstituto[row[11].ToString().Trim()]);
+                        cmd.Parameters.AddWithValue("@idUbicacion", dicUbicacion[row[12].ToString().Trim()]);
+                        cmd.Parameters.AddWithValue("@idEstatus", dicEstatus[row[13].ToString().Trim()]);
+                        cmd.Parameters.AddWithValue("@idClasificacion", dicClasificacion[row[14].ToString().Trim()]);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    tx.Commit();
+                    MessageBox.Show("Importación completada con éxito.");
+                }
+                catch (Exception ex)
+                {
+                    tx.Rollback();
+                    MessageBox.Show("Error al insertar: " + ex.Message);
+                }
+            }
+        }
+
+
+
+
+        private void ImportarCSV()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Archivos CSV (*.csv)|*.csv";
+
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
+            dtImportado = new DataTable();
+
+            for (int i = 0; i < 17; i++)
+                dtImportado.Columns.Add("C" + i);
+
+
+
+            using (StreamReader sr = new StreamReader(ofd.FileName, Encoding.UTF8))
+            {
+                while (!sr.EndOfStream)
+                {
+                    string[] fila = sr.ReadLine().Split(new char[] { ',', ';', '\t' , ' ' });
+
+                    if (fila.Length == 17)
+                        dtImportado.Rows.Add(fila);
+                }
+            }
+
+            MessageBox.Show("Filas cargadas: " + dtImportado.Rows.Count);
+
+            dgvControl.DataSource = dtImportado;
+        }
+
+
+        private void ValidarDatos()
+        {
+            if (dtImportado == null || dtImportado.Rows.Count == 0)
+            {
+                MessageBox.Show("No hay datos para validar.");
+                return;
+            }
+
+            if (dtImportado.Columns.Count != 17)
+            {
+                MessageBox.Show("El archivo no cumple con el formato esperado (17 columnas).");
+                return;
+            }
+
+            PrepararTablas();
+            CargarCatalogos();
+            CargarExpedientesBD();
+
+            HashSet<string> expedientesCSV = new HashSet<string>();
+
+            foreach (DataRow row in dtImportado.Rows)
+            {
+                string error = "";
+                string expediente = row[3].ToString().Trim();
+
+                if (string.IsNullOrWhiteSpace(expediente))
+                    error += "No. Expediente vacío. ";
+
+                if (!expedientesCSV.Add(expediente))
+                    error += "Duplicado en archivo. ";
+
+                if (expedientesBD.Contains(expediente))
+                    error += "Ya existe en BD. ";
+
+                if (!dicSeccion.ContainsKey(row[9].ToString().Trim()))
+                    error += "Sección inválida. ";
+
+                if (!dicSubSeccion.ContainsKey(row[10].ToString().Trim()))
+                    error += "Subsección inválida. ";
+
+                if (!dicInstituto.ContainsKey(row[11].ToString().Trim()))
+                    error += "Instituto inválido. ";
+
+                if (!dicUbicacion.ContainsKey(row[12].ToString().Trim()))
+                    error += "Ubicación inválida. ";
+
+                if (!dicEstatus.ContainsKey(row[13].ToString().Trim()))
+                    error += "Estatus inválido. ";
+
+                if (!dicClasificacion.ContainsKey(row[14].ToString().Trim()))
+                    error += "Clasificación inválida. ";
+
+                if (error != "")
+                    dtErrores.Rows.Add(row.ItemArray.Concat(new[] { error }).ToArray());
+                else
+                    dtValidos.Rows.Add(row.ItemArray);
+            }
+
+            dgvControl.DataSource = dtErrores.Rows.Count > 0 ? dtErrores : dtValidos;
+
+            if (dtErrores.Rows.Count > 0)
+                ExportarErroresCSV();
+
+            MessageBox.Show(
+                $"Validación finalizada\n" +
+                $"✔ Válidos: {dtValidos.Rows.Count}\n" +
+                $"❌ Errores: {dtErrores.Rows.Count}"
+            );
+        }
+
+
+        private void MarcarErrores()
+        {
+            foreach (DataGridViewRow row in dgvControl.Rows)
+            {
+                if (row.Cells.Count > 17) // columna Error
+                {
+                    row.DefaultCellStyle.BackColor = Color.LightCoral;
+                }
+            }
+        }
+
+        private void ExportarErroresCSV()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV (*.csv)|*.csv";
+            sfd.FileName = "Errores_Importacion.csv";
+
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+            using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
+            {
+                foreach (DataRow row in dtErrores.Rows)
+                    sw.WriteLine(string.Join(";", row.ItemArray));
+            }
+        }
+
+
+
+
+
+        private void CargarCatalogos()
+        {
+            dicSeccion = ObtenerDiccionario("Seccion", "Nombre", "idSeccion");
+            dicSubSeccion = ObtenerDiccionario("SubSeccion", "Nombre", "idSubSeccion");
+            dicInstituto = ObtenerDiccionario("Institucion", "Nombre", "idInstitucion");
+            dicUbicacion = ObtenerDiccionario("Ubicacion", "Nombre", "idUbicacion");
+            dicEstatus = ObtenerDiccionario("Estatus", "Nombre", "idEstatus");
+            dicClasificacion = ObtenerDiccionario("Clasificacion", "Nombre", "idClasificacion");
+        }
+
+
+        private Dictionary<string, int> ObtenerDiccionario(string tabla, string campoTexto, string campoID)
+        {
+            Dictionary<string, int> dic = new Dictionary<string, int>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand(
+                    $"SELECT {campoID}, {campoTexto} FROM {tabla}", con);
+
+                SqlDataReader dr = cmd.ExecuteReader();
+                while (dr.Read())
+                    dic[dr[campoTexto].ToString().Trim()] = Convert.ToInt32(dr[campoID]);
+            }
+
+            return dic;
+        }
+
+
+        private void PrepararTablas()
+        {
+            dtValidos = dtImportado.Clone();
+            dtErrores = dtImportado.Clone();
+            dtErrores.Columns.Add("Error", typeof(string));
+        }
+
+
+
+
+
+
         private void CargarTabla()
         {
             try
@@ -70,30 +386,22 @@ namespace SIGC_TESChi
     c.nForjas,
     c.nLegajos,
 
-    -- IDS PARA LOS COMBOS
-    c.idSeccion,
-    c.idSubSeccion,
-    c.idUbicacion,
-    c.idInstituto,
-    c.idEstatus,
-    c.idClasificacion,
-
-    -- DESCRIPCIONES
-    s.dSeccion AS Seccion,
-    ss.dSubSeccion AS SubSeccion,
-    u.dUbicacion AS Ubicacion,
-    i.dInstituto AS Instituto,
-    e.dEstatus AS Estatus,
-    cl.dClasificacion AS Clasificacion,
+    -- SUSTITUCIÓN DE IDS (MISMO ORDEN)
+    s.claveSeccion        AS claveSeccion,
+    ss.claveSubSeccion    AS claveSubSeccion,
+    i.claveInstituto      AS claveInstituto,
+    u.dUbicacion          AS dUbicacion,
+    e.dEstatus            AS dEstatus,
+    cl.dClasificacion     AS dClasificacion,
 
     c.formClasificatoria,
     c.Observaciones
 FROM Control c
-LEFT JOIN Seccion s ON c.idSeccion = s.idSeccion
-LEFT JOIN SubSeccion ss ON c.idSubSeccion = ss.idSubSeccion
-LEFT JOIN Ubicacion u ON c.idUbicacion = u.idUbicacion
-LEFT JOIN Instituto i ON c.idInstituto = i.idInstituto
-LEFT JOIN Estatus e ON c.idEstatus = e.idEstatus
+LEFT JOIN Seccion s        ON c.idSeccion = s.idSeccion
+LEFT JOIN SubSeccion ss    ON c.idSubSeccion = ss.idSubSeccion
+LEFT JOIN Instituto i      ON c.idInstituto = i.idInstituto
+LEFT JOIN Ubicacion u      ON c.idUbicacion = u.idUbicacion
+LEFT JOIN Estatus e        ON c.idEstatus = e.idEstatus
 LEFT JOIN Clasificacion cl ON c.idClasificacion = cl.idClasificacion
 ORDER BY c.idControl DESC";
 
@@ -914,7 +1222,159 @@ ORDER BY c.idControl DESC";
             dtpfCierre.Value = DateTime.Now;
         }
 
+        private void ExportarCSV()
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Archivos CSV (*.csv)|*.csv";
+            sfd.FileName = "Control.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                // Encabezados
+                foreach (DataGridViewColumn col in dgvControl.Columns)
+                    sb.Append(col.HeaderText + ";");
+
+                sb.AppendLine();
+
+                // Filas
+                foreach (DataGridViewRow row in dgvControl.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        foreach (DataGridViewCell cell in row.Cells)
+                            sb.Append(cell.Value + ";");
+
+                        sb.AppendLine();
+                    }
+                }
+
+                File.WriteAllText(sfd.FileName, sb.ToString(), Encoding.UTF8);
+                MessageBox.Show("✅ Archivo CSV generado correctamente.");
+            }
+        }
+
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtID_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label14_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label18_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label17_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label15_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtnExpediente_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtnExpendiente_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboEstatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboClasificacion_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboAño_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtLegajos_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            ExportarCSV();
+        }
+
+        private void btnImportar_Click(object sender, EventArgs e)
+        {
+            ImportarCSV();
+        }
+
+        private void btnValidar_Click(object sender, EventArgs e)
+        {
+            ValidarDatos();
+
+            MessageBox.Show(
+                $"Validación terminada:\n" +
+                $"✔ Válidos: {dtValidos.Rows.Count}\n" +
+                $"❌ Errores: {dtErrores.Rows.Count}"
+            );
+
+            dgvControl.DataSource = dtErrores.Rows.Count > 0 ? dtErrores : dtValidos;
+        }
+
+        private void btnInsertar_Click(object sender, EventArgs e)
+        {
+            InsertarDatos();
+        }
+    }
     }
 
-    }
+    
 
