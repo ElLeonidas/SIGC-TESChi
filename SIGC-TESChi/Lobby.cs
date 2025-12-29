@@ -344,6 +344,11 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error al resaltar fechas: " + ex.Message);
             }
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
 

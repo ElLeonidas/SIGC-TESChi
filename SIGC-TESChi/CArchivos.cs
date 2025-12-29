@@ -433,6 +433,11 @@ ORDER BY c.idControl DESC";
                     da.Fill(dt);
 
                     dgvControl.DataSource = dt; // Asignamos la tabla al DataGridView
+
+                    dgvControl.DefaultCellStyle.ForeColor = Color.Black;
+                    dgvControl.DefaultCellStyle.BackColor = Color.White;
+                    dgvControl.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+                    dgvControl.EnableHeadersVisualStyles = true;
                 }
             }
             catch (Exception ex)

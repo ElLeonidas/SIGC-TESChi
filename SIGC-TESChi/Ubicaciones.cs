@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace SIGC_TESChi
 {
@@ -100,6 +101,9 @@ namespace SIGC_TESChi
 
         private void CargarUbicaciones()
         {
+
+
+
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
@@ -109,6 +113,11 @@ namespace SIGC_TESChi
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     tablaUbicaciones.DataSource = dt;
+
+                    tablaUbicaciones.DefaultCellStyle.ForeColor = Color.Black;
+                    tablaUbicaciones.DefaultCellStyle.BackColor = Color.White;
+                    tablaUbicaciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+                    tablaUbicaciones.EnableHeadersVisualStyles = true;
                 }
             }
             catch (Exception ex)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -72,6 +73,11 @@ namespace SIGC_TESChi
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     tablaInstitucion.DataSource = dt;
+
+                    tablaInstitucion.DefaultCellStyle.ForeColor = Color.Black;
+                    tablaInstitucion.DefaultCellStyle.BackColor = Color.White;
+                    tablaInstitucion.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+                    tablaInstitucion.EnableHeadersVisualStyles = true;
                 }
             }
             catch (Exception ex)

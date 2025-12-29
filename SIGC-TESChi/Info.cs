@@ -12,9 +12,23 @@ namespace SIGC_TESChi
 {
     public partial class Info : UserControl
     {
+
+        public event Action<bool> ModoOscuroCambiado;
+
+
         public Info()
         {
             InitializeComponent();
+        }
+
+        private void Info_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboxModoOscuro_CheckedChanged(object sender, EventArgs e)
+        {
+            ModoOscuroCambiado?.Invoke(cboxModoOscuro.Checked);
         }
     }
 }

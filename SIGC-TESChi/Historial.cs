@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -109,12 +110,10 @@ namespace SIGC_TESChi
                         if (dgvHistorial.Columns["Llave"] != null)
                             dgvHistorial.Columns["Llave"].Visible = false;
 
-                        // 🎨 Estética recomendada
-                        dgvHistorial.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-                        dgvHistorial.ReadOnly = true;
-                        dgvHistorial.AllowUserToAddRows = false;
-                        dgvHistorial.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                        dgvHistorial.MultiSelect = false;
+                        dgvHistorial.DefaultCellStyle.ForeColor = Color.Black;
+                        dgvHistorial.DefaultCellStyle.BackColor = Color.White;
+                        dgvHistorial.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+                        dgvHistorial.EnableHeadersVisualStyles = true;
                     }
                 }
             }

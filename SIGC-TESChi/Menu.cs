@@ -8,96 +8,179 @@ namespace SIGC_TESChi
     {
         private ToolTip toolTip;
 
+        // 🔹 UserControls persistentes
+        private Lobby ucLobby;
+        private RUsuarios ucRUsuarios;
+        private CArchivos ucCArchivos;
+        private Secciones ucSecciones;
+        private Ubicaciones ucUbicaciones;
+        private Graficas ucGraficas;
+        private TipoUsuarios ucTipoUsuarios;
+        private SubSecciones ucSubSecciones;
+        private CaratulaExpediente ucCaratula;
+        private Historial ucHistorial;
+        private Institucion ucInstitucion;
+        private UnidadA ucUnidadA;
+        private Clasificacion ucClasificacion;
+        private Info ucInfo;
+
         public Menu()
         {
             InitializeComponent();
 
-            // Evitar que la ventana se agrande o cambie de tamaño
+            InicializarUserControls();   // 🔴 CLAVE
+            InicializarToolTips();
+
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-            // Inicializamos el ToolTip
-            toolTip = new ToolTip();
-            toolTip.AutoPopDelay = 5000;  // Visible 5 segundos
-            toolTip.InitialDelay = 200;   // Aparece tras 0.2 segundos
-            toolTip.ReshowDelay = 100;    // Retardo entre botones
-            toolTip.ShowAlways = true;    // Siempre visible
-
-            // Asignar eventos de mouse para mostrar tooltips
-            btnLobby.MouseEnter += (s, e) => toolTip.Show("Area de Recepcion", btnLobby);
-            btnLobby.MouseLeave += (s, e) => toolTip.Hide(btnLobby);
-
-            btnTipoUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Tipos de usuarios", btnTipoUsuarios);
-            btnTipoUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnTipoUsuarios);
-
-            btnRUsuarios.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Usuarios", btnRUsuarios);
-            btnRUsuarios.MouseLeave += (s, e) => toolTip.Hide(btnRUsuarios);
-
-            btnSecciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Secciones de los archivos", btnSecciones);
-            btnSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSecciones);
-
-            btnSubSecciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Subsecciones de los archivos", btnSubSecciones);
-            btnSubSecciones.MouseLeave += (s, e) => toolTip.Hide(btnSubSecciones);
-
-            btnInstitucion.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Instituciones", btnInstitucion);
-            btnInstitucion.MouseLeave += (s, e) => toolTip.Hide(btnInstitucion);
-
-            btnUbicaciones.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Ubicaciones de los Archivos", btnUbicaciones);
-            btnUbicaciones.MouseLeave += (s, e) => toolTip.Hide(btnUbicaciones);
-
-            btnUnidadA.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Unidad Administrativa", btnUnidadA);
-            btnUnidadA.MouseLeave += (s, e) => toolTip.Hide(btnUnidadA);
-
-            btnClasificacion.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar Clasificaciones", btnClasificacion);
-            btnClasificacion.MouseLeave += (s, e) => toolTip.Hide(btnClasificacion);
-
-            btnCArchivos.MouseEnter += (s, e) => toolTip.Show("Registrar y Consultar archivos del sistema", btnCArchivos);
-            btnCArchivos.MouseLeave += (s, e) => toolTip.Hide(btnCArchivos);
-
-            btnHistorial.MouseEnter += (s, e) => toolTip.Show("Consultar el Historial", btnHistorial);
-            btnHistorial.MouseLeave += (s, e) => toolTip.Hide(btnHistorial);
-
-            btnFormato.MouseEnter += (s, e) => toolTip.Show("Captura e Impresion de Portadas", btnFormato);
-            btnFormato.MouseLeave += (s, e) => toolTip.Hide(btnFormato);
-
-            btnEstadistica.MouseEnter += (s, e) => toolTip.Show("Consulta y Visualizar Graficas", btnEstadistica);
-            btnEstadistica.MouseLeave += (s, e) => toolTip.Hide(btnEstadistica);
-
-            btnInfo.MouseEnter += (s, e) => toolTip.Show("Consulta Informacion Extra del Programa", btnInfo);
-            btnInfo.MouseLeave += (s, e) => toolTip.Hide(btnInfo);
-
-            btnCerrarSesion.MouseEnter += (s, e) => toolTip.Show("Cerrar sesión", btnCerrarSesion);
-            btnCerrarSesion.MouseLeave += (s, e) => toolTip.Hide(btnCerrarSesion);
+            this.KeyPreview = true;
         }
+
+        private void InicializarUserControls()
+        {
+            ucLobby = new Lobby();
+            ucRUsuarios = new RUsuarios();
+            ucCArchivos = new CArchivos();
+            ucSecciones = new Secciones();
+            ucUbicaciones = new Ubicaciones();
+            ucGraficas = new Graficas();
+            ucTipoUsuarios = new TipoUsuarios();
+            ucSubSecciones = new SubSecciones();
+            ucCaratula = new CaratulaExpediente();
+            ucHistorial = new Historial();
+            ucInstitucion = new Institucion();
+            ucUnidadA = new UnidadA();
+            ucClasificacion = new Clasificacion();
+            ucInfo = new Info();
+
+            // Evento modo oscuro
+            ucInfo.ModoOscuroCambiado += Info_ModoOscuroCambiado;
+
+            // Agregar todos al panel
+            AgregarUC(ucLobby);
+            AgregarUC(ucRUsuarios);
+            AgregarUC(ucCArchivos);
+            AgregarUC(ucSecciones);
+            AgregarUC(ucUbicaciones);
+            AgregarUC(ucGraficas);
+            AgregarUC(ucTipoUsuarios);
+            AgregarUC(ucSubSecciones);
+            AgregarUC(ucCaratula);
+            AgregarUC(ucHistorial);
+            AgregarUC(ucInstitucion);
+            AgregarUC(ucUnidadA);
+            AgregarUC(ucClasificacion);
+            AgregarUC(ucInfo);
+
+            MostrarUC(ucLobby); // Vista inicial
+        }
+
+        private bool TienePermiso(UserControl uc)
+        {
+            int rol = SessionData.IdTipoUsuario;
+
+            if (uc == ucHistorial && rol == 3)
+                return false;
+
+            if (uc == ucTipoUsuarios && rol != 1)
+                return false;
+
+            if (uc == ucRUsuarios && rol != 1)
+                return false;
+
+            return true;
+        }
+
+
 
         private void Menu_Load(object sender, EventArgs e)
         {
-            // Carga el panel por defecto al iniciar
-            LoadPanel(new Lobby());
+            switch (SessionData.IdTipoUsuario)
+            {
+                case 1: // Administrador
+                        // Acceso total
+                    break;
+
+                case 2: // Licenciada
+                    btnRUsuarios.Enabled = false;
+                    btnTipoUsuarios.Enabled = false;
+                    break;
+
+                case 3: // Servicio
+                    btnRUsuarios.Enabled = false;
+                    btnTipoUsuarios.Enabled = false;
+                    btnHistorial.Enabled = false;
+                    break;
+            }
         }
 
-        // Método para cargar cualquier UserControl en el panel Categorias
-        private void LoadPanel(UserControl control)
+        // =========================
+        // 🔹 GESTIÓN DE USERCONTROL
+        // =========================
+
+        private void AgregarUC(UserControl uc)
         {
-            Categorias.Controls.Clear();      // Limpia el panel
-            control.Dock = DockStyle.Fill;    // Se ajusta al tamaño del panel
-            Categorias.Controls.Add(control); // Agrega el nuevo control
+            uc.Dock = DockStyle.Fill;
+            uc.Visible = false;
+            Categorias.Controls.Add(uc);
         }
 
-        private void btnLobby_Click(object sender, EventArgs e)
+        private void OcultarTodos()
         {
-            LoadPanel(new Lobby());
+            foreach (Control c in Categorias.Controls)
+                c.Visible = false;
         }
 
-        private void btnRUsuarios_Click(object sender, EventArgs e)
+        private void MostrarUC(UserControl uc)
         {
-            LoadPanel(new RUsuarios());
+            if (uc == null) return;
+
+            if (!TienePermiso(uc))
+            {
+                MessageBox.Show(
+                    "No tienes permisos para acceder a este módulo",
+                    "Acceso denegado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            OcultarTodos();
+            uc.Visible = true;
         }
 
-        private void btnCArchivos_Click(object sender, EventArgs e)
+
+        // =========================
+        // 🌙 MODO OSCURO
+        // =========================
+
+        private void Info_ModoOscuroCambiado(bool activar)
         {
-            LoadPanel(new CArchivos());
+            if (activar)
+                ThemeManager.AplicarModoOscuro(this);
+            else
+                ThemeManager.AplicarModoClaro(this);
         }
+
+        // =========================
+        // 🔘 BOTONES
+        // =========================
+
+        private void btnLobby_Click(object sender, EventArgs e) => MostrarUC(ucLobby);
+        private void btnRUsuarios_Click(object sender, EventArgs e) => MostrarUC(ucRUsuarios);
+        private void btnCArchivos_Click(object sender, EventArgs e) => MostrarUC(ucCArchivos);
+        private void btnSecciones_Click(object sender, EventArgs e) => MostrarUC(ucSecciones);
+        private void btnUbicaciones_Click(object sender, EventArgs e) => MostrarUC(ucUbicaciones);
+        private void btnEstadistica_Click(object sender, EventArgs e) => MostrarUC(ucGraficas);
+        private void btnTipoUsuarios_Click(object sender, EventArgs e) => MostrarUC(ucTipoUsuarios);
+        private void btnSubSecciones_Click(object sender, EventArgs e) => MostrarUC(ucSubSecciones);
+        private void btnFormato_Click(object sender, EventArgs e) => MostrarUC(ucCaratula);
+        private void btnHistorial_Click(object sender, EventArgs e) => MostrarUC(ucHistorial);
+        private void btnInstitucion_Click(object sender, EventArgs e) => MostrarUC(ucInstitucion);
+        private void btnUnidadA_Click(object sender, EventArgs e) => MostrarUC(ucUnidadA);
+        private void btnClasificacion_Click(object sender, EventArgs e) => MostrarUC(ucClasificacion);
+        private void btnInfo_Click(object sender, EventArgs e) => MostrarUC(ucInfo);
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {
@@ -106,59 +189,72 @@ namespace SIGC_TESChi
             this.Hide();
         }
 
-        private void btnSecciones_Click(object sender, EventArgs e)
+        // =========================
+        // 🛈 TOOLTIPS
+        // =========================
+
+        private void InicializarToolTips()
         {
-            LoadPanel(new Secciones());
+            toolTip = new ToolTip
+            {
+                AutoPopDelay = 5000,
+                InitialDelay = 200,
+                ReshowDelay = 100,
+                ShowAlways = true
+            };
+
+            toolTip.SetToolTip(btnLobby, "Área de Recepción");
+            toolTip.SetToolTip(btnTipoUsuarios, "Registrar y Consultar Tipos de usuarios");
+            toolTip.SetToolTip(btnRUsuarios, "Registrar y Consultar Usuarios");
+            toolTip.SetToolTip(btnSecciones, "Registrar y Consultar Secciones");
+            toolTip.SetToolTip(btnSubSecciones, "Registrar y Consultar Subsecciones");
+            toolTip.SetToolTip(btnInstitucion, "Registrar y Consultar Instituciones");
+            toolTip.SetToolTip(btnUbicaciones, "Registrar y Consultar Ubicaciones");
+            toolTip.SetToolTip(btnUnidadA, "Registrar y Consultar Unidad Administrativa");
+            toolTip.SetToolTip(btnClasificacion, "Registrar y Consultar Clasificaciones");
+            toolTip.SetToolTip(btnCArchivos, "Registrar y Consultar Archivos");
+            toolTip.SetToolTip(btnHistorial, "Consultar Historial");
+            toolTip.SetToolTip(btnFormato, "Captura e impresión de portadas");
+            toolTip.SetToolTip(btnEstadistica, "Visualizar gráficas");
+            toolTip.SetToolTip(btnInfo, "Información del sistema");
+            toolTip.SetToolTip(btnCerrarSesion, "Cerrar sesión");
         }
 
-        private void btnUbicaciones_Click(object sender, EventArgs e)
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            LoadPanel(new Ubicaciones());
+            if (keyData == (Keys.Control | Keys.D3) ||
+                keyData == (Keys.Control | Keys.NumPad3))
+            {
+                MostrarUC(ucCaratula);
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.D2) ||
+                keyData == (Keys.Control | Keys.NumPad2))
+            {
+                MostrarUC(ucRUsuarios); 
+                return true;
+            }
+
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
-        private void btnEstadistica_Click(object sender, EventArgs e)
+
+
+        private void btnFormato_KeyDown(object sender, KeyEventArgs e)
         {
-            LoadPanel(new Graficas());
-        }
-        private void btnTipoUsuarios_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new TipoUsuarios());
+
         }
 
-        private void btnSubSecciones_Click(object sender, EventArgs e)
+        private void btnFormato_KeyPress(object sender, KeyPressEventArgs e)
         {
-            LoadPanel(new SubSecciones());
+
         }
 
-        private void btnFormato_Click(object sender, EventArgs e)
+        private void btnFormato_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            LoadPanel(new CaratulaExpediente());
-        }
 
-        private void btnHistorial_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new Historial());
-        }
-
-        private void btnInstitucion_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new Institucion());
-        }
-
-        private void btnUnidadA_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new UnidadA());
-        }
-
-        private void btnClasificacion_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new Clasificacion());
-        }
-
-        private void btnInfo_Click(object sender, EventArgs e)
-        {
-            LoadPanel(new Info());
         }
     }
 }
-

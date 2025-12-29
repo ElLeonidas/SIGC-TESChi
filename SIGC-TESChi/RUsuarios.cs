@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -58,8 +59,17 @@ namespace SIGC_TESChi
 
         private void RUsuarios_Load(object sender, EventArgs e)
         {
+
+            if (SessionData.IdTipoUsuario != 1)
+            {
+                MessageBox.Show("No tienes permisos para acceder a este módulo");
+                this.Enabled = false;
+            }
+
+
             CargarTiposUsuario();
             CargarUsuarios();
+
         }
 
         //  CARGAS 
@@ -110,6 +120,11 @@ namespace SIGC_TESChi
                 TablaUsuarios.Columns.Clear();
                 TablaUsuarios.AutoGenerateColumns = true;
                 TablaUsuarios.DataSource = dt;
+
+                TablaUsuarios.DefaultCellStyle.ForeColor = Color.Black;
+                TablaUsuarios.DefaultCellStyle.BackColor = Color.White;
+                TablaUsuarios.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
+                TablaUsuarios.EnableHeadersVisualStyles = true;
             }
         }
 
