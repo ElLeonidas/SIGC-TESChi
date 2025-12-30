@@ -1,62 +1,54 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Drawing;
-using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
 {
     public partial class FrmLogin : Form
     {
-        // 🔹 Cadena de conexión
+        // Cadena de conexión
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+
+        // Límite de intentos
+        private int intentosFallidos = 0;
+        private const int MAX_INTENTOS = 2;
 
         public FrmLogin()
         {
             InitializeComponent();
 
-            
-
-            // === FORM ===
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.DoubleBuffered = true;
             this.BackColor = Color.White;
-            this.AcceptButton = btnLogin; // Enter = Iniciar sesión
+            this.AcceptButton = btnLogin;
 
-            // === LABELS TRANSPARENTES ===
             label1.BackColor = Color.Transparent;
             label2.BackColor = Color.Transparent;
             label3.BackColor = Color.Transparent;
 
-            // === TARJETA CON IMAGEN (pnlCard) ===
             pnlCard.Dock = DockStyle.Fill;
             pnlCard.BackgroundImageLayout = ImageLayout.Stretch;
 
-            // === PANEL LOGIN (glass) ===
-            pnlLogin.BackColor = Color.FromArgb(235, 255, 255, 255); // menos transparencia
+            pnlLogin.BackColor = Color.FromArgb(235, 255, 255, 255);
 
-            // === BOTÓN LOGIN ===
             btnLogin.FlatStyle = FlatStyle.Flat;
             btnLogin.FlatAppearance.BorderSize = 0;
             btnLogin.BackColor = Color.FromArgb(88, 63, 149);
             btnLogin.ForeColor = Color.White;
             btnLogin.Font = new Font("Segoe UI", 10, FontStyle.Bold);
 
-
-            // === TEXTBOX PASSWORD ===
             txtPassword.UseSystemPasswordChar = true;
 
-            // === BOTÓN OJO ===
             btnOcultar.FlatStyle = FlatStyle.Flat;
             btnOcultar.FlatAppearance.BorderSize = 0;
             btnOcultar.Text = "👁";
 
-            // Centrar panel login al cargar
             this.Load += FrmLogin_Load;
 
-            // Eventos
             btnCerrarPrograma.Click += BtnCerrarPrograma_Click;
             btnLogin.Click += BtnLogin_Click;
             btnOcultar.Click += btnOcultar_Click;
@@ -95,6 +87,13 @@ namespace SIGC_TESChi
                 return;
             }
 
+            if (intentosFallidos >= MAX_INTENTOS)
+            {
+                MessageBox.Show("Ha excedido el número máximo de intentos. Intente más tarde.", "Bloqueo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string usuario = txtUsuario.Text.Trim();
             string password = txtPassword.Text.Trim();
 
@@ -105,41 +104,55 @@ namespace SIGC_TESChi
                     conn.Open();
 
                     string query = @"
-                        SELECT idUsuario, Username, Nombre, Apaterno, Amaterno, idTipoUsuario
+                        SELECT idUsuario, Username, Nombre, Apaterno, Amaterno, idTipoUsuario, contrasena
                         FROM Usuario
-                        WHERE Username = @user
-                          AND contrasena = @pass;";
+                        WHERE Username = @user;";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@user", usuario);
-                        cmd.Parameters.AddWithValue("@pass", password);
 
                         using (SqlDataReader reader = cmd.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                // Datos de usuario
-                                SessionData.IdUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
-                                SessionData.Username = reader.GetString(reader.GetOrdinal("Username"));
-                                SessionData.NombreCompleto =
-                                    reader.GetString(reader.GetOrdinal("Nombre")) + " " +
-                                    reader.GetString(reader.GetOrdinal("Apaterno")) + " " +
-                                    reader.GetString(reader.GetOrdinal("Amaterno"));
+                                string hashAlmacenado = reader.GetString(reader.GetOrdinal("contrasena"));
 
-                                SessionData.IdTipoUsuario = reader.GetInt32(reader.GetOrdinal("idTipoUsuario"));
+                                if (VerificarHashPBKDF2(password, hashAlmacenado))
+                                {
+                                    intentosFallidos = 0; // Reset contador
 
-                                // Abrir menú
-                                Menu menu = new Menu();
-                                menu.Show();
-                                this.Hide();
+                                    // Datos de usuario
+                                    SessionData.IdUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
+                                    SessionData.Username = reader.GetString(reader.GetOrdinal("Username"));
+                                    SessionData.NombreCompleto =
+                                        reader.GetString(reader.GetOrdinal("Nombre")) + " " +
+                                        reader.GetString(reader.GetOrdinal("Apaterno")) + " " +
+                                        reader.GetString(reader.GetOrdinal("Amaterno"));
+
+                                    SessionData.IdTipoUsuario = reader.GetInt32(reader.GetOrdinal("idTipoUsuario"));
+
+                                    // Abrir menú
+                                    Menu menu = new Menu();
+                                    menu.Show();
+                                    this.Hide();
+                                }
+                                else
+                                {
+                                    intentosFallidos++;
+                                    MessageBox.Show(
+                                        $"Usuario o contraseña incorrectos. Intento {intentosFallidos} de {MAX_INTENTOS}.",
+                                        "Acceso denegado",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error
+                                    );
+                                }
                             }
-
                             else
                             {
-                                // ❌ Usuario/contraseña incorrectos
+                                intentosFallidos++;
                                 MessageBox.Show(
-                                    "Usuario o contraseña incorrectos.",
+                                    $"Usuario o contraseña incorrectos. Intento {intentosFallidos} de {MAX_INTENTOS}.",
                                     "Acceso denegado",
                                     MessageBoxButtons.OK,
                                     MessageBoxIcon.Error
@@ -168,165 +181,154 @@ namespace SIGC_TESChi
             txtPassword.SelectionStart = txtPassword.Text.Length;
         }
 
-        // ========= EFECTO BLUR (opcional, puedes comentarlo si no lo usas) =========
-        [DllImport("user32.dll")]
-        private static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-
-        private enum WindowCompositionAttribute
+        // ================== PBKDF2 ==================
+        private string CrearHashPBKDF2(string password, out byte[] salt)
         {
-            WCA_ACCENT_POLICY = 19
-        }
-
-        private enum AccentState
-        {
-            ACCENT_DISABLED = 0,
-            ACCENT_ENABLE_BLURBEHIND = 3,
-            ACCENT_ENABLE_ACRYLICBLURBEHIND = 4
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct AccentPolicy
-        {
-            public AccentState AccentState;
-            public int AccentFlags;
-            public int GradientColor;
-            public int AnimationId;
-        }
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WindowCompositionAttributeData
-        {
-            public WindowCompositionAttribute Attribute;
-            public IntPtr Data;
-            public int SizeOfData;
-        }
-
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-            // Si te da problemas visuales, comenta esto:
-            // HabilitarBlur();
-        }
-
-        private void txtUsuario_Enter(object sender, EventArgs e)
-        {
-            if (txtUsuario.Text == "Usuario")
+            salt = new byte[16];
+            using (var rng = RandomNumberGenerator.Create())
             {
-                txtUsuario.Text = "";
-                txtUsuario.ForeColor = Color.Black;
+                rng.GetBytes(salt);
+            }
+
+            var pbkdf2 = new Rfc2898DeriveBytes(
+                password,
+                salt,
+                100000,
+                HashAlgorithmName.SHA256
+            );
+
+            byte[] hash = pbkdf2.GetBytes(32);
+
+            byte[] hashBytes = new byte[48];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 32);
+
+            return Convert.ToBase64String(hashBytes);
+        }
+
+        private bool VerificarHashPBKDF2(string password, string hashAlmacenado)
+        {
+            byte[] hashBytes;
+            try
+            {
+                hashBytes = Convert.FromBase64String(hashAlmacenado);
+            }
+            catch
+            {
+                return false; // Hash inválido
+            }
+
+            if (hashBytes.Length != 48)
+                return false;
+
+            byte[] salt = new byte[16];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+
+            var pbkdf2 = new Rfc2898DeriveBytes(
+                password,
+                salt,
+                100000,
+                HashAlgorithmName.SHA256
+            );
+
+            byte[] hash = pbkdf2.GetBytes(32);
+
+            for (int i = 0; i < 32; i++)
+            {
+                if (hash[i] != hashBytes[i + 16])
+                    return false;
+            }
+            return true;
+        }
+
+        // ================== CREAR NUEVO USUARIO ==================
+        public void CrearUsuario(string username, string nombre, string apaterno, string amaterno, string password, int idTipoUsuario)
+        {
+            string hash = CrearHashPBKDF2(password, out byte[] salt);
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = @"
+                        INSERT INTO Usuario (Username, Nombre, Apaterno, Amaterno, idTipoUsuario, contrasena)
+                        VALUES (@user, @nombre, @ap, @am, @tipo, @pass);";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@user", username);
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@ap", apaterno);
+                        cmd.Parameters.AddWithValue("@am", amaterno);
+                        cmd.Parameters.AddWithValue("@tipo", idTipoUsuario);
+                        cmd.Parameters.AddWithValue("@pass", hash);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al crear usuario:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void txtUsuario_Leave(object sender, EventArgs e)
+        // ================== ACTUALIZAR TODAS LAS CONTRASEÑAS A PBKDF2 ==================
+        public void ActualizarContraseñasABaseSegura()
         {
-            if (string.IsNullOrWhiteSpace(txtUsuario.Text))
+            try
             {
-                txtUsuario.Text = "Usuario";
-                txtUsuario.ForeColor = Color.Gray;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    // Traer todos los usuarios con contraseña actual
+                    string selectQuery = "SELECT idUsuario, contrasena FROM Usuario";
+                    using (SqlCommand selectCmd = new SqlCommand(selectQuery, conn))
+                    {
+                        using (SqlDataReader reader = selectCmd.ExecuteReader())
+                        {
+                            var usuarios = new System.Collections.Generic.List<(int id, string pass)>();
+
+                            while (reader.Read())
+                            {
+                                int idUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
+                                string contrasena = reader.GetString(reader.GetOrdinal("contrasena"));
+                                usuarios.Add((idUsuario, contrasena));
+                            }
+
+                            reader.Close();
+
+                            // Actualizar cada usuario con PBKDF2
+                            foreach (var usuario in usuarios)
+                            {
+                                string hash = CrearHashPBKDF2(usuario.pass, out byte[] salt);
+
+                                string updateQuery = "UPDATE Usuario SET contrasena = @hash WHERE idUsuario = @id";
+                                using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                                {
+                                    updateCmd.Parameters.AddWithValue("@hash", hash);
+                                    updateCmd.Parameters.AddWithValue("@id", usuario.id);
+                                    updateCmd.ExecuteNonQuery();
+                                }
+                            }
+
+                            MessageBox.Show("Todas las contraseñas se actualizaron correctamente a PBKDF2.", "Actualización completa", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar contraseñas:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
 
-        private void txtPassword_Enter(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            if (txtPassword.Text == "Contraseña")
-            {
-                txtPassword.Text = "";
-                txtPassword.ForeColor = Color.Black;
-                txtPassword.UseSystemPasswordChar = true;
-            }
-        }
-
-        private void HabilitarBlur()
-        {
-            var accent = new AccentPolicy();
-            accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
-
-            int accentStructSize = System.Runtime.InteropServices.Marshal.SizeOf(accent);
-
-            IntPtr accentPtr = System.Runtime.InteropServices.Marshal.AllocHGlobal(accentStructSize);
-            System.Runtime.InteropServices.Marshal.StructureToPtr(accent, accentPtr, false);
-
-            var data = new WindowCompositionAttributeData();
-            data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
-            data.SizeOfData = accentStructSize;
-            data.Data = accentPtr;
-
-            SetWindowCompositionAttribute(this.Handle, ref data);
-            System.Runtime.InteropServices.Marshal.FreeHGlobal(accentPtr);
-        }
-
-        private void FrmLogin_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtPassword_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnLogin_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnlLogin_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtUsuario_DragEnter(object sender, DragEventArgs e)
-        {
-            if (txtUsuario.Text == "Usuario")
-            {
-                txtUsuario.Text = "";
-                txtUsuario.ForeColor = Color.Black;
-            }
-        }
-
-        private void txtUsuario_DragLeave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtUsuario.Text))
-            {
-                txtUsuario.Text = "Usuario";
-                txtUsuario.ForeColor = Color.Gray;
-            }
-        }
-
-        private void txtUsuario_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pictureBox2_Click(object sender, EventArgs e)
-        {
-
+            ActualizarContraseñasABaseSegura();
         }
     }
 }
