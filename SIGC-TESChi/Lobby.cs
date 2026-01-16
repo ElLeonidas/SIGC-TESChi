@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -14,33 +13,35 @@ namespace SIGC_TESChi
         public Lobby()
         {
             InitializeComponent();
-            toolTip = new ToolTip();
 
-            // Inicializamos el ToolTip
-            toolTip = new ToolTip();
-            toolTip.AutoPopDelay = 5000;  // Visible 5 segundos
-            toolTip.InitialDelay = 200;   // Aparece tras 0.2 segundos
-            toolTip.ReshowDelay = 100;    // Retardo entre botones
-            toolTip.ShowAlways = true;    // Siempre visible
+            dgvEventos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEventos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvEventos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvEventos.Dock = DockStyle.Fill;
 
-            // Asignar eventos de mouse para mostrar tooltips
-            btnAgregar.MouseEnter += (s, e) => toolTip.Show("Boton para Agregar Nuevo Evento", btnAgregar);
+            toolTip = new ToolTip
+            {
+                AutoPopDelay = 5000,
+                InitialDelay = 200,
+                ReshowDelay = 100,
+                ShowAlways = true
+            };
+
+            btnAgregar.MouseEnter += (s, e) => toolTip.Show("Agregar evento", btnAgregar);
             btnAgregar.MouseLeave += (s, e) => toolTip.Hide(btnAgregar);
-            btnModificar.MouseEnter += (s, e) => toolTip.Show("Boton para Modificar Evento", btnModificar);
+            btnModificar.MouseEnter += (s, e) => toolTip.Show("Modificar evento", btnModificar);
             btnModificar.MouseLeave += (s, e) => toolTip.Hide(btnModificar);
-            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Boton para Eliminar Evento", btnEliminar);
+            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Eliminar evento", btnEliminar);
             btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
-            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Boton para Limpiar Campos", btnLimpiar);
+            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Limpiar formulario", btnLimpiar);
             btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
         }
 
         private void Lobby_Load(object sender, EventArgs e)
         {
-            // Usuario logueado
             txtUsuario.Text = SessionData.NombreCompleto;
             txtUsuario.ReadOnly = true;
 
-            // Configuración controles
             chkAlerta.Checked = true;
             nudMinutos.Value = 10;
             txtTipo.MaxLength = 100;
@@ -50,14 +51,10 @@ namespace SIGC_TESChi
             dtpHora.ShowUpDown = true;
 
             mthCalendario.MaxSelectionCount = 1;
-            mthCalendario.TodayDate = DateTime.Today;
             mthCalendario.SelectionStart = DateTime.Today;
 
             ConfigurarDGV();
-
-            // Mostrar eventos del mes por defecto
             CargarEventosDelMes();
-
             IniciarAlertaTimer();
         }
 
@@ -77,56 +74,86 @@ namespace SIGC_TESChi
             dgvEventos.Columns.Add("modalidad", "Modalidad");
 
             dgvEventos.Columns["idEvento"].Visible = false;
-
             dgvEventos.SelectionChanged += DgvEventos_SelectionChanged;
         }
 
-        // ======================= BOTONES =======================
+        //VALIDACIÓN
+        private bool ValidarFormulario()
+        {
+            if (string.IsNullOrWhiteSpace(txtTitulo.Text))
+            {
+                MessageBox.Show("Ingrese el título del evento.");
+                txtTitulo.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtTipo.Text))
+            {
+                MessageBox.Show("Ingrese el tipo de evento.");
+                txtTipo.Focus();
+                return false;
+            }
+
+            if (cmbModalidad.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione la modalidad.");
+                cmbModalidad.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        // BOTONES 
         private void btnAgregar_Click(object sender, EventArgs e) => GuardarEvento();
         private void btnModificar_Click(object sender, EventArgs e) => ModificarEvento();
         private void btnEliminar_Click(object sender, EventArgs e) => EliminarEvento();
         private void btnLimpiar_Click(object sender, EventArgs e) => LimpiarFormulario();
         private void btnBuscar_Click(object sender, EventArgs e) => CargarEventosDelMes();
 
-        // ======================= MÉTODOS CRUD =======================
+        //CRUD
         private void GuardarEvento()
         {
+            if (!ValidarFormulario()) return;
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string sql = @"INSERT INTO Agenda 
-                                   (titulo, fecha, hora, tipo, modalidad, idUsuarioCreador, idTipoUsuario, alertaActiva, minutosAntes)
-                                   VALUES (@titulo, @fecha, @hora, @tipo, @modalidad, @idUsuario, @idTipoUsuario, @alertaActiva, @minutosAntes)";
+                    string sql = @"INSERT INTO Agenda
+                    (titulo, fecha, hora, tipo, modalidad, idUsuarioCreador, idTipoUsuario, alertaActiva, minutosAntes)
+                    VALUES (@titulo,@fecha,@hora,@tipo,@modalidad,@idUsuario,@idTipoUsuario,@alerta,@minutos)";
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text);
+                    cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text.Trim());
                     cmd.Parameters.AddWithValue("@fecha", mthCalendario.SelectionStart.Date);
                     cmd.Parameters.AddWithValue("@hora", dtpHora.Value.TimeOfDay);
-                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text);
-                    cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem?.ToString() ?? "");
+                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem.ToString());
                     cmd.Parameters.AddWithValue("@idUsuario", SessionData.IdUsuario);
                     cmd.Parameters.AddWithValue("@idTipoUsuario", SessionData.IdTipoUsuario);
-                    cmd.Parameters.AddWithValue("@alertaActiva", chkAlerta.Checked);
-                    cmd.Parameters.AddWithValue("@minutosAntes", (int)nudMinutos.Value);
+                    cmd.Parameters.AddWithValue("@alerta", chkAlerta.Checked);
+                    cmd.Parameters.AddWithValue("@minutos", (int)nudMinutos.Value);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("Evento agregado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Evento agregado correctamente.");
                 CargarEventosDelMes();
                 LimpiarFormulario();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar evento: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void ModificarEvento()
         {
             if (dgvEventos.SelectedRows.Count == 0) return;
+            if (!ValidarFormulario()) return;
+
             int idEvento = Convert.ToInt32(dgvEventos.SelectedRows[0].Cells["idEvento"].Value);
 
             try
@@ -134,124 +161,99 @@ namespace SIGC_TESChi
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string sql = @"UPDATE Agenda SET
-                                   titulo=@titulo, fecha=@fecha, hora=@hora, tipo=@tipo, modalidad=@modalidad,
-                                   alertaActiva=@alertaActiva, minutosAntes=@minutosAntes
-                                   WHERE idEvento=@idEvento";
+                    titulo=@titulo, fecha=@fecha, hora=@hora, tipo=@tipo, modalidad=@modalidad,
+                    alertaActiva=@alerta, minutosAntes=@minutos
+                    WHERE idEvento=@idEvento";
 
                     SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text);
+                    cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text.Trim());
                     cmd.Parameters.AddWithValue("@fecha", mthCalendario.SelectionStart.Date);
                     cmd.Parameters.AddWithValue("@hora", dtpHora.Value.TimeOfDay);
-                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text);
-                    cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem?.ToString() ?? "");
-                    cmd.Parameters.AddWithValue("@alertaActiva", chkAlerta.Checked);
-                    cmd.Parameters.AddWithValue("@minutosAntes", (int)nudMinutos.Value);
+                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem.ToString());
+                    cmd.Parameters.AddWithValue("@alerta", chkAlerta.Checked);
+                    cmd.Parameters.AddWithValue("@minutos", (int)nudMinutos.Value);
                     cmd.Parameters.AddWithValue("@idEvento", idEvento);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
 
-                MessageBox.Show("Evento modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Evento modificado correctamente.");
                 CargarEventosDelMes();
                 LimpiarFormulario();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al modificar evento: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void EliminarEvento()
         {
             if (dgvEventos.SelectedRows.Count == 0) return;
+
             int idEvento = Convert.ToInt32(dgvEventos.SelectedRows[0].Cells["idEvento"].Value);
 
-            DialogResult resp = MessageBox.Show("¿Desea eliminar este evento?", "Confirmación", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (resp == DialogResult.No) return;
+            if (MessageBox.Show("¿Eliminar evento?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string sql = "DELETE FROM Agenda WHERE idEvento=@idEvento";
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@idEvento", idEvento);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-
-                MessageBox.Show("Evento eliminado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                CargarEventosDelMes();
-                LimpiarFormulario();
+                SqlCommand cmd = new SqlCommand("DELETE FROM Agenda WHERE idEvento=@id", conn);
+                cmd.Parameters.AddWithValue("@id", idEvento);
+                conn.Open();
+                cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al eliminar evento: " + ex.Message);
-            }
+
+            MessageBox.Show("Evento eliminado.");
+            CargarEventosDelMes();
+            LimpiarFormulario();
         }
 
         private void LimpiarFormulario()
         {
             txtTitulo.Clear();
             txtTipo.Clear();
-            dtpHora.Value = DateTime.Now;
             cmbModalidad.SelectedIndex = -1;
             chkAlerta.Checked = true;
             nudMinutos.Value = 10;
+            dtpHora.Value = DateTime.Now;
             dgvEventos.ClearSelection();
         }
 
-        // ======================= CARGAR EVENTOS =======================
+        //CARGA
         private void CargarEventosDelMes()
         {
             dgvEventos.Rows.Clear();
 
             int mes = mthCalendario.SelectionStart.Month;
-            int año = mthCalendario.SelectionStart.Year;
+            int anio = mthCalendario.SelectionStart.Year;
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                string sql = @"SELECT idEvento, titulo, fecha, hora, tipo, modalidad, alertaActiva
+                               FROM Agenda
+                               WHERE MONTH(fecha)=@mes AND YEAR(fecha)=@anio
+                               ORDER BY fecha, hora";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@mes", mes);
+                cmd.Parameters.AddWithValue("@anio", anio);
+
+                conn.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
                 {
-                    string sql = @"SELECT idEvento, titulo, fecha, hora, tipo, modalidad, alertaActiva
-                                   FROM Agenda
-                                   WHERE MONTH(fecha) = @mes AND YEAR(fecha) = @anio
-                                   ORDER BY fecha, hora";
+                    string fecha = Convert.ToDateTime(r["fecha"]).ToString("dd/MM/yyyy");
+                    string hora = DateTime.Today.Add((TimeSpan)r["hora"]).ToString("HH:mm");
 
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.AddWithValue("@mes", mes);
-                    cmd.Parameters.AddWithValue("@anio", año);
+                    int i = dgvEventos.Rows.Add(r["idEvento"], fecha, hora, r["titulo"], r["tipo"], r["modalidad"]);
 
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        TimeSpan hora = (TimeSpan)reader["hora"];
-                        string horaStr = DateTime.Today.Add(hora).ToString("HH:mm");
-                        string fechaStr = Convert.ToDateTime(reader["fecha"]).ToString("dd/MM/yyyy");
-
-                        int index = dgvEventos.Rows.Add(
-                            reader["idEvento"],
-                            fechaStr,
-                            horaStr,
-                            reader["titulo"],
-                            reader["tipo"],
-                            reader["modalidad"]
-                        );
-
-                        if ((bool)reader["alertaActiva"])
-                            dgvEventos.Rows[index].DefaultCellStyle.BackColor = System.Drawing.Color.LightYellow;
-                    }
+                    if ((bool)r["alertaActiva"])
+                        dgvEventos.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.LightYellow;
                 }
-
-                ResaltarDiasConEventos();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al cargar eventos: " + ex.Message);
             }
         }
 
@@ -259,24 +261,17 @@ namespace SIGC_TESChi
         {
             if (dgvEventos.SelectedRows.Count == 0) return;
 
-            DataGridViewRow row = dgvEventos.SelectedRows[0];
-            txtTitulo.Text = row.Cells["titulo"].Value.ToString();
-            txtTipo.Text = row.Cells["tipo"].Value.ToString();
-            dtpHora.Value = DateTime.Today.Add(TimeSpan.Parse(row.Cells["hora"].Value.ToString()));
-            cmbModalidad.SelectedItem = row.Cells["modalidad"].Value.ToString();
+            var r = dgvEventos.SelectedRows[0];
+            txtTitulo.Text = r.Cells["titulo"].Value.ToString();
+            txtTipo.Text = r.Cells["tipo"].Value.ToString();
+            cmbModalidad.SelectedItem = r.Cells["modalidad"].Value.ToString();
+            dtpHora.Value = DateTime.Today.Add(TimeSpan.Parse(r.Cells["hora"].Value.ToString()));
         }
 
-        private void mthCalendario_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            // Automáticamente mostrar eventos del mes
-            CargarEventosDelMes();
-        }
-
-        // ======================= ALERTAS =======================
+        //ALERTAS
         private void IniciarAlertaTimer()
         {
-            alertaTimer = new Timer();
-            alertaTimer.Interval = 60000; // cada minuto
+            alertaTimer = new Timer { Interval = 60000 };
             alertaTimer.Tick += AlertaTimer_Tick;
             alertaTimer.Start();
         }
@@ -285,69 +280,23 @@ namespace SIGC_TESChi
         {
             DateTime ahora = DateTime.Now;
 
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                SqlCommand cmd = new SqlCommand(
+                    "SELECT titulo, fecha, hora, minutosAntes FROM Agenda WHERE alertaActiva=1", conn);
+
+                conn.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
                 {
-                    string sql = @"SELECT titulo, fecha, hora, minutosAntes 
-                                   FROM Agenda WHERE alertaActiva = 1";
+                    DateTime f = Convert.ToDateTime(r["fecha"]).Add((TimeSpan)r["hora"])
+                                 .AddMinutes(-Convert.ToInt32(r["minutosAntes"]));
 
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        DateTime fecha = Convert.ToDateTime(reader["fecha"]);
-                        TimeSpan hora = (TimeSpan)reader["hora"];
-                        int minutosAntes = Convert.ToInt32(reader["minutosAntes"]);
-
-                        DateTime horaAlerta = fecha.Add(hora).AddMinutes(-minutosAntes);
-
-                        if (ahora >= horaAlerta && ahora < horaAlerta.AddMinutes(1))
-                        {
-                            MessageBox.Show($"⚠️ Recordatorio: {reader["titulo"]}",
-                                            "Alerta de evento",
-                                            MessageBoxButtons.OK,
-                                            MessageBoxIcon.Warning);
-                        }
-                    }
+                    if (ahora >= f && ahora < f.AddMinutes(1))
+                        MessageBox.Show("Recordatorio: " + r["titulo"]);
                 }
             }
-            catch { }
-        }
-
-        private void ResaltarDiasConEventos()
-        {
-            mthCalendario.RemoveAllBoldedDates();
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string sql = "SELECT DISTINCT fecha FROM Agenda";
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        mthCalendario.AddBoldedDate(Convert.ToDateTime(reader["fecha"]));
-                    }
-                }
-
-                mthCalendario.UpdateBoldedDates();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al resaltar fechas: " + ex.Message);
-            }
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace SIGC_TESChi
 {
-    partial class Info
+    partial class Confi
     {
         /// <summary> 
         /// Variable del diseñador necesaria.
@@ -30,17 +30,15 @@
         {
             this.cboxModoOscuro = new System.Windows.Forms.CheckBox();
             this.pnlInfo = new System.Windows.Forms.Panel();
-            this.cmbFuentes = new System.Windows.Forms.ComboBox();
             this.pnlInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // cboxModoOscuro
             // 
             this.cboxModoOscuro.AutoSize = true;
-            this.cboxModoOscuro.Location = new System.Drawing.Point(517, 124);
-            this.cboxModoOscuro.Margin = new System.Windows.Forms.Padding(4);
+            this.cboxModoOscuro.Location = new System.Drawing.Point(388, 101);
             this.cboxModoOscuro.Name = "cboxModoOscuro";
-            this.cboxModoOscuro.Size = new System.Drawing.Size(110, 20);
+            this.cboxModoOscuro.Size = new System.Drawing.Size(90, 17);
             this.cboxModoOscuro.TabIndex = 0;
             this.cboxModoOscuro.Text = "Modo Oscuro";
             this.cboxModoOscuro.UseVisualStyleBackColor = true;
@@ -48,33 +46,19 @@
             // 
             // pnlInfo
             // 
-            this.pnlInfo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pnlInfo.Controls.Add(this.cmbFuentes);
             this.pnlInfo.Controls.Add(this.cboxModoOscuro);
             this.pnlInfo.Location = new System.Drawing.Point(4, 4);
-            this.pnlInfo.Margin = new System.Windows.Forms.Padding(4);
             this.pnlInfo.Name = "pnlInfo";
-            this.pnlInfo.Size = new System.Drawing.Size(1239, 827);
+            this.pnlInfo.Size = new System.Drawing.Size(931, 675);
             this.pnlInfo.TabIndex = 1;
-            // 
-            // cmbFuentes
-            // 
-            this.cmbFuentes.FormattingEnabled = true;
-            this.cmbFuentes.Location = new System.Drawing.Point(516, 179);
-            this.cmbFuentes.Name = "cmbFuentes";
-            this.cmbFuentes.Size = new System.Drawing.Size(200, 24);
-            this.cmbFuentes.TabIndex = 1;
-            this.cmbFuentes.SelectedIndexChanged += new System.EventHandler(this.cmbFuentes_SelectedIndexChanged);
             // 
             // Info
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.pnlInfo);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Info";
-            this.Size = new System.Drawing.Size(1247, 835);
+            this.Size = new System.Drawing.Size(938, 682);
             this.Load += new System.EventHandler(this.Info_Load);
             this.pnlInfo.ResumeLayout(false);
             this.pnlInfo.PerformLayout();
@@ -86,6 +70,5 @@
 
         private System.Windows.Forms.CheckBox cboxModoOscuro;
         private System.Windows.Forms.Panel pnlInfo;
-        private System.Windows.Forms.ComboBox cmbFuentes;
     }
 }

@@ -31,6 +31,8 @@ namespace SIGC_TESChi
             InicializarUserControls();   // 🔴 CLAVE
             InicializarToolTips();
 
+            FontManager.AplicarFuente(this);
+
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
@@ -55,6 +57,7 @@ namespace SIGC_TESChi
 
             // Evento modo oscuro
             ucInfo.ModoOscuroCambiado += Info_ModoOscuroCambiado;
+            ucInfo.FuenteCambiada += Info_FuenteCambiada;
 
             // Agregar todos al panel
             AgregarUC(ucLobby);
@@ -164,6 +167,15 @@ namespace SIGC_TESChi
         }
 
         // =========================
+        // 🔤 CAMBIO DE FUENTE
+        // =========================
+        private void Info_FuenteCambiada(string nombreFuente)
+        {
+            FontManager.CambiarFuente(nombreFuente);
+            FontManager.AplicarFuente(this);
+        }
+
+        // =========================
         // 🔘 BOTONES
         // =========================
 
@@ -204,7 +216,6 @@ namespace SIGC_TESChi
             };
 
             toolTip.SetToolTip(btnLobby, "Área de Recepción");
-            toolTip.SetToolTip(btnTipoUsuarios, "Registrar y Consultar Tipos de usuarios");
             toolTip.SetToolTip(btnRUsuarios, "Registrar y Consultar Usuarios");
             toolTip.SetToolTip(btnSecciones, "Registrar y Consultar Secciones");
             toolTip.SetToolTip(btnSubSecciones, "Registrar y Consultar Subsecciones");
@@ -216,7 +227,8 @@ namespace SIGC_TESChi
             toolTip.SetToolTip(btnHistorial, "Consultar Historial");
             toolTip.SetToolTip(btnFormato, "Captura e impresión de portadas");
             toolTip.SetToolTip(btnEstadistica, "Visualizar gráficas");
-            toolTip.SetToolTip(btnInfo, "Información del sistema");
+            toolTip.SetToolTip(btnInfo, "Configuracion del sistema");
+            toolTip.SetToolTip(btnTipoUsuarios, "Informacion del Sistema");
             toolTip.SetToolTip(btnCerrarSesion, "Cerrar sesión");
         }
 
@@ -236,25 +248,13 @@ namespace SIGC_TESChi
                 return true;
             }
 
+            if (keyData == (Keys.Control | Keys.H))
+            {
+                MostrarUC(ucHistorial);
+                return true;
+            }
 
             return base.ProcessCmdKey(ref msg, keyData);
-        }
-
-
-
-        private void btnFormato_KeyDown(object sender, KeyEventArgs e)
-        {
-
-        }
-
-        private void btnFormato_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
-
-        private void btnFormato_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-
         }
     }
 }

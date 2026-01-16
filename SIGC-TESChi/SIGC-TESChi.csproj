@@ -281,6 +281,7 @@
     <Compile Include="DetallesCambio.Designer.cs">
       <DependentUpon>DetallesCambio.cs</DependentUpon>
     </Compile>
+    <Compile Include="FontManager.cs" />
     <Compile Include="Graficas.cs">
       <SubType>UserControl</SubType>
     </Compile>
