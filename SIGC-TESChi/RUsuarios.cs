@@ -428,5 +428,41 @@ namespace SIGC_TESChi
             comboTipoUsuario.SelectedIndex = -1;
             TablaUsuarios.ClearSelection();
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                btnAgregar.PerformClick(); // Ejecuta el botón Agregar
+                return true; // Indica que la tecla fue manejada
+            }
+
+            if (keyData == (Keys.Control | Keys.Delete))
+            {
+                btnEliminar.PerformClick(); // Ejecuta el botón Eliminar
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.F))
+            {
+                btnBuscar.PerformClick(); // Ejecuta el botón Buscar
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.H))
+            {
+                btnModificar.PerformClick(); // Ejecuta el botón Modificar
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.N))
+            {
+                btnLimpiar.PerformClick(); // Ejecuta el botón Limpiar
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
     }
 }

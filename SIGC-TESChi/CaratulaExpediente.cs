@@ -639,5 +639,17 @@ namespace SIGC_TESChi
         {
 
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.P))
+            {
+                btnImprimir.PerformClick(); // Ejecuta el botón Imprimir
+                return true; // Indica que la tecla fue manejada
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
     }
 }

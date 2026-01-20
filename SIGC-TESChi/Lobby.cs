@@ -45,6 +45,7 @@ namespace SIGC_TESChi
             chkAlerta.Checked = true;
             nudMinutos.Value = 10;
             txtTipo.MaxLength = 100;
+            cmbModalidad.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbModalidad.Items.AddRange(new string[] { "Presencial", "En línea" });
 
             dtpHora.Format = DateTimePickerFormat.Time;
@@ -205,8 +206,6 @@ namespace SIGC_TESChi
                 conn.Open();
                 cmd.ExecuteNonQuery();
             }
-
-            MessageBox.Show("Evento eliminado.");
             CargarEventosDelMes();
             LimpiarFormulario();
         }
@@ -298,6 +297,36 @@ namespace SIGC_TESChi
                 }
             }
         }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Control | Keys.S))
+            {
+                btnAgregar.PerformClick(); // Ejecuta el botón Agregar
+                return true; // Indica que la tecla fue manejada
+            }
+
+            if (keyData == (Keys.Control | Keys.Delete))
+            {
+                btnEliminar.PerformClick(); // Ejecuta el botón Eliminar
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.H))
+            {
+                btnModificar.PerformClick(); // Ejecuta el botón Modificar
+                return true;
+            }
+
+            if (keyData == (Keys.Control | Keys.N))
+            {
+                btnLimpiar.PerformClick(); // Ejecuta el botón Limpiar
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
     }
 }
 
