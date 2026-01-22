@@ -2,7 +2,9 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Security.Cryptography;
 using System.Windows.Forms;
+
 
 namespace SIGC_TESChi
 {
@@ -16,6 +18,8 @@ namespace SIGC_TESChi
         public RUsuarios()
         {
             InitializeComponent();
+
+            txtContrasena.UseSystemPasswordChar = true;
 
             TablaUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             TablaUsuarios.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -75,24 +79,24 @@ namespace SIGC_TESChi
         //  CARGAS 
         private void CargarTiposUsuario()
         {
-            comboTipoUsuario.Items.Clear();
-
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
-                string q = "SELECT idTipoUsuario, dTipoUsuario FROM TipoUsuario ORDER BY idTipoUsuario";
-                SqlCommand cmd = new SqlCommand(q, con);
-                SqlDataReader dr = cmd.ExecuteReader();
 
-                while (dr.Read())
-                {
-                    comboTipoUsuario.Items.Add(
-                        dr["idTipoUsuario"] + " - " + dr["dTipoUsuario"]);
-                }
+                string q = "SELECT idTipoUsuario, dTipoUsuario FROM TipoUsuario";
+                SqlDataAdapter da = new SqlDataAdapter(q, con);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                comboTipoUsuario.DataSource = dt;
+                comboTipoUsuario.DisplayMember = "dTipoUsuario"; // texto visible
+                comboTipoUsuario.ValueMember = "idTipoUsuario";  // INT real
             }
 
             comboTipoUsuario.SelectedIndex = -1;
         }
+
+
 
         private void CargarUsuarios()
         {
@@ -101,16 +105,16 @@ namespace SIGC_TESChi
                 con.Open();
 
                 string query = @"
-                SELECT 
-                    U.idUsuario,
-                    U.Username,
-                    U.Nombre,
-                    U.Apaterno,
-                    U.Amaterno,
-                    U.idTipoUsuario,
-                    T.dTipoUsuario AS TipoUsuario
-                FROM Usuario U
-                INNER JOIN TipoUsuario T ON U.idTipoUsuario = T.idTipoUsuario";
+        SELECT 
+            U.idUsuario,
+            U.Username,
+            U.Nombre,
+            U.Apaterno,
+            U.Amaterno,
+            U.idTipoUsuario,               
+            T.dTipoUsuario AS TipoUsuario
+        FROM Usuario U
+        INNER JOIN TipoUsuario T ON U.idTipoUsuario = T.idTipoUsuario";
 
                 SqlDataAdapter da = new SqlDataAdapter(query, con);
                 DataTable dt = new DataTable();
@@ -121,16 +125,46 @@ namespace SIGC_TESChi
                 TablaUsuarios.AutoGenerateColumns = true;
                 TablaUsuarios.DataSource = dt;
 
-                TablaUsuarios.DefaultCellStyle.ForeColor = Color.Black;
-                TablaUsuarios.DefaultCellStyle.BackColor = Color.White;
-                TablaUsuarios.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
-                TablaUsuarios.EnableHeadersVisualStyles = true;
+                // 🔹 CAMBIAR TÍTULOS DE COLUMNAS
+                TablaUsuarios.Columns["idUsuario"].HeaderText = "Identificador";
+                TablaUsuarios.Columns["Username"].HeaderText = "Username";
+                TablaUsuarios.Columns["Nombre"].HeaderText = "Nombre";
+                TablaUsuarios.Columns["Amaterno"].HeaderText = "Apellido Materno";
+                TablaUsuarios.Columns["Apaterno"].HeaderText = "Apellido Paterno";
+                TablaUsuarios.Columns["TipoUsuario"].HeaderText = "Tipo de Usuario";
+
+                // 🔒 Ocultar ID
+                TablaUsuarios.Columns["idTipoUsuario"].Visible = false;
             }
         }
 
+
+
+
+        public static string CrearHashPBKDF2(string password)
+        {
+            int iterations = 100000;
+            byte[] salt = new byte[16];
+
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                rng.GetBytes(salt);
+            }
+
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                byte[] hash = pbkdf2.GetBytes(32);
+
+                return iterations + ":" +
+                       Convert.ToBase64String(salt) + ":" +
+                       Convert.ToBase64String(hash);
+            }
+        }
+
+
         private void AgregarUsuario()
         {
-            if (CamposVacios())
+            if (CamposVaciosAgregar())
             {
                 MessageBox.Show("⚠️ Llena todos los campos.");
                 return;
@@ -144,26 +178,27 @@ namespace SIGC_TESChi
 
             string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
 
+            string hashPassword = CrearHashPBKDF2(txtContrasena.Text.Trim());
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
                 string q = @"
-        INSERT INTO Usuario
-        (Username, Nombre, Apaterno, Amaterno, Contrasena, idTipoUsuario)
-        VALUES (@u,@n,@ap,@am,@c,@t)";
+INSERT INTO Usuario
+(Username, Nombre, Apaterno, Amaterno, Contrasena, idTipoUsuario)
+VALUES (@u,@n,@ap,@am,@c,@t)";
 
                 SqlCommand cmd = new SqlCommand(q, con);
                 cmd.Parameters.AddWithValue("@u", txtNombreAcceso.Text.Trim());
                 cmd.Parameters.AddWithValue("@n", txtUsuario.Text.Trim());
                 cmd.Parameters.AddWithValue("@ap", txtApaterno.Text.Trim());
                 cmd.Parameters.AddWithValue("@am", txtAmaterno.Text.Trim());
-                cmd.Parameters.AddWithValue("@c", txtContrasena.Text.Trim());
+                cmd.Parameters.AddWithValue("@c", hashPassword); // 🔐 HASH
                 cmd.Parameters.AddWithValue("@t", tipo);
                 cmd.ExecuteNonQuery();
             }
 
-            // 🔴 HISTORIAL (INSERT)
             string datosNuevos =
                 $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
                 $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}, Tipo={tipo}";
@@ -181,7 +216,6 @@ namespace SIGC_TESChi
             LimpiarCampos();
         }
 
-
         private void ModificarUsuario()
         {
             if (string.IsNullOrWhiteSpace(txtIdentificador.Text))
@@ -190,14 +224,19 @@ namespace SIGC_TESChi
                 return;
             }
 
-            string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
+            if (CamposVaciosModificar())
+            {
+                MessageBox.Show("⚠️ Llena todos los campos obligatorios.");
+                return;
+            }
+
+            int tipo = Convert.ToInt32(comboTipoUsuario.SelectedValue);
             string datosAnteriores = "";
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 con.Open();
 
-                // 🔴 DATOS ANTERIORES
                 string select = @"
         SELECT Username, Nombre, Apaterno, Amaterno, idTipoUsuario
         FROM Usuario WHERE idUsuario=@id";
@@ -221,11 +260,16 @@ namespace SIGC_TESChi
             Nombre=@n,
             Apaterno=@ap,
             Amaterno=@am,
-            idTipoUsuario=@t" +
-                    (string.IsNullOrWhiteSpace(txtContrasena.Text)
-                        ? ""
-                        : ", Contrasena=@c") +
-                " WHERE idUsuario=@id";
+            idTipoUsuario=@t";
+
+                bool cambiarPassword =
+                    !string.IsNullOrWhiteSpace(txtContrasena.Text) &&
+                    txtContrasena.Text != "********";
+
+                if (cambiarPassword)
+                    q += ", Contrasena=@c";
+
+                q += " WHERE idUsuario=@id";
 
                 SqlCommand cmd = new SqlCommand(q, con);
                 cmd.Parameters.AddWithValue("@u", txtNombreAcceso.Text.Trim());
@@ -235,29 +279,21 @@ namespace SIGC_TESChi
                 cmd.Parameters.AddWithValue("@t", tipo);
                 cmd.Parameters.AddWithValue("@id", txtIdentificador.Text);
 
-                if (!string.IsNullOrWhiteSpace(txtContrasena.Text))
-                    cmd.Parameters.AddWithValue("@c", txtContrasena.Text.Trim());
+                if (cambiarPassword)
+                {
+                    string hashPassword = CrearHashPBKDF2(txtContrasena.Text.Trim());
+                    cmd.Parameters.AddWithValue("@c", hashPassword);
+                }
 
                 cmd.ExecuteNonQuery();
             }
-
-            // 🔴 HISTORIAL (UPDATE)
-            string datosNuevos =
-                $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
-                $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}, Tipo={tipo}";
-
-            HistorialHelper.RegistrarCambio(
-                "Usuario",
-                txtIdentificador.Text,
-                "UPDATE",
-                datosAnteriores,
-                datosNuevos
-            );
 
             MessageBox.Show("✅ Usuario modificado.");
             CargarUsuarios();
             LimpiarCampos();
         }
+
+
 
 
         private void EliminarUsuario()
@@ -382,11 +418,12 @@ namespace SIGC_TESChi
             txtUsuario.Text = fila.Cells["Nombre"].Value.ToString();
             txtApaterno.Text = fila.Cells["Apaterno"].Value.ToString();
             txtAmaterno.Text = fila.Cells["Amaterno"].Value.ToString();
-            txtContrasena.Clear();
 
-            string tipoTexto = fila.Cells["TipoUsuario"].Value.ToString();
-            comboTipoUsuario.SelectedIndex =
-                comboTipoUsuario.FindStringExact(tipoTexto);
+            // 🔐 Mostrar máscara
+            txtContrasena.Text = "********";
+
+            // 👤 Seleccionar tipo usando el ID REAL
+            comboTipoUsuario.SelectedValue = fila.Cells["idTipoUsuario"].Value;
         }
 
         private bool ExisteUsuario(string username)
@@ -401,7 +438,7 @@ namespace SIGC_TESChi
             }
         }
 
-        private bool CamposVacios()
+        private bool CamposVaciosAgregar()
         {
             return string.IsNullOrWhiteSpace(txtNombreAcceso.Text) ||
                    string.IsNullOrWhiteSpace(txtUsuario.Text) ||
@@ -410,6 +447,16 @@ namespace SIGC_TESChi
                    string.IsNullOrWhiteSpace(txtContrasena.Text) ||
                    comboTipoUsuario.SelectedIndex == -1;
         }
+
+        private bool CamposVaciosModificar()
+        {
+            return string.IsNullOrWhiteSpace(txtNombreAcceso.Text) ||
+                   string.IsNullOrWhiteSpace(txtUsuario.Text) ||
+                   string.IsNullOrWhiteSpace(txtApaterno.Text) ||
+                   string.IsNullOrWhiteSpace(txtAmaterno.Text) ||
+                   comboTipoUsuario.SelectedIndex == -1;
+        }
+
 
         private void btnLimpiar_Click(object sender, EventArgs e)
         {

@@ -206,43 +206,44 @@ namespace SIGC_TESChi
             return Convert.ToBase64String(hashBytes);
         }
 
-        private bool VerificarHashPBKDF2(string password, string hashAlmacenado)
-        {
-            byte[] hashBytes;
-            try
-            {
-                hashBytes = Convert.FromBase64String(hashAlmacenado);
-            }
-            catch
-            {
-                return false; // Hash inválido
-            }
+        
 
-            if (hashBytes.Length != 48)
+private bool VerificarHashPBKDF2(string password, string hashAlmacenado)
+    {
+        try
+        {
+            // Formato esperado: iteraciones:saltBase64:hashBase64
+            string[] partes = hashAlmacenado.Split(':');
+            if (partes.Length != 3)
                 return false;
 
-            byte[] salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
+            int iteraciones = int.Parse(partes[0]);
+            byte[] salt = Convert.FromBase64String(partes[1]);
+            byte[] hashOriginal = Convert.FromBase64String(partes[2]);
 
-            var pbkdf2 = new Rfc2898DeriveBytes(
-                password,
-                salt,
-                100000,
-                HashAlgorithmName.SHA256
-            );
-
-            byte[] hash = pbkdf2.GetBytes(32);
-
-            for (int i = 0; i < 32; i++)
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iteraciones))
             {
-                if (hash[i] != hashBytes[i + 16])
-                    return false;
+                byte[] hashCalculado = pbkdf2.GetBytes(hashOriginal.Length);
+
+                // Comparación segura (byte a byte)
+                for (int i = 0; i < hashOriginal.Length; i++)
+                {
+                    if (hashCalculado[i] != hashOriginal[i])
+                        return false;
+                }
             }
+
             return true;
         }
+        catch
+        {
+            return false;
+        }
+    }
 
-        // ================== CREAR NUEVO USUARIO ==================
-        public void CrearUsuario(string username, string nombre, string apaterno, string amaterno, string password, int idTipoUsuario)
+
+    // ================== CREAR NUEVO USUARIO ==================
+    public void CrearUsuario(string username, string nombre, string apaterno, string amaterno, string password, int idTipoUsuario)
         {
             string hash = CrearHashPBKDF2(password, out byte[] salt);
 

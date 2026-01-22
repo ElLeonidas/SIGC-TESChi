@@ -118,6 +118,11 @@ namespace SIGC_TESChi
                     tablaUbicaciones.DefaultCellStyle.BackColor = Color.White;
                     tablaUbicaciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
                     tablaUbicaciones.EnableHeadersVisualStyles = true;
+
+                    // 🔹 CAMBIAR TÍTULOS DE COLUMNAS
+                    tablaUbicaciones.Columns["idUbicacion"].HeaderText = "Identificador";
+                    tablaUbicaciones.Columns["dUbicacion"].HeaderText = "Nombre de Ubicacion";
+                    
                 }
             }
             catch (Exception ex)
