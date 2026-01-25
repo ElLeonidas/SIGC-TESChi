@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
 using System.Drawing;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 namespace SIGC_TESChi
 {
@@ -64,16 +66,19 @@ namespace SIGC_TESChi
             txtID.TabStop = false;
         }
 
+        private List<string> ListaPalabras = new List<string>();
+
         private void Ubicaciones_Load(object sender, EventArgs e)
         {
             CargarUbicaciones();
         }
 
-        // EVENTOS
+        #region BOTONES
 
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             AgregarUbicacion();
+
         }
 
         private void btnModificar_Click(object sender, EventArgs e)
@@ -97,6 +102,10 @@ namespace SIGC_TESChi
             CargarUbicaciones();
         }
 
+        #endregion
+
+
+        #region METODOS
         //MÉTODOS 
 
         private void CargarUbicaciones()
@@ -140,7 +149,10 @@ namespace SIGC_TESChi
 
         private void AgregarUbicacion()
         {
-            if (string.IsNullOrWhiteSpace(txtUbicacion.Text))
+            // 0️⃣ Limpiar espacios extra del texto ingresado
+            string ubicacion = Utillidades.LimpiarEspacios(txtUbicacion.Text);
+
+            if (string.IsNullOrWhiteSpace(ubicacion))
             {
                 MessageBox.Show("Por favor ingresa una ubicación.");
                 return;
@@ -152,14 +164,21 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    // 1️⃣ Verificar duplicados
-                    string checkQuery = "SELECT COUNT(*) FROM Ubicacion WHERE dUbicacion = @ubicacion";
+                    // 1️⃣ Verificar duplicados usando versión normalizada
+                    string checkQuery = "SELECT dUbicacion FROM Ubicacion";
                     using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
-                        checkCmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+                        List<string> listaUbicaciones = new List<string>();
+                        using (SqlDataReader reader = checkCmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Limpiar espacios al traer de la BD también
+                                listaUbicaciones.Add(Utillidades.LimpiarEspacios(reader.GetString(0)));
+                            }
+                        }
 
-                        int existe = (int)checkCmd.ExecuteScalar();
-                        if (existe > 0)
+                        if (Utillidades.EsDuplicado(listaUbicaciones, ubicacion))
                         {
                             MessageBox.Show("⚠️ Esta ubicación ya está registrada.");
                             return;
@@ -173,28 +192,24 @@ namespace SIGC_TESChi
                 SELECT SCOPE_IDENTITY();";
 
                     int idUbicacion;
-
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@ubicacion", txtUbicacion.Text);
+                        // Guardar la ubicación ya limpia
+                        cmd.Parameters.AddWithValue("@ubicacion", ubicacion);
                         idUbicacion = Convert.ToInt32(cmd.ExecuteScalar());
                     }
 
-                    // 🔴🔴🔴 CORRECCIÓN CLAVE 🔴🔴🔴
                     // 3️⃣ Registrar historial DESPUÉS del INSERT
                     HistorialHelper.RegistrarCambio(
                         "Ubicacion",                 // Tabla afectada
                         idUbicacion.ToString(),      // Llave primaria
                         "INSERT",                    // Tipo de acción
                         null,                        // No hay datos anteriores
-                        $"Ubicación={txtUbicacion.Text}" // Datos nuevos
+                        $"Ubicación={ubicacion}"     // Datos nuevos
                     );
-                    // 🔴🔴🔴 FIN DE LA CORRECCIÓN 🔴🔴🔴
                 }
 
                 MessageBox.Show("✅ Ubicación agregada.");
-                MessageBox.Show("Registrando historial INSERT");
-
                 CargarUbicaciones();
                 LimpiarCampos();
             }
@@ -203,6 +218,7 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error al agregar ubicación:\n" + ex.Message);
             }
         }
+
 
         private void ModificarUbicacion()
         {
@@ -355,6 +371,8 @@ namespace SIGC_TESChi
             txtUbicacion.Text = fila.Cells["dUbicacion"].Value.ToString();
         }
 
+        #endregion
+
         //EXPORTAR CSV
 
         private void btnExportarPDF_Click(object sender, EventArgs e)
@@ -388,7 +406,32 @@ namespace SIGC_TESChi
             }
         }
 
+        private void txtUbicacion_TextChanged(object sender, EventArgs e)
+        {
 
+            int cursor = txtUbicacion.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtUbicacion.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtUbicacion.Text != limpio)
+            {
+                txtUbicacion.Text = limpio;
+                txtUbicacion.SelectionStart = Math.Min(cursor, txtUbicacion.Text.Length);
+            }
+
+        }
     }
 
 }

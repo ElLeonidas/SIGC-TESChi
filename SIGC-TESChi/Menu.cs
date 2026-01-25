@@ -24,9 +24,18 @@ namespace SIGC_TESChi
         private Clasificacion ucClasificacion;
         private Info ucInfo;
 
+        private System.Windows.Forms.Timer inactivityTimer;
+        private System.Windows.Forms.Timer warningTimer;
+        private int tiempoInactividad = 5 * 60 * 1000; // 5 minutos
+        private int tiempoAviso = 30 * 1000; // 30 segundos de aviso
+        private bool avisoMostrado = false;
+
+
         public Menu()
         {
             InitializeComponent();
+
+            InicializarTimerInactividad();
 
             InicializarUserControls();   // 🔴 CLAVE
             InicializarToolTips();
@@ -77,6 +86,95 @@ namespace SIGC_TESChi
 
             MostrarUC(ucLobby); // Vista inicial
         }
+
+        private void InicializarTimerInactividad()
+        {
+            inactivityTimer = new System.Windows.Forms.Timer();
+            inactivityTimer.Interval = tiempoInactividad;
+            inactivityTimer.Tick += Inactividad_Tick;
+            inactivityTimer.Start();
+
+            warningTimer = new System.Windows.Forms.Timer();
+            warningTimer.Interval = tiempoAviso;
+            warningTimer.Tick += Warning_Tick;
+
+            // Detectar interacción en el form principal
+            this.MouseMove += ResetTimer;
+            this.KeyPress += ResetTimer;
+            this.MouseClick += ResetTimer;
+
+            // Detectar interacción en todos los UserControls
+            InicializarEventosUserControls(this);
+        }
+
+
+        private void ResetTimer(object sender, EventArgs e)
+        {
+            // Si se había mostrado el aviso, lo cancelamos
+            if (avisoMostrado)
+            {
+                warningTimer.Stop();
+                avisoMostrado = false;
+            }
+
+            inactivityTimer.Stop();
+            inactivityTimer.Start();
+        }
+
+
+        private void Inactividad_Tick(object sender, EventArgs e)
+        {
+            inactivityTimer.Stop();
+            avisoMostrado = true;
+            warningTimer.Start();
+
+            DialogResult result = MessageBox.Show(
+                "No se ha detectado actividad. La sesión se cerrará en 30 segundos.\n\n¿Deseas continuar activo?",
+                "Aviso de inactividad",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                ResetTimer(this, EventArgs.Empty);
+            }
+        }
+
+        private void Warning_Tick(object sender, EventArgs e)
+        {
+            warningTimer.Stop();
+
+            // Si el aviso ya se mostró y el usuario no interactuó, cerramos sesión
+            if (avisoMostrado)
+            {
+                MessageBox.Show(
+                    "La sesión se ha cerrado por inactividad.",
+                    "Inactividad",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
+                FrmLogin loginForm = new FrmLogin();
+                loginForm.Show();
+                this.Hide();
+            }
+        }
+
+
+        private void InicializarEventosUserControls(Control parent)
+        {
+            foreach (Control c in parent.Controls)
+            {
+                c.MouseMove += ResetTimer;
+                c.KeyPress += ResetTimer;
+                c.MouseClick += ResetTimer;
+
+                if (c.HasChildren)
+                    InicializarEventosUserControls(c); // Recursivo
+            }
+        }
+
 
         private bool TienePermiso(UserControl uc)
         {

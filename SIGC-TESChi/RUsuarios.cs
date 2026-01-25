@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 
@@ -304,6 +305,14 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
                 return;
             }
 
+            // 🔴 Evitar que el usuario se elimine a sí mismo
+            int idUsuarioSeleccionado = Convert.ToInt32(txtIdentificador.Text);
+            if (idUsuarioSeleccionado == SessionData.IdUsuario)
+            {
+                MessageBox.Show("⚠️ No puedes eliminarte a ti mismo.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (MessageBox.Show("¿Seguro de eliminar?", "Confirmar",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes)
                 return;
@@ -318,7 +327,7 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
 
                 SqlCommand cmd = new SqlCommand(
                     "DELETE FROM Usuario WHERE idUsuario=@id", con);
-                cmd.Parameters.AddWithValue("@id", txtIdentificador.Text);
+                cmd.Parameters.AddWithValue("@id", idUsuarioSeleccionado);
                 cmd.ExecuteNonQuery();
             }
 
@@ -335,6 +344,7 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
             CargarUsuarios();
             LimpiarCampos();
         }
+
 
 
 
@@ -419,11 +429,12 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
             txtApaterno.Text = fila.Cells["Apaterno"].Value.ToString();
             txtAmaterno.Text = fila.Cells["Amaterno"].Value.ToString();
 
-            // 🔐 Mostrar máscara
             txtContrasena.Text = "********";
-
-            // 👤 Seleccionar tipo usando el ID REAL
             comboTipoUsuario.SelectedValue = fila.Cells["idTipoUsuario"].Value;
+
+            // 🔹 Deshabilitar botón Eliminar si es el usuario actual
+            int idSeleccionado = Convert.ToInt32(fila.Cells["idUsuario"].Value);
+            btnEliminar.Enabled = idSeleccionado != SessionData.IdUsuario;
         }
 
         private bool ExisteUsuario(string username)
@@ -511,5 +522,120 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private void txtNombreAcceso_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtNombreAcceso.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtNombreAcceso.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtNombreAcceso.Text != limpio)
+            {
+                txtNombreAcceso.Text = limpio;
+                txtNombreAcceso.SelectionStart = Math.Min(cursor, txtNombreAcceso.Text.Length);
+            }
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtUsuario.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtUsuario.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtUsuario.Text != limpio)
+            {
+                txtUsuario.Text = limpio;
+                txtUsuario.SelectionStart = Math.Min(cursor, txtUsuario.Text.Length);
+            }
+        }
+
+        private void txtApaterno_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtApaterno.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtApaterno.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtApaterno.Text != limpio)
+            {
+                txtApaterno.Text = limpio;
+                txtApaterno.SelectionStart = Math.Min(cursor, txtApaterno.Text.Length);
+            }
+        }
+
+        private void txtAmaterno_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtAmaterno.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtAmaterno.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtAmaterno.Text != limpio)
+            {
+                txtAmaterno.Text = limpio;
+                txtAmaterno.SelectionStart = Math.Min(cursor, txtAmaterno.Text.Length);
+            }
+        }
+
+        private void txtContrasena_TextChanged(object sender, EventArgs e)
+        {
+
+            
+
+        }
+
+        private void txtContrasena_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Bloquear la tecla espacio
+            if (e.KeyChar == ' ')
+            {
+                e.Handled = true;
+            }
+        }
     }
 }

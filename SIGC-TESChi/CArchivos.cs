@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.FileIO;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -38,16 +41,24 @@ namespace SIGC_TESChi
         int duplicadosCSV = 0;
         int duplicadosBD = 0;
 
+
+
         public CArchivos()
         {
-                InitializeComponent();
+            InitializeComponent();
 
 
-            //dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            //dgvControl.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgvControl.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            //dgvControl.Dock = DockStyle.Fill;
+            this.AutoScroll = true;
 
+            cboAño.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboCodUnidAdmin.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboNombUniAdmin.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSeccion.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboSubSeccion.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboInstituto.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboUbicacion.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboEstatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboClasificacion.DropDownStyle = ComboBoxStyle.DropDownList;
 
             Load += CArchivos_Load;
 
@@ -75,29 +86,136 @@ namespace SIGC_TESChi
 
         }
 
-        
 
-
-
-        private void InicializarTablas()
+        public class ImportadorCSV
         {
-            dtValidos = new DataTable();
-            dtErrores = new DataTable();
+            private string cs =
+                @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
-            foreach (DataGridViewColumn col in dgvControl.Columns)
+            public void ImportarCSV(string rutaCSV)
             {
-                dtValidos.Columns.Add(col.HeaderText);
-                dtErrores.Columns.Add(col.HeaderText);
+                int linea = 0;
+                int insertados = 0;
+                StringBuilder errores = new StringBuilder();
+
+                using (SqlConnection conn = new SqlConnection(cs))
+                {
+                    conn.Open();
+
+                    using (StreamReader sr = new StreamReader(rutaCSV, Encoding.UTF8))
+                    {
+                        while (!sr.EndOfStream)
+                        {
+                            linea++;
+                            string fila = sr.ReadLine();
+                            if (string.IsNullOrWhiteSpace(fila)) continue;
+
+                            string[] d = fila.Split(';');
+
+                            if (d.Length < 18)
+                            {
+                                errores.AppendLine("Línea " + linea + ": columnas insuficientes");
+                                continue;
+                            }
+
+                            try
+                            {
+                                int anio;
+                                if (!int.TryParse(d[0].Trim(), out anio))
+                                    throw new Exception("Año inválido");
+
+                                int idSeccion = ObtenerId(conn,
+                                    "SELECT idSeccion FROM Seccion WHERE claveSeccion=@v", d[9]);
+
+                                int idSubSeccion = ObtenerId(conn,
+                                    "SELECT idSubSeccion FROM SubSeccion WHERE claveSubSeccion=@v", d[10]);
+
+                                int idInstituto = ObtenerId(conn,
+                                    "SELECT idInstituto FROM Instituto WHERE dInstituto=@v", d[11]);
+
+                                int idUbicacion = ObtenerId(conn,
+                                    "SELECT idUbicacion FROM Ubicacion WHERE dUbicacion=@v", d[12]);
+
+                                int idEstatus = ObtenerId(conn,
+                                    "SELECT idEstatus FROM Estatus WHERE dEstatus=@v", d[13]);
+
+                                int idClasificacion = ObtenerId(conn,
+                                    "SELECT idClasificacion FROM Clasificacion WHERE dClasificacion=@v", d[14]);
+
+                                DateTime fApertura, fCierre;
+                                if (!DateTime.TryParseExact(d[5], "d/M/yyyy",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out fApertura))
+                                    throw new Exception("Fecha apertura inválida");
+
+                                if (!DateTime.TryParseExact(d[6], "d/M/yyyy",
+                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out fCierre))
+                                    throw new Exception("Fecha cierre inválida");
+
+                                int fojas = 0;
+                                int.TryParse(d[7], out fojas);
+
+                                string sql = @"
+INSERT INTO Control
+(anioControl, CodUniAdm, nomUniAdm, noExpediente, nExpediente,
+ fApertura, fCierre, nForjas, nLegajos,
+ idSeccion, idSubSeccion, idInstituto, idUbicacion, idEstatus, idClasificacion,
+ formClasificatoria, Observaciones, enlace)
+VALUES
+(@anio,@cod,@nomUA,@noExp,@nomExp,
+ @fa,@fc,@fojas,@legajos,
+ @sec,@sub,@inst,@ubi,@est,@clas,
+ @form,@obs,@enlace)";
+
+                                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                                {
+                                    cmd.Parameters.AddWithValue("@anio", anio);
+                                    cmd.Parameters.AddWithValue("@cod", d[1]);
+                                    cmd.Parameters.AddWithValue("@nomUA", d[2]);
+                                    cmd.Parameters.AddWithValue("@noExp", d[3]);
+                                    cmd.Parameters.AddWithValue("@nomExp", d[4]);
+                                    cmd.Parameters.AddWithValue("@fa", fApertura);
+                                    cmd.Parameters.AddWithValue("@fc", fCierre);
+                                    cmd.Parameters.AddWithValue("@fojas", fojas);
+                                    cmd.Parameters.AddWithValue("@legajos", d[8]);
+                                    cmd.Parameters.AddWithValue("@sec", idSeccion);
+                                    cmd.Parameters.AddWithValue("@sub", idSubSeccion);
+                                    cmd.Parameters.AddWithValue("@inst", idInstituto);
+                                    cmd.Parameters.AddWithValue("@ubi", idUbicacion);
+                                    cmd.Parameters.AddWithValue("@est", idEstatus);
+                                    cmd.Parameters.AddWithValue("@clas", idClasificacion);
+                                    cmd.Parameters.AddWithValue("@form", d[15]);
+                                    cmd.Parameters.AddWithValue("@obs", d[16]);
+                                    cmd.Parameters.AddWithValue("@enlace", d[17]);
+
+                                    cmd.ExecuteNonQuery();
+                                    insertados++;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                errores.AppendLine("Línea " + linea + ": " + ex.Message);
+                            }
+                        }
+                    }
+                }
+
+                File.WriteAllText("ErroresImportacion.txt", errores.ToString());
+                MessageBox.Show("Insertados: " + insertados +
+                                "\nErrores: " + errores.ToString().Split('\n').Length);
             }
 
-            dtErrores.Columns.Add("MotivoError");
+            private int ObtenerId(SqlConnection c, string sql, string valor)
+            {
+                using (SqlCommand cmd = new SqlCommand(sql, c))
+                {
+                    cmd.Parameters.AddWithValue("@v", valor.Trim());
+                    object r = cmd.ExecuteScalar();
+                    if (r == null) throw new Exception("No existe: " + valor);
+                    return Convert.ToInt32(r);
+                }
+            }
         }
 
-
-        private void InicializarContadores()
-        {
-            totalRegistros = validos = errores = duplicadosCSV = duplicadosBD = 0;
-        }
 
 
         private void CargarExpedientesBD()
@@ -114,30 +232,6 @@ namespace SIGC_TESChi
                 while (dr.Read())
                     expedientesBD.Add(dr[0].ToString().Trim());
             }
-        }
-
-
-
-        private void MostrarResumen()
-        {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("📊 RESUMEN DE IMPORTACIÓN\n");
-            sb.AppendLine($"📄 Total de registros leídos: {totalRegistros}");
-            sb.AppendLine($"✅ Registros válidos: {validos}");
-            sb.AppendLine($"❌ Registros con error: {errores}");
-            sb.AppendLine($"🚫 Duplicados en archivo: {duplicadosCSV}");
-            sb.AppendLine($"🚫 Duplicados en base de datos: {duplicadosBD}");
-
-            if (errores > 0)
-                sb.AppendLine("\n📁 Se generó un archivo CSV con los errores.");
-
-            MessageBox.Show(
-                sb.ToString(),
-                "Resultado de la importación",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
         }
 
 
@@ -191,36 +285,6 @@ namespace SIGC_TESChi
 
 
 
-
-        private void ImportarCSV()
-        {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Archivos CSV (*.csv)|*.csv";
-
-            if (ofd.ShowDialog() != DialogResult.OK) return;
-
-            dtImportado = new DataTable();
-
-            for (int i = 0; i < 17; i++)
-                dtImportado.Columns.Add("C" + i);
-
-
-
-            using (StreamReader sr = new StreamReader(ofd.FileName, Encoding.UTF8))
-            {
-                while (!sr.EndOfStream)
-                {
-                    string[] fila = sr.ReadLine().Split(new char[] { ',', ';', '\t' , ' ' });
-
-                    if (fila.Length == 17)
-                        dtImportado.Rows.Add(fila);
-                }
-            }
-
-            MessageBox.Show("Filas cargadas: " + dtImportado.Rows.Count);
-
-            dgvControl.DataSource = dtImportado;
-        }
 
 
         private void ValidarDatos()
@@ -409,6 +473,25 @@ ORDER BY c.idControl DESC";
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvControl.DataSource = dt;
+
+                    dgvControl.Columns["idControl"].HeaderText = "Identificador";
+                    dgvControl.Columns["anioControl"].HeaderText = "Año del Expediente";
+                    dgvControl.Columns["CodUniAdm"].HeaderText = "Codigo de Unidad Administrativa";
+                    dgvControl.Columns["nomUniAdm"].HeaderText = "Nombre de Unidad Administrativa";
+                    dgvControl.Columns["noExpediente"].HeaderText = "Numero de Expediente";
+                    dgvControl.Columns["nExpediente"].HeaderText = "Nombre de Expediente";
+                    dgvControl.Columns["fApertura"].HeaderText = "Fecha de Apertura";
+                    dgvControl.Columns["fCierre"].HeaderText = "Fecha de Cierre";
+                    dgvControl.Columns["nForjas"].HeaderText = "Numero de Fojas";
+                    dgvControl.Columns["nLegajos"].HeaderText = "Numero de Legajos";
+                    dgvControl.Columns["claveSeccion"].HeaderText = "Clave de Seccion";
+                    dgvControl.Columns["claveSubSeccion"].HeaderText = "Clave de SubSeccion";
+                    dgvControl.Columns["claveInstituto"].HeaderText = "Clave del Instituto";
+                    dgvControl.Columns["dUbicacion"].HeaderText = "Ubicacion";
+                    dgvControl.Columns["dEstatus"].HeaderText = "Estatus";
+                    dgvControl.Columns["dClasificacion"].HeaderText = "Clasificación";
+                    dgvControl.Columns["formClasificatoria"].HeaderText = "Formula Clasificactoria";
+
                 }
             }
             catch (Exception ex)
@@ -835,7 +918,15 @@ ORDER BY c.idControl DESC";
 
         private void txtFojas_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtFojas.SelectionStart;
 
+            string limpio = Regex.Replace(txtFojas.Text, @"[^0-9]", "");
+
+            if (txtFojas.Text != limpio)
+            {
+                txtFojas.Text = limpio;
+                txtFojas.SelectionStart = Math.Min(cursor, txtFojas.Text.Length);
+            }
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -845,7 +936,27 @@ ORDER BY c.idControl DESC";
 
         private void txtObservaciones_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtObservaciones.SelectionStart;
 
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtObservaciones.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtObservaciones.Text != limpio)
+            {
+                txtObservaciones.Text = limpio;
+                txtObservaciones.SelectionStart = Math.Min(cursor, txtObservaciones.Text.Length);
+            }
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
@@ -889,7 +1000,7 @@ ORDER BY c.idControl DESC";
             cboNombUniAdmin.Text = row.Cells["nomUniAdm"].Value.ToString();
 
             // EXPEDIENTES  
-            txtnExpediente.Text = row.Cells["noExpediente"].Value.ToString();
+            txtnoExpediente.Text = row.Cells["noExpediente"].Value.ToString();
             txtnExpendiente.Text = row.Cells["nExpediente"].Value.ToString();
 
             // FECHAS
@@ -1043,7 +1154,7 @@ ORDER BY c.idControl DESC";
                     cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
                     cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue?.ToString());
                     cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
-                    cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
+                    cmd.Parameters.AddWithValue("@noExp", txtnoExpediente.Text);
                     cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
                     cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
                     cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
@@ -1081,6 +1192,18 @@ ORDER BY c.idControl DESC";
                     cmd.ExecuteNonQuery();
                 }
 
+                if (cboSeccion.SelectedValue == null ||
+    cboSubSeccion.SelectedValue == null ||
+    cboUbicacion.SelectedValue == null ||
+    cboInstituto.SelectedValue == null ||
+    cboEstatus.SelectedValue == null ||
+    cboClasificacion.SelectedValue == null)
+                {
+                    MessageBox.Show("Completa todos los campos obligatorios.");
+                    return;
+                }
+
+
                 // =====================
                 // 🔴 HISTORIAL (INSERT)
                 // =====================
@@ -1089,7 +1212,7 @@ ORDER BY c.idControl DESC";
                     "NUEVO",
                     "INSERT",
                     null,
-                    $"Año={cboAño.Text}, Sección={cboSeccion.Text}, Expediente={txtnExpediente.Text}"
+                    $"Año={cboAño.Text}, Sección={cboSeccion.Text}, Expediente={txtnoExpediente.Text}"
                 );
 
                 MessageBox.Show("Registro guardado correctamente.",
@@ -1166,7 +1289,7 @@ ORDER BY c.idControl DESC";
                         cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
                         cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue);
                         cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
-                        cmd.Parameters.AddWithValue("@noExp", txtnExpediente.Text);
+                        cmd.Parameters.AddWithValue("@noExp", txtnoExpediente.Text);
                         cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
                         cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
                         cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
@@ -1191,7 +1314,7 @@ ORDER BY c.idControl DESC";
                     txtID.Text,
                     "UPDATE",
                     datosAntes,
-                    $"Año={cboAño.Text}, Unidad={cboCodUnidAdmin.Text}, Expediente={txtnExpediente.Text}"
+                    $"Año={cboAño.Text}, Unidad={cboCodUnidAdmin.Text}, Expediente={txtnoExpediente.Text}"
                 );
 
                 MessageBox.Show("Registro actualizado correctamente.");
@@ -1206,7 +1329,7 @@ ORDER BY c.idControl DESC";
 
         private void LimpiarCampos()
         {
-            txtnExpediente.Clear();
+            txtnoExpediente.Clear();
             txtnExpendiente.Clear();
             txtFojas.Clear();
             txtLegajos.Clear();
@@ -1310,14 +1433,54 @@ ORDER BY c.idControl DESC";
 
         }
 
-        private void txtnExpediente_TextChanged(object sender, EventArgs e)
+        private void txtnoExpediente_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtnoExpediente.SelectionStart;
 
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtnoExpediente.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtnoExpediente.Text != limpio)
+            {
+                txtnoExpediente.Text = limpio;
+                txtnoExpediente.SelectionStart = Math.Min(cursor, txtnoExpediente.Text.Length);
+            }
         }
 
         private void txtnExpendiente_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtnoExpediente.SelectionStart;
 
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtnoExpediente.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtnoExpediente.Text != limpio)
+            {
+                txtnoExpediente.Text = limpio;
+                txtnoExpediente.SelectionStart = Math.Min(cursor, txtnoExpediente.Text.Length);
+            }
         }
 
         private void cboEstatus_SelectedIndexChanged(object sender, EventArgs e)
@@ -1357,7 +1520,15 @@ ORDER BY c.idControl DESC";
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            ImportarCSV();
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "CSV (*.csv)|*.csv";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                ImportadorCSV imp = new ImportadorCSV();
+                imp.ImportarCSV(ofd.FileName);
+                MessageBox.Show("Importación completada");
+            }
         }
 
         private void btnValidar_Click(object sender, EventArgs e)
@@ -1376,6 +1547,34 @@ ORDER BY c.idControl DESC";
         private void btnInsertar_Click(object sender, EventArgs e)
         {
             InsertarDatos();
+        }
+
+        private void CArchivos_Scroll(object sender, ScrollEventArgs e)
+        {
+
+        }
+
+        private void txtLegajos_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Permitir teclas de control (Backspace, Delete, etc.)
+            if (char.IsControl(e.KeyChar))
+                return;
+
+            // Permitir SOLO números
+            if (!char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // bloquea todo lo que no sea número
+            }
+        }
+
+        private void cboAño_DropDownStyleChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cboCodUnidAdmin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
     }

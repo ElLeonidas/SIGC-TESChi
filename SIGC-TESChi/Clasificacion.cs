@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -73,6 +74,11 @@ namespace SIGC_TESChi
                     tablaClasificacion.DefaultCellStyle.BackColor = Color.White;
                     tablaClasificacion.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
                     tablaClasificacion.EnableHeadersVisualStyles = true;
+
+                    tablaClasificacion.Columns["idClasificacion"].HeaderText = "Identificador";
+                    tablaClasificacion.Columns["dClasificacion"].HeaderText = "Nombre de la Clasificación";
+
+
 
                 }
             }
@@ -307,6 +313,31 @@ namespace SIGC_TESChi
 
             txtID.Text = fila.Cells["idClasificacion"].Value.ToString();
             txtClasificacion.Text = fila.Cells["dClasificacion"].Value.ToString();
+        }
+
+        private void txtClasificacion_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtClasificacion.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtClasificacion.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtClasificacion.Text != limpio)
+            {
+                txtClasificacion.Text = limpio;
+                txtClasificacion.SelectionStart = Math.Min(cursor, txtClasificacion.Text.Length);
+            }
         }
     }
 }

@@ -30,6 +30,16 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaratulaExpediente));
             this.pnlCaratula = new System.Windows.Forms.Panel();
+            this.cboContable = new System.Windows.Forms.CheckBox();
+            this.cboxJuridicoLegal = new System.Windows.Forms.CheckBox();
+            this.cboFiscal = new System.Windows.Forms.CheckBox();
+            this.cboxAdministrativo = new System.Windows.Forms.CheckBox();
+            this.cboxArchivoHistorico = new System.Windows.Forms.CheckBox();
+            this.cboxArchivoConcentracion = new System.Windows.Forms.CheckBox();
+            this.cboxArchivoTramite = new System.Windows.Forms.CheckBox();
+            this.cboxConfidencial = new System.Windows.Forms.CheckBox();
+            this.cboxReservada = new System.Windows.Forms.CheckBox();
+            this.cboFondoDocumental = new System.Windows.Forms.ComboBox();
             this.cboNombreUnidadAdministrativa = new System.Windows.Forms.ComboBox();
             this.cboCodigoUnidadAdministrativa = new System.Windows.Forms.ComboBox();
             this.lblFechaDocumentoImpresion = new System.Windows.Forms.Label();
@@ -52,16 +62,9 @@
             this.dtpApertura = new System.Windows.Forms.DateTimePicker();
             this.btnImprimir = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.cboFondoDocumental = new System.Windows.Forms.ComboBox();
-            this.cboxReservada = new System.Windows.Forms.CheckBox();
-            this.cboxConfidencial = new System.Windows.Forms.CheckBox();
-            this.cboxArchivoTramite = new System.Windows.Forms.CheckBox();
-            this.cboxArchivoConcentracion = new System.Windows.Forms.CheckBox();
-            this.cboxArchivoHistorico = new System.Windows.Forms.CheckBox();
-            this.cboxAdministrativo = new System.Windows.Forms.CheckBox();
-            this.cboFiscal = new System.Windows.Forms.CheckBox();
-            this.cboxJuridicoLegal = new System.Windows.Forms.CheckBox();
-            this.cboContable = new System.Windows.Forms.CheckBox();
+            this.lblCodigoUnidadImpresion = new System.Windows.Forms.Label();
+            this.lblNombreUnidadImpresion = new System.Windows.Forms.Label();
+            this.lblFondoDocumentalImpresion = new System.Windows.Forms.Label();
             this.pnlCaratula.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +74,9 @@
             this.pnlCaratula.BackColor = System.Drawing.Color.White;
             this.pnlCaratula.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCaratula.BackgroundImage")));
             this.pnlCaratula.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlCaratula.Controls.Add(this.lblFondoDocumentalImpresion);
+            this.pnlCaratula.Controls.Add(this.lblNombreUnidadImpresion);
+            this.pnlCaratula.Controls.Add(this.lblCodigoUnidadImpresion);
             this.pnlCaratula.Controls.Add(this.cboContable);
             this.pnlCaratula.Controls.Add(this.cboxJuridicoLegal);
             this.pnlCaratula.Controls.Add(this.cboFiscal);
@@ -106,6 +112,124 @@
             this.pnlCaratula.Size = new System.Drawing.Size(781, 1021);
             this.pnlCaratula.TabIndex = 61;
             this.pnlCaratula.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlCaratula_Paint);
+            // 
+            // cboContable
+            // 
+            this.cboContable.AutoSize = true;
+            this.cboContable.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboContable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboContable.Location = new System.Drawing.Point(652, 761);
+            this.cboContable.Name = "cboContable";
+            this.cboContable.Size = new System.Drawing.Size(12, 11);
+            this.cboContable.TabIndex = 134;
+            this.cboContable.UseVisualStyleBackColor = true;
+            // 
+            // cboxJuridicoLegal
+            // 
+            this.cboxJuridicoLegal.AutoSize = true;
+            this.cboxJuridicoLegal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxJuridicoLegal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxJuridicoLegal.Location = new System.Drawing.Point(652, 722);
+            this.cboxJuridicoLegal.Name = "cboxJuridicoLegal";
+            this.cboxJuridicoLegal.Size = new System.Drawing.Size(12, 11);
+            this.cboxJuridicoLegal.TabIndex = 133;
+            this.cboxJuridicoLegal.UseVisualStyleBackColor = true;
+            // 
+            // cboFiscal
+            // 
+            this.cboFiscal.AutoSize = true;
+            this.cboFiscal.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboFiscal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboFiscal.Location = new System.Drawing.Point(301, 761);
+            this.cboFiscal.Name = "cboFiscal";
+            this.cboFiscal.Size = new System.Drawing.Size(12, 11);
+            this.cboFiscal.TabIndex = 132;
+            this.cboFiscal.UseVisualStyleBackColor = true;
+            // 
+            // cboxAdministrativo
+            // 
+            this.cboxAdministrativo.AutoSize = true;
+            this.cboxAdministrativo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxAdministrativo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxAdministrativo.Location = new System.Drawing.Point(301, 726);
+            this.cboxAdministrativo.Name = "cboxAdministrativo";
+            this.cboxAdministrativo.Size = new System.Drawing.Size(12, 11);
+            this.cboxAdministrativo.TabIndex = 131;
+            this.cboxAdministrativo.UseVisualStyleBackColor = true;
+            // 
+            // cboxArchivoHistorico
+            // 
+            this.cboxArchivoHistorico.AutoSize = true;
+            this.cboxArchivoHistorico.BackColor = System.Drawing.Color.Transparent;
+            this.cboxArchivoHistorico.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxArchivoHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxArchivoHistorico.Location = new System.Drawing.Point(664, 872);
+            this.cboxArchivoHistorico.Name = "cboxArchivoHistorico";
+            this.cboxArchivoHistorico.Size = new System.Drawing.Size(12, 11);
+            this.cboxArchivoHistorico.TabIndex = 130;
+            this.cboxArchivoHistorico.UseVisualStyleBackColor = false;
+            // 
+            // cboxArchivoConcentracion
+            // 
+            this.cboxArchivoConcentracion.AutoSize = true;
+            this.cboxArchivoConcentracion.BackColor = System.Drawing.Color.Transparent;
+            this.cboxArchivoConcentracion.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxArchivoConcentracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxArchivoConcentracion.Location = new System.Drawing.Point(483, 871);
+            this.cboxArchivoConcentracion.Name = "cboxArchivoConcentracion";
+            this.cboxArchivoConcentracion.Size = new System.Drawing.Size(12, 11);
+            this.cboxArchivoConcentracion.TabIndex = 129;
+            this.cboxArchivoConcentracion.UseVisualStyleBackColor = false;
+            // 
+            // cboxArchivoTramite
+            // 
+            this.cboxArchivoTramite.AutoSize = true;
+            this.cboxArchivoTramite.BackColor = System.Drawing.Color.Transparent;
+            this.cboxArchivoTramite.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxArchivoTramite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxArchivoTramite.Location = new System.Drawing.Point(294, 855);
+            this.cboxArchivoTramite.Name = "cboxArchivoTramite";
+            this.cboxArchivoTramite.Size = new System.Drawing.Size(12, 11);
+            this.cboxArchivoTramite.TabIndex = 128;
+            this.cboxArchivoTramite.UseVisualStyleBackColor = false;
+            this.cboxArchivoTramite.CheckedChanged += new System.EventHandler(this.cboxArchivoTramite_CheckedChanged);
+            // 
+            // cboxConfidencial
+            // 
+            this.cboxConfidencial.AutoSize = true;
+            this.cboxConfidencial.BackColor = System.Drawing.Color.Transparent;
+            this.cboxConfidencial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.cboxConfidencial.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxConfidencial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxConfidencial.Location = new System.Drawing.Point(674, 931);
+            this.cboxConfidencial.Name = "cboxConfidencial";
+            this.cboxConfidencial.Size = new System.Drawing.Size(12, 11);
+            this.cboxConfidencial.TabIndex = 127;
+            this.cboxConfidencial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxConfidencial.UseVisualStyleBackColor = false;
+            // 
+            // cboxReservada
+            // 
+            this.cboxReservada.AutoSize = true;
+            this.cboxReservada.BackColor = System.Drawing.Color.Transparent;
+            this.cboxReservada.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cboxReservada.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cboxReservada.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cboxReservada.ForeColor = System.Drawing.Color.Black;
+            this.cboxReservada.Location = new System.Drawing.Point(376, 931);
+            this.cboxReservada.Name = "cboxReservada";
+            this.cboxReservada.Size = new System.Drawing.Size(12, 11);
+            this.cboxReservada.TabIndex = 126;
+            this.cboxReservada.UseVisualStyleBackColor = false;
+            this.cboxReservada.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // cboFondoDocumental
+            // 
+            this.cboFondoDocumental.FormattingEnabled = true;
+            this.cboFondoDocumental.Location = new System.Drawing.Point(235, 558);
+            this.cboFondoDocumental.Name = "cboFondoDocumental";
+            this.cboFondoDocumental.Size = new System.Drawing.Size(516, 21);
+            this.cboFondoDocumental.TabIndex = 125;
             // 
             // cboNombreUnidadAdministrativa
             // 
@@ -164,6 +288,7 @@
             this.txtObservaciones.Name = "txtObservaciones";
             this.txtObservaciones.Size = new System.Drawing.Size(530, 20);
             this.txtObservaciones.TabIndex = 118;
+            this.txtObservaciones.TextChanged += new System.EventHandler(this.txtObservaciones_TextChanged);
             // 
             // txtSubserieDocumental
             // 
@@ -172,19 +297,20 @@
             this.txtSubserieDocumental.Size = new System.Drawing.Size(157, 20);
             this.txtSubserieDocumental.TabIndex = 97;
             this.txtSubserieDocumental.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.maskedTextBox2_MaskInputRejected);
+            this.txtSubserieDocumental.TextChanged += new System.EventHandler(this.txtSubserieDocumental_TextChanged);
             // 
             // txtSerieDocumental
             // 
-            this.txtSerieDocumental.Location = new System.Drawing.Point(238, 663);
+            this.txtSerieDocumental.Location = new System.Drawing.Point(593, 630);
             this.txtSerieDocumental.Name = "txtSerieDocumental";
             this.txtSerieDocumental.Size = new System.Drawing.Size(157, 20);
             this.txtSerieDocumental.TabIndex = 96;
-            this.txtSerieDocumental.TextChanged += new System.EventHandler(this.textBox7_TextChanged);
+            this.txtSerieDocumental.TextChanged += new System.EventHandler(this.txtSerieDocumental_TextChanged);
             // 
             // cboSubSeccion
             // 
             this.cboSubSeccion.FormattingEnabled = true;
-            this.cboSubSeccion.Location = new System.Drawing.Point(640, 632);
+            this.cboSubSeccion.Location = new System.Drawing.Point(281, 663);
             this.cboSubSeccion.Name = "cboSubSeccion";
             this.cboSubSeccion.Size = new System.Drawing.Size(46, 21);
             this.cboSubSeccion.TabIndex = 95;
@@ -192,7 +318,7 @@
             // cboSeccion
             // 
             this.cboSeccion.FormattingEnabled = true;
-            this.cboSeccion.Location = new System.Drawing.Point(292, 632);
+            this.cboSeccion.Location = new System.Drawing.Point(280, 629);
             this.cboSeccion.Name = "cboSeccion";
             this.cboSeccion.Size = new System.Drawing.Size(46, 21);
             this.cboSeccion.TabIndex = 94;
@@ -203,6 +329,8 @@
             this.txtSubfondoDocumental.Name = "txtSubfondoDocumental";
             this.txtSubfondoDocumental.Size = new System.Drawing.Size(524, 20);
             this.txtSubfondoDocumental.TabIndex = 93;
+            this.txtSubfondoDocumental.MaskInputRejected += new System.Windows.Forms.MaskInputRejectedEventHandler(this.txtSubfondoDocumental_MaskInputRejected);
+            this.txtSubfondoDocumental.TextChanged += new System.EventHandler(this.txtSubfondoDocumental_TextChanged);
             // 
             // txtAsunto
             // 
@@ -211,6 +339,7 @@
             this.txtAsunto.Name = "txtAsunto";
             this.txtAsunto.Size = new System.Drawing.Size(537, 69);
             this.txtAsunto.TabIndex = 84;
+            this.txtAsunto.TextChanged += new System.EventHandler(this.txtAsunto_TextChanged);
             // 
             // txtTLegajos
             // 
@@ -218,6 +347,7 @@
             this.txtTLegajos.Name = "txtTLegajos";
             this.txtTLegajos.Size = new System.Drawing.Size(100, 20);
             this.txtTLegajos.TabIndex = 83;
+            this.txtTLegajos.TextChanged += new System.EventHandler(this.txtTLegajos_TextChanged);
             // 
             // txtNoLegajo
             // 
@@ -225,6 +355,7 @@
             this.txtNoLegajo.Name = "txtNoLegajo";
             this.txtNoLegajo.Size = new System.Drawing.Size(100, 20);
             this.txtNoLegajo.TabIndex = 82;
+            this.txtNoLegajo.TextChanged += new System.EventHandler(this.txtNoLegajo_TextChanged);
             // 
             // txtNoExpediente
             // 
@@ -232,6 +363,7 @@
             this.txtNoExpediente.Name = "txtNoExpediente";
             this.txtNoExpediente.Size = new System.Drawing.Size(100, 20);
             this.txtNoExpediente.TabIndex = 81;
+            this.txtNoExpediente.TextChanged += new System.EventHandler(this.txtNoExpediente_TextChanged);
             // 
             // txtTDocumentosCierre
             // 
@@ -239,6 +371,7 @@
             this.txtTDocumentosCierre.Name = "txtTDocumentosCierre";
             this.txtTDocumentosCierre.Size = new System.Drawing.Size(124, 20);
             this.txtTDocumentosCierre.TabIndex = 80;
+            this.txtTDocumentosCierre.TextChanged += new System.EventHandler(this.txtTDocumentosCierre_TextChanged);
             // 
             // txtNombreExpediente
             // 
@@ -284,123 +417,29 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // cboFondoDocumental
+            // lblCodigoUnidadImpresion
             // 
-            this.cboFondoDocumental.FormattingEnabled = true;
-            this.cboFondoDocumental.Location = new System.Drawing.Point(235, 558);
-            this.cboFondoDocumental.Name = "cboFondoDocumental";
-            this.cboFondoDocumental.Size = new System.Drawing.Size(516, 21);
-            this.cboFondoDocumental.TabIndex = 125;
+            this.lblCodigoUnidadImpresion.AutoSize = true;
+            this.lblCodigoUnidadImpresion.Location = new System.Drawing.Point(226, 172);
+            this.lblCodigoUnidadImpresion.Name = "lblCodigoUnidadImpresion";
+            this.lblCodigoUnidadImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblCodigoUnidadImpresion.TabIndex = 135;
             // 
-            // cboxReservada
+            // lblNombreUnidadImpresion
             // 
-            this.cboxReservada.AutoSize = true;
-            this.cboxReservada.BackColor = System.Drawing.Color.Transparent;
-            this.cboxReservada.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cboxReservada.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxReservada.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxReservada.ForeColor = System.Drawing.Color.Black;
-            this.cboxReservada.Location = new System.Drawing.Point(376, 931);
-            this.cboxReservada.Name = "cboxReservada";
-            this.cboxReservada.Size = new System.Drawing.Size(12, 11);
-            this.cboxReservada.TabIndex = 126;
-            this.cboxReservada.UseVisualStyleBackColor = false;
-            this.cboxReservada.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.lblNombreUnidadImpresion.AutoSize = true;
+            this.lblNombreUnidadImpresion.Location = new System.Drawing.Point(227, 210);
+            this.lblNombreUnidadImpresion.Name = "lblNombreUnidadImpresion";
+            this.lblNombreUnidadImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblNombreUnidadImpresion.TabIndex = 136;
             // 
-            // cboxConfidencial
+            // lblFondoDocumentalImpresion
             // 
-            this.cboxConfidencial.AutoSize = true;
-            this.cboxConfidencial.BackColor = System.Drawing.Color.Transparent;
-            this.cboxConfidencial.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.cboxConfidencial.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxConfidencial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxConfidencial.Location = new System.Drawing.Point(674, 931);
-            this.cboxConfidencial.Name = "cboxConfidencial";
-            this.cboxConfidencial.Size = new System.Drawing.Size(12, 11);
-            this.cboxConfidencial.TabIndex = 127;
-            this.cboxConfidencial.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cboxConfidencial.UseVisualStyleBackColor = false;
-            // 
-            // cboxArchivoTramite
-            // 
-            this.cboxArchivoTramite.AutoSize = true;
-            this.cboxArchivoTramite.BackColor = System.Drawing.Color.Transparent;
-            this.cboxArchivoTramite.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxArchivoTramite.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxArchivoTramite.Location = new System.Drawing.Point(294, 855);
-            this.cboxArchivoTramite.Name = "cboxArchivoTramite";
-            this.cboxArchivoTramite.Size = new System.Drawing.Size(12, 11);
-            this.cboxArchivoTramite.TabIndex = 128;
-            this.cboxArchivoTramite.UseVisualStyleBackColor = false;
-            this.cboxArchivoTramite.CheckedChanged += new System.EventHandler(this.cboxArchivoTramite_CheckedChanged);
-            // 
-            // cboxArchivoConcentracion
-            // 
-            this.cboxArchivoConcentracion.AutoSize = true;
-            this.cboxArchivoConcentracion.BackColor = System.Drawing.Color.Transparent;
-            this.cboxArchivoConcentracion.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxArchivoConcentracion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxArchivoConcentracion.Location = new System.Drawing.Point(483, 871);
-            this.cboxArchivoConcentracion.Name = "cboxArchivoConcentracion";
-            this.cboxArchivoConcentracion.Size = new System.Drawing.Size(12, 11);
-            this.cboxArchivoConcentracion.TabIndex = 129;
-            this.cboxArchivoConcentracion.UseVisualStyleBackColor = false;
-            // 
-            // cboxArchivoHistorico
-            // 
-            this.cboxArchivoHistorico.AutoSize = true;
-            this.cboxArchivoHistorico.BackColor = System.Drawing.Color.Transparent;
-            this.cboxArchivoHistorico.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxArchivoHistorico.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxArchivoHistorico.Location = new System.Drawing.Point(664, 872);
-            this.cboxArchivoHistorico.Name = "cboxArchivoHistorico";
-            this.cboxArchivoHistorico.Size = new System.Drawing.Size(12, 11);
-            this.cboxArchivoHistorico.TabIndex = 130;
-            this.cboxArchivoHistorico.UseVisualStyleBackColor = false;
-            // 
-            // cboxAdministrativo
-            // 
-            this.cboxAdministrativo.AutoSize = true;
-            this.cboxAdministrativo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxAdministrativo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxAdministrativo.Location = new System.Drawing.Point(301, 726);
-            this.cboxAdministrativo.Name = "cboxAdministrativo";
-            this.cboxAdministrativo.Size = new System.Drawing.Size(12, 11);
-            this.cboxAdministrativo.TabIndex = 131;
-            this.cboxAdministrativo.UseVisualStyleBackColor = true;
-            // 
-            // cboFiscal
-            // 
-            this.cboFiscal.AutoSize = true;
-            this.cboFiscal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboFiscal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboFiscal.Location = new System.Drawing.Point(301, 761);
-            this.cboFiscal.Name = "cboFiscal";
-            this.cboFiscal.Size = new System.Drawing.Size(12, 11);
-            this.cboFiscal.TabIndex = 132;
-            this.cboFiscal.UseVisualStyleBackColor = true;
-            // 
-            // cboxJuridicoLegal
-            // 
-            this.cboxJuridicoLegal.AutoSize = true;
-            this.cboxJuridicoLegal.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboxJuridicoLegal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboxJuridicoLegal.Location = new System.Drawing.Point(652, 722);
-            this.cboxJuridicoLegal.Name = "cboxJuridicoLegal";
-            this.cboxJuridicoLegal.Size = new System.Drawing.Size(12, 11);
-            this.cboxJuridicoLegal.TabIndex = 133;
-            this.cboxJuridicoLegal.UseVisualStyleBackColor = true;
-            // 
-            // cboContable
-            // 
-            this.cboContable.AutoSize = true;
-            this.cboContable.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cboContable.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cboContable.Location = new System.Drawing.Point(652, 761);
-            this.cboContable.Name = "cboContable";
-            this.cboContable.Size = new System.Drawing.Size(12, 11);
-            this.cboContable.TabIndex = 134;
-            this.cboContable.UseVisualStyleBackColor = true;
+            this.lblFondoDocumentalImpresion.AutoSize = true;
+            this.lblFondoDocumentalImpresion.Location = new System.Drawing.Point(237, 561);
+            this.lblFondoDocumentalImpresion.Name = "lblFondoDocumentalImpresion";
+            this.lblFondoDocumentalImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblFondoDocumentalImpresion.TabIndex = 137;
             // 
             // CaratulaExpediente
             // 
@@ -454,5 +493,8 @@
         private System.Windows.Forms.CheckBox cboxJuridicoLegal;
         private System.Windows.Forms.CheckBox cboFiscal;
         private System.Windows.Forms.CheckBox cboxAdministrativo;
+        private System.Windows.Forms.Label lblFondoDocumentalImpresion;
+        private System.Windows.Forms.Label lblNombreUnidadImpresion;
+        private System.Windows.Forms.Label lblCodigoUnidadImpresion;
     }
 }

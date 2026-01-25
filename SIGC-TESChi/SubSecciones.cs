@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -106,6 +107,13 @@ namespace SIGC_TESChi
                     tablaSubsecciones.DefaultCellStyle.BackColor = Color.White;
                     tablaSubsecciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
                     tablaSubsecciones.EnableHeadersVisualStyles = true;
+
+                    tablaSubsecciones.Columns["idSubSeccion"].HeaderText = "Identificador";
+                    tablaSubsecciones.Columns["claveSubSeccion"].HeaderText = "Clave de la Subsección";
+                    tablaSubsecciones.Columns["dSubSeccion"].HeaderText = "Nombre de la Subsección";
+
+
+
                 }
             }
             catch (Exception ex)
@@ -346,6 +354,56 @@ namespace SIGC_TESChi
             txtID.Text = fila.Cells["idSubSeccion"].Value.ToString();
             txtClaveSubseccion.Text = fila.Cells["claveSubSeccion"].Value.ToString();
             txtSubseccion.Text = fila.Cells["dSubSeccion"].Value.ToString();
+        }
+
+        private void txtClaveSubseccion_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtClaveSubseccion.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtClaveSubseccion.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtClaveSubseccion.Text != limpio)
+            {
+                txtClaveSubseccion.Text = limpio;
+                txtClaveSubseccion.SelectionStart = Math.Min(cursor, txtClaveSubseccion.Text.Length);
+            }
+        }
+
+        private void txtSubseccion_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtSubseccion.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSubseccion.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSubseccion.Text != limpio)
+            {
+                txtSubseccion.Text = limpio;
+                txtSubseccion.SelectionStart = Math.Min(cursor, txtSubseccion.Text.Length);
+            }
         }
     }
 }

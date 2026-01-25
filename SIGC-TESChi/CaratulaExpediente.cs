@@ -4,11 +4,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Printing;
 
 
 
@@ -24,6 +25,20 @@ namespace SIGC_TESChi
         private Dictionary<Label, BorderStyle> borderLabels = new Dictionary<Label, BorderStyle>();
         private Dictionary<Control, bool> estadoVisibilidad = new Dictionary<Control, bool>();
 
+        private Dictionary<TextBox, BorderStyle> bordesTextBox = new Dictionary<TextBox, BorderStyle>();
+
+        private Dictionary<TextBox, Color> fondosTextBox = new Dictionary<TextBox, Color>();
+
+        private Dictionary<CheckBox, FlatStyle> estilosCheck = new Dictionary<CheckBox, FlatStyle>();
+
+        private Dictionary<TextBox, bool> multilineTextBox =
+    new Dictionary<TextBox, bool>();
+
+        private Dictionary<MaskedTextBox, BorderStyle> bordesMasked =
+    new Dictionary<MaskedTextBox, BorderStyle>();
+
+        private Dictionary<MaskedTextBox, Color> fondosMasked =
+            new Dictionary<MaskedTextBox, Color>();
 
 
 
@@ -42,6 +57,92 @@ namespace SIGC_TESChi
             printDocument1.PrintPage += printDocument1_PrintPage;
 
         }
+
+        private IEnumerable<Control> ObtenerTodosLosControles(Control padre)
+        {
+            foreach (Control c in padre.Controls)
+            {
+                yield return c;
+
+                if (c.HasChildren)
+                {
+                    foreach (Control hijo in ObtenerTodosLosControles(c))
+                    {
+                        yield return hijo;
+                    }
+                }
+            }
+        }
+
+
+        private void PrepararControlesParaImpresion()
+        {
+            foreach (Control c in ObtenerTodosLosControles(pnlCaratula))
+            {
+                // ===== TEXTBOX =====
+                if (c is TextBox txt)
+                {
+                    bordesTextBox[txt] = txt.BorderStyle;
+                    fondosTextBox[txt] = txt.BackColor;
+
+                    txt.BorderStyle = BorderStyle.None;
+                    txt.BackColor = Color.White;
+                    txt.ReadOnly = true;
+                }
+
+                // ===== MASKEDTEXTBOX (🔥 CLAVE 🔥) =====
+                if (c is MaskedTextBox mtxt)
+                {
+                    bordesMasked[mtxt] = mtxt.BorderStyle;
+                    fondosMasked[mtxt] = mtxt.BackColor;
+
+                    mtxt.BorderStyle = BorderStyle.None;
+                    mtxt.BackColor = Color.White;
+                    mtxt.ReadOnly = true;
+                }
+
+                // ===== CHECKBOX =====
+                if (c is CheckBox chk)
+                {
+                    estilosCheck[chk] = chk.FlatStyle;
+                    chk.FlatStyle = FlatStyle.Flat;
+                    chk.BackColor = Color.White;
+                }
+            }
+        }
+
+
+
+        private void RestaurarControlesDespuesImpresionAvanzada()
+        {
+            foreach (var txt in bordesTextBox.Keys)
+            {
+                txt.BorderStyle = bordesTextBox[txt];
+                txt.BackColor = fondosTextBox[txt];
+                txt.ReadOnly = false;
+            }
+
+            foreach (var mtxt in bordesMasked.Keys)
+            {
+                mtxt.BorderStyle = bordesMasked[mtxt];
+                mtxt.BackColor = fondosMasked[mtxt];
+                mtxt.ReadOnly = false;
+            }
+
+            foreach (var chk in estilosCheck.Keys)
+            {
+                chk.FlatStyle = estilosCheck[chk];
+            }
+
+            bordesTextBox.Clear();
+            fondosTextBox.Clear();
+            bordesMasked.Clear();
+            fondosMasked.Clear();
+            estilosCheck.Clear();
+        }
+
+
+
 
         private void GuardarYOcultarControlesParaImpresion()
         {
@@ -342,10 +443,14 @@ namespace SIGC_TESChi
         {
             PrepararVistaParaImpresion();
             PrepararLabelsParaImpresion();
-            GuardarYOcultarControlesParaImpresion();  
+            PrepararControlesParaImpresion();   // 🔥 AQUÍ
+            GuardarYOcultarControlesParaImpresion();
+
             CapturarPanelCompleto();
+
             RestaurarLabelsDespuesImpresion();
-            RestaurarControlesDespuesImpresion();      
+            RestaurarControlesDespuesImpresionAvanzada(); // 🔥 AQUÍ
+            RestaurarControlesDespuesImpresion();
             RestaurarVistaNormal();
 
 
@@ -512,6 +617,34 @@ namespace SIGC_TESChi
             lblFechaDocumentoImpresion.BorderStyle = BorderStyle.None;
             lblFechaDocumentoImpresion.Visible = true;
             dtpCierre.Visible = false;
+
+            // ====== CÓDIGO UNIDAD ADMINISTRATIVA ======
+            lblCodigoUnidadImpresion.Text = cboCodigoUnidadAdministrativa.SelectedItem?.ToString() ?? "";
+            lblCodigoUnidadImpresion.Location = cboCodigoUnidadAdministrativa.Location;
+            lblCodigoUnidadImpresion.Size = cboCodigoUnidadAdministrativa.Size;
+            lblCodigoUnidadImpresion.BackColor = Color.Transparent;
+            lblCodigoUnidadImpresion.BorderStyle = BorderStyle.None;
+            lblCodigoUnidadImpresion.Visible = true;
+            cboCodigoUnidadAdministrativa.Visible = false;
+
+            // ====== NOMBRE UNIDAD ADMINISTRATIVA ======
+            lblNombreUnidadImpresion.Text = cboNombreUnidadAdministrativa.SelectedItem?.ToString() ?? "";
+            lblNombreUnidadImpresion.Location = cboNombreUnidadAdministrativa.Location;
+            lblNombreUnidadImpresion.Size = cboNombreUnidadAdministrativa.Size;
+            lblNombreUnidadImpresion.BackColor = Color.Transparent;
+            lblNombreUnidadImpresion.BorderStyle = BorderStyle.None;
+            lblNombreUnidadImpresion.Visible = true;
+            cboNombreUnidadAdministrativa.Visible = false;
+
+            // ====== FONDO DOCUMENTAL ======
+            lblFondoDocumentalImpresion.Text = cboFondoDocumental.SelectedItem?.ToString() ?? "";
+            lblFondoDocumentalImpresion.Location = cboFondoDocumental.Location;
+            lblFondoDocumentalImpresion.Size = cboFondoDocumental.Size;
+            lblFondoDocumentalImpresion.BackColor = Color.Transparent;
+            lblFondoDocumentalImpresion.BorderStyle = BorderStyle.None;
+            lblFondoDocumentalImpresion.Visible = true;
+            cboFondoDocumental.Visible = false;
+
         }
 
 
@@ -560,6 +693,15 @@ namespace SIGC_TESChi
             // ===== DATE =====
             dtpApertura.Visible = true;
             dtpCierre.Visible = true;
+
+            lblCodigoUnidadImpresion.Visible = false;
+            lblNombreUnidadImpresion.Visible = false;
+            lblFondoDocumentalImpresion.Visible = false;
+
+            cboCodigoUnidadAdministrativa.Visible = true;
+            cboNombreUnidadAdministrativa.Visible = true;
+            cboFondoDocumental.Visible = true;
+
         }
 
 
@@ -617,8 +759,29 @@ namespace SIGC_TESChi
 
         private void textBox7_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtSubserieDocumental.SelectionStart;
 
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSubserieDocumental.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSubserieDocumental.Text != limpio)
+            {
+                txtSubserieDocumental.Text = limpio;
+                txtSubserieDocumental.SelectionStart = Math.Min(cursor, txtSubserieDocumental.Text.Length);
+            }
         }
+        
 
         private void maskedTextBox2_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
         {
@@ -637,7 +800,27 @@ namespace SIGC_TESChi
 
         private void txtNombreExpediente_TextChanged(object sender, EventArgs e)
         {
+            int cursor = txtNombreExpediente.SelectionStart;
 
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtNombreExpediente.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtNombreExpediente.Text != limpio)
+            {
+                txtNombreExpediente.Text = limpio;
+                txtNombreExpediente.SelectionStart = Math.Min(cursor, txtNombreExpediente.Text.Length);
+            }
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -651,5 +834,260 @@ namespace SIGC_TESChi
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private void txtNoExpediente_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtNoExpediente.SelectionStart;
+
+            // 1️⃣ Permitir SOLO números
+            string limpio = Regex.Replace(
+                txtNoExpediente.Text,
+                @"[^0-9]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo (no afecta, pero se conserva)
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtNoExpediente.Text != limpio)
+            {
+                txtNoExpediente.Text = limpio;
+                txtNoExpediente.SelectionStart =
+                    Math.Min(cursor, txtNoExpediente.Text.Length);
+            }
+
+        }
+
+        private void txtTLegajos_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtTLegajos.SelectionStart;
+
+            // 1️⃣ Permitir SOLO números
+            string limpio = Regex.Replace(
+                txtTLegajos.Text,
+                @"[^0-9]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo (no afecta, pero se conserva)
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtTLegajos.Text != limpio)
+            {
+                txtTLegajos.Text = limpio;
+                txtTLegajos.SelectionStart =
+                    Math.Min(cursor, txtTLegajos.Text.Length);
+            }
+
+        }
+
+        private void txtTDocumentosCierre_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtTDocumentosCierre.SelectionStart;
+
+            // 1️⃣ Permitir SOLO números
+            string limpio = Regex.Replace(
+                txtTDocumentosCierre.Text,
+                @"[^0-9]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo (no afecta, pero se conserva)
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtTDocumentosCierre.Text != limpio)
+            {
+                txtTDocumentosCierre.Text = limpio;
+                txtTDocumentosCierre.SelectionStart =
+                    Math.Min(cursor, txtTDocumentosCierre.Text.Length);
+            }
+
+        }
+
+        private void txtAsunto_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtAsunto.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtAsunto.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtAsunto.Text != limpio)
+            {
+                txtAsunto.Text = limpio;
+                txtAsunto.SelectionStart = Math.Min(cursor, txtAsunto.Text.Length);
+            }
+        }
+
+        private void txtSubfondoDocumental_MaskInputRejected(object sender, MaskInputRejectedEventArgs e)
+        {
+            int cursor = txtSubfondoDocumental.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSubfondoDocumental.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSubfondoDocumental.Text != limpio)
+            {
+                txtSubfondoDocumental.Text = limpio;
+                txtSubfondoDocumental.SelectionStart = Math.Min(cursor, txtSubfondoDocumental.Text.Length);
+            }
+        }
+
+        private void txtObservaciones_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtObservaciones.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtObservaciones.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtObservaciones.Text != limpio)
+            {
+                txtObservaciones.Text = limpio;
+                txtObservaciones.SelectionStart = Math.Min(cursor, txtObservaciones.Text.Length);
+            }
+        }
+
+        private void txtSubserieDocumental_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtSubserieDocumental.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSubserieDocumental.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSubserieDocumental.Text != limpio)
+            {
+                txtSubserieDocumental.Text = limpio;
+                txtSubserieDocumental.SelectionStart = Math.Min(cursor, txtSubserieDocumental.Text.Length);
+            }
+        }
+
+        private void txtSerieDocumental_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtSerieDocumental.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSerieDocumental.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSerieDocumental.Text != limpio)
+            {
+                txtSerieDocumental.Text = limpio;
+                txtSerieDocumental.SelectionStart = Math.Min(cursor, txtSerieDocumental.Text.Length);
+            }
+        }
+
+        private void txtSubfondoDocumental_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtSubfondoDocumental.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtSubfondoDocumental.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtSubfondoDocumental.Text != limpio)
+            {
+                txtSubfondoDocumental.Text = limpio;
+                txtSubfondoDocumental.SelectionStart = Math.Min(cursor, txtSubfondoDocumental.Text.Length);
+            }
+        }
+
+        private void txtNoLegajo_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtNoLegajo.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtNoLegajo.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtNoLegajo.Text != limpio)
+            {
+                txtNoLegajo.Text = limpio;
+                txtNoLegajo.SelectionStart = Math.Min(cursor, txtNoLegajo.Text.Length);
+            }
+        }
     }
 }

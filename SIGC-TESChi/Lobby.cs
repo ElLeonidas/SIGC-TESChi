@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -327,6 +328,60 @@ namespace SIGC_TESChi
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
+        private void txtTitulo_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtTitulo.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtTitulo.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtTitulo.Text != limpio)
+            {
+                txtTitulo.Text = limpio;
+                txtTitulo.SelectionStart = Math.Min(cursor, txtTitulo.Text.Length);
+            }
+        }
+
+        private void txtTipo_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtTipo.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtTipo.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtTipo.Text != limpio)
+            {
+                txtTipo.Text = limpio;
+                txtTipo.SelectionStart = Math.Min(cursor, txtTitulo.Text.Length);
+            }
+        }
+
+        private void cmbModalidad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

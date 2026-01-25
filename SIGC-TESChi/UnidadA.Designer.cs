@@ -60,17 +60,19 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1249, 838);
+            this.panel1.Size = new System.Drawing.Size(938, 682);
             this.panel1.TabIndex = 0;
             // 
             // panel3
             // 
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.tablaUnidadA);
-            this.panel3.Location = new System.Drawing.Point(3, 232);
+            this.panel3.Location = new System.Drawing.Point(2, 188);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1239, 599);
+            this.panel3.Size = new System.Drawing.Size(930, 487);
             this.panel3.TabIndex = 1;
             // 
             // tablaUnidadA
@@ -80,11 +82,12 @@
             this.tablaUnidadA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablaUnidadA.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablaUnidadA.Location = new System.Drawing.Point(0, 0);
+            this.tablaUnidadA.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tablaUnidadA.Name = "tablaUnidadA";
             this.tablaUnidadA.ReadOnly = true;
             this.tablaUnidadA.RowHeadersWidth = 51;
             this.tablaUnidadA.RowTemplate.Height = 24;
-            this.tablaUnidadA.Size = new System.Drawing.Size(1235, 595);
+            this.tablaUnidadA.Size = new System.Drawing.Size(926, 483);
             this.tablaUnidadA.TabIndex = 0;
             // 
             // panel2
@@ -102,18 +105,20 @@
             this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
-            this.panel2.Location = new System.Drawing.Point(3, 3);
+            this.panel2.Location = new System.Drawing.Point(2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1239, 203);
+            this.panel2.Size = new System.Drawing.Size(930, 166);
             this.panel2.TabIndex = 0;
             // 
             // btnLimpiar
             // 
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnLimpiar.Location = new System.Drawing.Point(1109, 82);
+            this.btnLimpiar.Location = new System.Drawing.Point(832, 67);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnLimpiar.Name = "btnLimpiar";
-            this.btnLimpiar.Size = new System.Drawing.Size(60, 60);
+            this.btnLimpiar.Size = new System.Drawing.Size(45, 49);
             this.btnLimpiar.TabIndex = 2;
             this.btnLimpiar.UseVisualStyleBackColor = true;
             // 
@@ -121,9 +126,10 @@
             // 
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(977, 81);
+            this.btnBuscar.Location = new System.Drawing.Point(733, 66);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(60, 60);
+            this.btnBuscar.Size = new System.Drawing.Size(45, 49);
             this.btnBuscar.TabIndex = 9;
             this.btnBuscar.UseVisualStyleBackColor = true;
             // 
@@ -131,9 +137,10 @@
             // 
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnModificar.Location = new System.Drawing.Point(1043, 81);
+            this.btnModificar.Location = new System.Drawing.Point(782, 66);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(60, 60);
+            this.btnModificar.Size = new System.Drawing.Size(45, 49);
             this.btnModificar.TabIndex = 1;
             this.btnModificar.UseVisualStyleBackColor = true;
             // 
@@ -141,9 +148,10 @@
             // 
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnEliminar.Location = new System.Drawing.Point(911, 82);
+            this.btnEliminar.Location = new System.Drawing.Point(683, 67);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(60, 60);
+            this.btnEliminar.Size = new System.Drawing.Size(45, 49);
             this.btnEliminar.TabIndex = 8;
             this.btnEliminar.UseVisualStyleBackColor = true;
             // 
@@ -151,41 +159,47 @@
             // 
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnAgregar.Location = new System.Drawing.Point(845, 81);
+            this.btnAgregar.Location = new System.Drawing.Point(634, 66);
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnAgregar.Name = "btnAgregar";
-            this.btnAgregar.Size = new System.Drawing.Size(60, 60);
+            this.btnAgregar.Size = new System.Drawing.Size(45, 49);
             this.btnAgregar.TabIndex = 7;
             this.btnAgregar.UseVisualStyleBackColor = true;
             // 
             // txtNombreUnidad
             // 
-            this.txtNombreUnidad.Location = new System.Drawing.Point(417, 145);
+            this.txtNombreUnidad.Location = new System.Drawing.Point(313, 118);
+            this.txtNombreUnidad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtNombreUnidad.Name = "txtNombreUnidad";
-            this.txtNombreUnidad.Size = new System.Drawing.Size(357, 22);
+            this.txtNombreUnidad.Size = new System.Drawing.Size(269, 20);
             this.txtNombreUnidad.TabIndex = 1;
             // 
             // txtClaveUnidad
             // 
-            this.txtClaveUnidad.Location = new System.Drawing.Point(417, 101);
+            this.txtClaveUnidad.Location = new System.Drawing.Point(313, 82);
+            this.txtClaveUnidad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtClaveUnidad.Name = "txtClaveUnidad";
-            this.txtClaveUnidad.Size = new System.Drawing.Size(357, 22);
+            this.txtClaveUnidad.Size = new System.Drawing.Size(269, 20);
             this.txtClaveUnidad.TabIndex = 6;
+            this.txtClaveUnidad.TextChanged += new System.EventHandler(this.txtClaveUnidad_TextChanged);
             // 
             // txtID
             // 
             this.txtID.Enabled = false;
-            this.txtID.Location = new System.Drawing.Point(417, 54);
+            this.txtID.Location = new System.Drawing.Point(313, 44);
+            this.txtID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtID.Name = "txtID";
-            this.txtID.Size = new System.Drawing.Size(357, 22);
+            this.txtID.Size = new System.Drawing.Size(269, 20);
             this.txtID.TabIndex = 5;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(105, 147);
+            this.label4.Location = new System.Drawing.Point(79, 119);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(276, 20);
+            this.label4.Size = new System.Drawing.Size(228, 17);
             this.label4.TabIndex = 4;
             this.label4.Text = "Nombre de Unidad Administrativa:";
             // 
@@ -193,9 +207,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(126, 101);
+            this.label3.Location = new System.Drawing.Point(94, 82);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(255, 20);
+            this.label3.Size = new System.Drawing.Size(211, 17);
             this.label3.TabIndex = 3;
             this.label3.Text = "Clave de Unidad Administrativa:";
             // 
@@ -203,9 +218,10 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(65, 56);
+            this.label2.Location = new System.Drawing.Point(49, 46);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(316, 20);
+            this.label2.Size = new System.Drawing.Size(262, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Identificador de Unidad Administraviva:";
             // 
@@ -214,8 +230,9 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Georgia", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(-2, 0);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(378, 24);
+            this.label1.Size = new System.Drawing.Size(307, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "Registro de  Unidad Administrativa";
             // 
@@ -225,11 +242,12 @@
             // 
             // UnidadA
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "UnidadA";
-            this.Size = new System.Drawing.Size(1249, 838);
+            this.Size = new System.Drawing.Size(937, 681);
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tablaUnidadA)).EndInit();

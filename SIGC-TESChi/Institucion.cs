@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -78,6 +79,11 @@ namespace SIGC_TESChi
                     tablaInstitucion.DefaultCellStyle.BackColor = Color.White;
                     tablaInstitucion.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
                     tablaInstitucion.EnableHeadersVisualStyles = true;
+
+                    tablaInstitucion.Columns["idInstituto"].HeaderText = "Identificador";
+                    tablaInstitucion.Columns["claveInstituto"].HeaderText = "Clave del Instituto";
+                    tablaInstitucion.Columns["dInstituto"].HeaderText = "Nombre del Instituto";
+
                 }
             }
             catch (Exception ex)
@@ -334,6 +340,56 @@ namespace SIGC_TESChi
             txtID.Text = fila.Cells["idInstituto"].Value?.ToString() ?? "";
             txtAbreviatura.Text = fila.Cells["claveInstituto"].Value?.ToString() ?? "";
             txtNombre.Text = fila.Cells["dInstituto"].Value?.ToString() ?? "";
+        }
+
+        private void txtAbreviatura_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtAbreviatura.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtAbreviatura.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtAbreviatura.Text != limpio)
+            {
+                txtAbreviatura.Text = limpio;
+                txtAbreviatura.SelectionStart = Math.Min(cursor, txtAbreviatura.Text.Length);
+            }
+        }
+
+        private void txtNombre_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtNombre.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtNombre.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtNombre.Text != limpio)
+            {
+                txtNombre.Text = limpio;
+                txtNombre.SelectionStart = Math.Min(cursor, txtNombre.Text.Length);
+            }
         }
     }
 }

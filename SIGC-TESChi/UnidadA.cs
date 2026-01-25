@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -85,6 +86,11 @@ namespace SIGC_TESChi
                     tablaUnidadA.DefaultCellStyle.BackColor = Color.White;
                     tablaUnidadA.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
                     tablaUnidadA.EnableHeadersVisualStyles = true;
+
+                    tablaUnidadA.Columns["idUniAdmin"].HeaderText = "Identificador";
+                    tablaUnidadA.Columns["cUniAdmin"].HeaderText = "Clave de la Unidad Administrativa";
+                    tablaUnidadA.Columns["nUniAdmin"].HeaderText = "Nombre de la Unidad Administrativa";
+
                 }
             }
             catch (Exception ex)
@@ -350,6 +356,31 @@ namespace SIGC_TESChi
         private void btnExportarPDF_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Función de exportar pendiente.");
+        }
+
+        private void txtClaveUnidad_TextChanged(object sender, EventArgs e)
+        {
+            int cursor = txtClaveUnidad.SelectionStart;
+
+            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
+            string limpio = Regex.Replace(
+                txtClaveUnidad.Text,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+                ""
+            );
+
+            // 2️⃣ Reemplazar múltiples espacios por uno solo
+            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+
+            // 3️⃣ Evitar espacios al inicio
+            limpio = limpio.TrimStart();
+
+            // 4️⃣ Aplicar cambios solo si hay diferencia
+            if (txtClaveUnidad.Text != limpio)
+            {
+                txtClaveUnidad.Text = limpio;
+                txtClaveUnidad.SelectionStart = Math.Min(cursor, txtClaveUnidad.Text.Length);
+            }
         }
     }
 }

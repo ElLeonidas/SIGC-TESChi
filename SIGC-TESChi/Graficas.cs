@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Drawing.Printing;
 
 // PDF
 using PdfSharp.Pdf;
@@ -20,12 +21,18 @@ namespace SIGC_TESChi
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
         private ToolTip toolTip;
 
+        private PrintDocument printDocument1 = new PrintDocument();
+        private Bitmap bmpGrafica;
+
+
         public Graficas()
         {
             InitializeComponent();
             CargarCombos();
             CargarClasificaciones();
             toolTip = new ToolTip();
+
+            printDocument1.PrintPage += printDocument1_PrintPage;
 
             // Inicializamos el ToolTip
             toolTip = new ToolTip();
@@ -40,6 +47,55 @@ namespace SIGC_TESChi
             btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar la Grafica", btnBuscar);
             btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
         }
+
+        private void CapturarGrafica()
+        {
+            if (chartGrafica.Width <= 0 || chartGrafica.Height <= 0)
+                return;
+
+            bmpGrafica = new Bitmap(chartGrafica.Width, chartGrafica.Height);
+            chartGrafica.DrawToBitmap(
+                bmpGrafica,
+                new Rectangle(0, 0, chartGrafica.Width, chartGrafica.Height)
+            );
+        }
+
+        private void printDocument1_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            if (bmpGrafica == null)
+            {
+                e.HasMorePages = false;
+                return;
+            }
+
+            Rectangle area = e.PageBounds;
+
+            int margen = 20;
+            area = new Rectangle(
+                area.Left + margen,
+                area.Top + margen,
+                area.Width - margen * 2,
+                area.Height - margen * 2
+            );
+
+            float ratioX = (float)area.Width / bmpGrafica.Width;
+            float ratioY = (float)area.Height / bmpGrafica.Height;
+            float ratio = Math.Min(ratioX, ratioY);
+
+            int newWidth = (int)(bmpGrafica.Width * ratio);
+            int newHeight = (int)(bmpGrafica.Height * ratio);
+
+            int posX = area.Left + (area.Width - newWidth) / 2;
+            int posY = area.Top + (area.Height - newHeight) / 2;
+
+            e.Graphics.DrawImage(
+                bmpGrafica,
+                new Rectangle(posX, posY, newWidth, newHeight)
+            );
+
+            e.HasMorePages = false;
+        }
+
 
         // Paleta de colores
         private readonly Color[] colores = new Color[]
@@ -323,6 +379,31 @@ namespace SIGC_TESChi
             catch (Exception ex)
             {
                 MessageBox.Show("Error al cargar clasificaciones: " + ex.Message);
+            }
+        }
+
+        private void btnExportarPDF_Click_1(object sender, EventArgs e)
+        {
+            if (chartGrafica.Series.Count == 0)
+            {
+                MessageBox.Show("No hay gráfica para imprimir.");
+                return;
+            }
+
+            CapturarGrafica();
+
+            if (bmpGrafica == null)
+            {
+                MessageBox.Show("No se pudo capturar la gráfica.");
+                return;
+            }
+
+            PrintDialog pd = new PrintDialog();
+            pd.Document = printDocument1;
+
+            if (pd.ShowDialog() == DialogResult.OK)
+            {
+                printDocument1.Print();
             }
         }
     }
