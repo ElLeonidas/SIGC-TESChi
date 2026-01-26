@@ -41,12 +41,27 @@ namespace SIGC_TESChi
         int duplicadosCSV = 0;
         int duplicadosBD = 0;
 
-
+        private ToolTip toolTip;
 
         public CArchivos()
         {
             InitializeComponent();
 
+            // Eventos
+            Load += CArchivos_Load;
+            btnGuardar.Click += btnGuardar_Click;
+            btnEditar.Click += btnEditar_Click;
+            btnEliminar.Click += btnEliminar_Click;
+            btnLimpiar.Click += btnLimpiar_Click;
+            btnBuscar.Click += btnBuscar_Click;
+            dgvControl.CellClick += dgvControl_CellClick;
+
+            // ToolTips (IGUAL QUE UBICACIONES)
+            toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 200;
+            toolTip.ReshowDelay = 100;
+            toolTip.ShowAlways = true;
 
             this.AutoScroll = true;
 
@@ -64,12 +79,34 @@ namespace SIGC_TESChi
 
             this.cboSubSeccion.SelectedIndexChanged += new System.EventHandler(this.cboSubSeccion_SelectedIndexChanged);
 
+            btnGuardar.MouseEnter += (s, e) => toolTip.Show("Boton para Agregar Nuevo Expediente", btnGuardar);
+            btnGuardar.MouseLeave += (s, e) => toolTip.Hide(btnGuardar);
+
+            btnEditar.MouseEnter += (s, e) => toolTip.Show("Boton para Modificar el Expediente", btnEditar);
+            btnEditar.MouseLeave += (s, e) => toolTip.Hide(btnEditar);
+
+            btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Boton para Limpiar Campos", btnLimpiar);
+            btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
+
+            btnEliminar.MouseEnter += (s, e) => toolTip.Show("Boton para Eliminar Expediente", btnEliminar);
+            btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
+
+            btnExportar.MouseEnter += (s, e) => toolTip.Show("Boton para Exportar Expedientes", btnExportar);
+            btnExportar.MouseLeave += (s, e) => toolTip.Hide(btnExportar);
+
+            btnImportar.MouseEnter += (s, e) => toolTip.Show("Boton para Importar Expedientes", btnImportar);
+            btnImportar.MouseLeave += (s, e) => toolTip.Hide(btnImportar);
+
+            btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar Expediente", btnBuscar);
+            btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
+
         }
 
         private void CArchivos_Load(object sender, EventArgs e)
         {
             CargarArchivos();
             LlenarComboAÑo();
+            Refrescar();
 
             CargarTabla();
             CargarEstatus();
@@ -84,6 +121,23 @@ namespace SIGC_TESChi
 
             GenerarFormulaClasificatoria();
 
+        }
+
+        public void Refrescar()
+        {
+            // 🔄 Recargar tabla principal
+            CargarTabla();
+
+            // 🔄 Recargar catálogos (por si agregaron nuevos)
+            CargarEstatus();
+            CargarSecciones();
+            CargarUbicaciones();
+            CargarCodUnidAdmin();
+            CargarNombUnidAdmin();
+            CargarInstitutos();
+            CargarClasificacion();
+
+            combosListos = true;
         }
 
 
@@ -964,6 +1018,9 @@ ORDER BY c.idControl DESC";
 
             Insertar();
 
+            CargarTabla();
+
+
         }
 
         private void cboInstituto_SelectedIndexChanged(object sender, EventArgs e)
@@ -980,6 +1037,9 @@ ORDER BY c.idControl DESC";
         {
 
            Editar();
+
+           CargarTabla();
+
 
         }
 
@@ -1573,6 +1633,11 @@ ORDER BY c.idControl DESC";
         }
 
         private void cboCodUnidAdmin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
         {
 
         }

@@ -57,7 +57,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(938, 682);
             this.panel1.TabIndex = 0;
@@ -67,7 +67,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.tablaSubsecciones);
             this.panel3.Location = new System.Drawing.Point(2, 187);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(930, 489);
             this.panel3.TabIndex = 1;
@@ -79,7 +79,7 @@
             this.tablaSubsecciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablaSubsecciones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablaSubsecciones.Location = new System.Drawing.Point(0, 0);
-            this.tablaSubsecciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tablaSubsecciones.Margin = new System.Windows.Forms.Padding(2);
             this.tablaSubsecciones.Name = "tablaSubsecciones";
             this.tablaSubsecciones.ReadOnly = true;
             this.tablaSubsecciones.RowHeadersWidth = 51;
@@ -103,7 +103,7 @@
             this.panel2.Controls.Add(this.btnEliminar);
             this.panel2.Controls.Add(this.btnAgregar);
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(930, 166);
             this.panel2.TabIndex = 0;
@@ -111,7 +111,7 @@
             // txtClaveSubseccion
             // 
             this.txtClaveSubseccion.Location = new System.Drawing.Point(272, 82);
-            this.txtClaveSubseccion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtClaveSubseccion.Margin = new System.Windows.Forms.Padding(2);
             this.txtClaveSubseccion.Name = "txtClaveSubseccion";
             this.txtClaveSubseccion.Size = new System.Drawing.Size(269, 20);
             this.txtClaveSubseccion.TabIndex = 23;
@@ -155,7 +155,7 @@
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLimpiar.Location = new System.Drawing.Point(802, 66);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(45, 49);
             this.btnLimpiar.TabIndex = 21;
@@ -177,7 +177,7 @@
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnModificar.Location = new System.Drawing.Point(753, 66);
-            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(45, 49);
             this.btnModificar.TabIndex = 20;
@@ -187,7 +187,7 @@
             // 
             this.txtID.Enabled = false;
             this.txtID.Location = new System.Drawing.Point(272, 46);
-            this.txtID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtID.Margin = new System.Windows.Forms.Padding(2);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(269, 20);
             this.txtID.TabIndex = 15;
@@ -197,7 +197,7 @@
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBuscar.Location = new System.Drawing.Point(704, 66);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(45, 49);
             this.btnBuscar.TabIndex = 19;
@@ -206,7 +206,7 @@
             // txtSubseccion
             // 
             this.txtSubseccion.Location = new System.Drawing.Point(272, 119);
-            this.txtSubseccion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtSubseccion.Margin = new System.Windows.Forms.Padding(2);
             this.txtSubseccion.Name = "txtSubseccion";
             this.txtSubseccion.Size = new System.Drawing.Size(269, 20);
             this.txtSubseccion.TabIndex = 16;
@@ -217,7 +217,7 @@
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnEliminar.Location = new System.Drawing.Point(654, 66);
-            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(45, 49);
             this.btnEliminar.TabIndex = 18;
@@ -228,18 +228,19 @@
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAgregar.Location = new System.Drawing.Point(604, 66);
-            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(45, 49);
             this.btnAgregar.TabIndex = 17;
             this.btnAgregar.UseVisualStyleBackColor = true;
+            this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click_1);
             // 
             // SubSecciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "SubSecciones";
             this.Size = new System.Drawing.Size(937, 681);
             this.panel1.ResumeLayout(false);

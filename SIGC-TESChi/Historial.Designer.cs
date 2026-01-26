@@ -34,6 +34,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.dgvHistorial = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.btnTest_Click = new System.Windows.Forms.Button();
+            this.btnDetallesCambio = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -43,8 +45,6 @@
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
             this.historialCambiosBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btnDetallesCambio = new System.Windows.Forms.Button();
-            this.btnTest_Click = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHistorial)).BeginInit();
@@ -58,7 +58,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(938, 682);
             this.panel1.TabIndex = 0;
@@ -67,7 +67,7 @@
             // 
             this.panel3.Controls.Add(this.dgvHistorial);
             this.panel3.Location = new System.Drawing.Point(2, 176);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(929, 500);
             this.panel3.TabIndex = 1;
@@ -79,7 +79,7 @@
             this.dgvHistorial.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHistorial.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvHistorial.Location = new System.Drawing.Point(0, 0);
-            this.dgvHistorial.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvHistorial.Margin = new System.Windows.Forms.Padding(2);
             this.dgvHistorial.Name = "dgvHistorial";
             this.dgvHistorial.ReadOnly = true;
             this.dgvHistorial.RowHeadersWidth = 51;
@@ -101,21 +101,42 @@
             this.panel2.Controls.Add(this.dtpDesde);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(930, 161);
             this.panel2.TabIndex = 0;
+            // 
+            // btnTest_Click
+            // 
+            this.btnTest_Click.Location = new System.Drawing.Point(808, 113);
+            this.btnTest_Click.Name = "btnTest_Click";
+            this.btnTest_Click.Size = new System.Drawing.Size(75, 23);
+            this.btnTest_Click.TabIndex = 9;
+            this.btnTest_Click.Text = "test";
+            this.btnTest_Click.UseVisualStyleBackColor = true;
+            this.btnTest_Click.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // btnDetallesCambio
+            // 
+            this.btnDetallesCambio.Location = new System.Drawing.Point(808, 41);
+            this.btnDetallesCambio.Name = "btnDetallesCambio";
+            this.btnDetallesCambio.Size = new System.Drawing.Size(75, 23);
+            this.btnDetallesCambio.TabIndex = 8;
+            this.btnDetallesCambio.Text = "button1";
+            this.btnDetallesCambio.UseVisualStyleBackColor = true;
+            this.btnDetallesCambio.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnBuscar
             // 
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBuscar.Location = new System.Drawing.Point(457, 102);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(49, 53);
             this.btnBuscar.TabIndex = 1;
             this.btnBuscar.UseVisualStyleBackColor = true;
+            this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click_1);
             // 
             // label1
             // 
@@ -153,7 +174,7 @@
             // dtpHasta
             // 
             this.dtpHasta.Location = new System.Drawing.Point(540, 66);
-            this.dtpHasta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpHasta.Margin = new System.Windows.Forms.Padding(2);
             this.dtpHasta.Name = "dtpHasta";
             this.dtpHasta.Size = new System.Drawing.Size(193, 20);
             this.dtpHasta.TabIndex = 5;
@@ -162,7 +183,7 @@
             // 
             this.cmbTabla.FormattingEnabled = true;
             this.cmbTabla.Location = new System.Drawing.Point(424, 41);
-            this.cmbTabla.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbTabla.Margin = new System.Windows.Forms.Padding(2);
             this.cmbTabla.Name = "cmbTabla";
             this.cmbTabla.Size = new System.Drawing.Size(151, 21);
             this.cmbTabla.TabIndex = 2;
@@ -170,7 +191,7 @@
             // dtpDesde
             // 
             this.dtpDesde.Location = new System.Drawing.Point(270, 66);
-            this.dtpDesde.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpDesde.Margin = new System.Windows.Forms.Padding(2);
             this.dtpDesde.Name = "dtpDesde";
             this.dtpDesde.Size = new System.Drawing.Size(187, 20);
             this.dtpDesde.TabIndex = 4;
@@ -190,32 +211,12 @@
             // 
             this.historialCambiosBindingSource.DataMember = "HistorialCambios";
             // 
-            // btnDetallesCambio
-            // 
-            this.btnDetallesCambio.Location = new System.Drawing.Point(808, 41);
-            this.btnDetallesCambio.Name = "btnDetallesCambio";
-            this.btnDetallesCambio.Size = new System.Drawing.Size(75, 23);
-            this.btnDetallesCambio.TabIndex = 8;
-            this.btnDetallesCambio.Text = "button1";
-            this.btnDetallesCambio.UseVisualStyleBackColor = true;
-            this.btnDetallesCambio.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // btnTest_Click
-            // 
-            this.btnTest_Click.Location = new System.Drawing.Point(808, 113);
-            this.btnTest_Click.Name = "btnTest_Click";
-            this.btnTest_Click.Size = new System.Drawing.Size(75, 23);
-            this.btnTest_Click.TabIndex = 9;
-            this.btnTest_Click.Text = "test";
-            this.btnTest_Click.UseVisualStyleBackColor = true;
-            this.btnTest_Click.Click += new System.EventHandler(this.button1_Click_1);
-            // 
             // Historial
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Historial";
             this.Size = new System.Drawing.Size(937, 681);
             this.Load += new System.EventHandler(this.Historial_Load);

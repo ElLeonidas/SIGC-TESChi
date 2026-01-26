@@ -40,6 +40,7 @@ namespace SIGC_TESChi
         private Dictionary<MaskedTextBox, Color> fondosMasked =
             new Dictionary<MaskedTextBox, Color>();
 
+        private ToolTip toolTip;
 
 
         string connectionString =
@@ -55,6 +56,20 @@ namespace SIGC_TESChi
             this.Height = 1600;
 
             printDocument1.PrintPage += printDocument1_PrintPage;
+
+            //EVENTOS
+            Load += CaratulaExpediente_Load;
+            btnImprimir.Click += btnImprimir_Click;
+
+            // ToolTips (IGUAL QUE UBICACIONES)
+            toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 200;
+            toolTip.ReshowDelay = 100;
+            toolTip.ShowAlways = true;
+
+            btnImprimir.MouseEnter += (s, e) => toolTip.Show("Boton para Imprimir Caratula", btnImprimir);
+            btnImprimir.MouseLeave += (s, e) => toolTip.Hide(btnImprimir);
 
         }
 

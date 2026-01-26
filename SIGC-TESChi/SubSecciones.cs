@@ -359,25 +359,35 @@ namespace SIGC_TESChi
         private void txtClaveSubseccion_TextChanged(object sender, EventArgs e)
         {
             int cursor = txtClaveSubseccion.SelectionStart;
+            string texto = txtClaveSubseccion.Text;
 
-            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
-            string limpio = Regex.Replace(
-                txtClaveSubseccion.Text,
-                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
+            // 1️⃣ Permitir letras, números, acentos, espacios y punto
+            texto = Regex.Replace(
+                texto,
+                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s\.]",
                 ""
             );
 
-            // 2️⃣ Reemplazar múltiples espacios por uno solo
-            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
+            // 2️⃣ Eliminar puntos al inicio
+            texto = Regex.Replace(texto, @"^\.+", "");
 
-            // 3️⃣ Evitar espacios al inicio
-            limpio = limpio.TrimStart();
+            // 3️⃣ Evitar puntos consecutivos
+            texto = Regex.Replace(texto, @"\.{2,}", ".");
 
-            // 4️⃣ Aplicar cambios solo si hay diferencia
-            if (txtClaveSubseccion.Text != limpio)
+            // 4️⃣ Eliminar puntos que NO tengan un número antes en el mismo bloque
+            texto = Regex.Replace(texto, @"(?<!\d)\.(?=[^0-9]*\.)", "");
+
+            // 5️⃣ Reemplazar múltiples espacios por uno
+            texto = Regex.Replace(texto, @"\s{2,}", " ");
+
+            // 6️⃣ Evitar espacios al inicio
+            texto = texto.TrimStart();
+
+            if (txtClaveSubseccion.Text != texto)
             {
-                txtClaveSubseccion.Text = limpio;
-                txtClaveSubseccion.SelectionStart = Math.Min(cursor, txtClaveSubseccion.Text.Length);
+                txtClaveSubseccion.Text = texto;
+                txtClaveSubseccion.SelectionStart =
+                    Math.Min(cursor, txtClaveSubseccion.Text.Length);
             }
         }
 
@@ -404,6 +414,11 @@ namespace SIGC_TESChi
                 txtSubseccion.Text = limpio;
                 txtSubseccion.SelectionStart = Math.Min(cursor, txtSubseccion.Text.Length);
             }
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

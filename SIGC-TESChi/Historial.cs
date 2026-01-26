@@ -11,6 +11,9 @@ namespace SIGC_TESChi
         string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
+        private ToolTip toolTip;
+
+
         public Historial()
         {
             InitializeComponent();
@@ -19,6 +22,20 @@ namespace SIGC_TESChi
             dgvHistorial.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvHistorial.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvHistorial.Dock = DockStyle.Fill;
+
+            //EVENTOS
+            Load += Historial_Load;
+            btnBuscar.Click += btnBuscar_Click;
+
+            // ToolTips (IGUAL QUE UBICACIONES)
+            toolTip = new ToolTip();
+            toolTip.AutoPopDelay = 5000;
+            toolTip.InitialDelay = 200;
+            toolTip.ReshowDelay = 100;
+            toolTip.ShowAlways = true;
+
+            btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar en el Historial", btnBuscar);
+            btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
 
         }
 
@@ -143,6 +160,11 @@ namespace SIGC_TESChi
         private void button1_Click_1(object sender, EventArgs e)
         {
            
+        }
+
+        private void btnBuscar_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

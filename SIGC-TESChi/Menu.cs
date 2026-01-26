@@ -247,6 +247,10 @@ namespace SIGC_TESChi
                 return;
             }
 
+            if (uc is CArchivos ca)
+                ca.Refrescar();
+
+
             OcultarTodos();
             uc.Visible = true;
         }
