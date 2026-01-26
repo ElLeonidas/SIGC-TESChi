@@ -285,6 +285,7 @@
     <Compile Include="DetallesCambio.Designer.cs">
       <DependentUpon>DetallesCambio.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileManager.cs" />
     <Compile Include="FontManager.cs" />
     <Compile Include="Graficas.cs">
       <SubType>UserControl</SubType>
@@ -299,6 +300,7 @@
       <DependentUpon>Historial.cs</DependentUpon>
     </Compile>
     <Compile Include="HistorialHelper.cs" />
+    <Compile Include="CSVHelper.cs" />
     <Compile Include="Info.cs">
       <SubType>UserControl</SubType>
     </Compile>

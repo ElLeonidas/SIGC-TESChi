@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -30,6 +31,9 @@ namespace SIGC_TESChi
         Dictionary<string, int> dicUbicacion;
         Dictionary<string, int> dicEstatus;
         Dictionary<string, int> dicClasificacion;
+        Dictionary<string, int> secciones;
+        Dictionary<string, int> subSecciones;
+
 
         HashSet<string> expedientesBD;
 
@@ -123,6 +127,106 @@ namespace SIGC_TESChi
 
         }
 
+        //EXPEDIENTES EN PDF
+
+        public static void SubirDocumentosControl(
+    int idControl,
+    int anioControl,
+    string noExpediente,
+    string connectionString)
+        {
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Multiselect = true,
+                Filter = "Todos los archivos|*.*"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            string carpeta = FileManager.ObtenerRutaControl(anioControl, noExpediente);
+
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            {
+                cn.Open();
+
+                foreach (string archivo in ofd.FileNames)
+                {
+                    string nombre = Path.GetFileName(archivo);
+                    string destino = Path.Combine(carpeta, nombre);
+
+                    File.Copy(archivo, destino, true);
+
+                    string sql = @"
+            INSERT INTO DocumentoControl
+            (idControl, NombreArchivo, RutaArchivo, Extension)
+            VALUES (@id, @nombre, @ruta, @ext)";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, cn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", idControl);
+                        cmd.Parameters.AddWithValue("@nombre", nombre);
+                        cmd.Parameters.AddWithValue("@ruta", destino);
+                        cmd.Parameters.AddWithValue("@ext", Path.GetExtension(nombre));
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
+        public static void PrevisualizarDocumento(string ruta)
+        {
+            if (!File.Exists(ruta))
+            {
+                MessageBox.Show("El archivo no existe.");
+                return;
+            }
+
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = ruta,
+                UseShellExecute = true
+            });
+        }
+
+        public static void DescargarDocumento(string ruta)
+        {
+            SaveFileDialog sfd = new SaveFileDialog
+            {
+                FileName = Path.GetFileName(ruta)
+            };
+
+            if (sfd.ShowDialog() != DialogResult.OK)
+                return;
+
+            File.Copy(ruta, sfd.FileName, true);
+        }
+
+        private void CargarDocumentos(int idControl)
+        {
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            {
+                string sql = @"
+SELECT 
+    idDocumento,
+    NombreArchivo,
+    Extension,
+    FechaSubida,
+    RutaArchivo
+FROM DocumentoControl
+WHERE idControl = @id";
+
+                SqlDataAdapter da = new SqlDataAdapter(sql, cn);
+                da.SelectCommand.Parameters.AddWithValue("@id", idControl);
+
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                dgvDocumentos.DataSource = dt;   // ✅ GRID CORRECTO
+                dgvDocumentos.Columns["RutaArchivo"].Visible = false;
+            }
+        }
+
         public void Refrescar()
         {
             // 🔄 Recargar tabla principal
@@ -140,136 +244,7 @@ namespace SIGC_TESChi
             combosListos = true;
         }
 
-
-        public class ImportadorCSV
-        {
-            private string cs =
-                @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
-
-            public void ImportarCSV(string rutaCSV)
-            {
-                int linea = 0;
-                int insertados = 0;
-                StringBuilder errores = new StringBuilder();
-
-                using (SqlConnection conn = new SqlConnection(cs))
-                {
-                    conn.Open();
-
-                    using (StreamReader sr = new StreamReader(rutaCSV, Encoding.UTF8))
-                    {
-                        while (!sr.EndOfStream)
-                        {
-                            linea++;
-                            string fila = sr.ReadLine();
-                            if (string.IsNullOrWhiteSpace(fila)) continue;
-
-                            string[] d = fila.Split(';');
-
-                            if (d.Length < 18)
-                            {
-                                errores.AppendLine("Línea " + linea + ": columnas insuficientes");
-                                continue;
-                            }
-
-                            try
-                            {
-                                int anio;
-                                if (!int.TryParse(d[0].Trim(), out anio))
-                                    throw new Exception("Año inválido");
-
-                                int idSeccion = ObtenerId(conn,
-                                    "SELECT idSeccion FROM Seccion WHERE claveSeccion=@v", d[9]);
-
-                                int idSubSeccion = ObtenerId(conn,
-                                    "SELECT idSubSeccion FROM SubSeccion WHERE claveSubSeccion=@v", d[10]);
-
-                                int idInstituto = ObtenerId(conn,
-                                    "SELECT idInstituto FROM Instituto WHERE dInstituto=@v", d[11]);
-
-                                int idUbicacion = ObtenerId(conn,
-                                    "SELECT idUbicacion FROM Ubicacion WHERE dUbicacion=@v", d[12]);
-
-                                int idEstatus = ObtenerId(conn,
-                                    "SELECT idEstatus FROM Estatus WHERE dEstatus=@v", d[13]);
-
-                                int idClasificacion = ObtenerId(conn,
-                                    "SELECT idClasificacion FROM Clasificacion WHERE dClasificacion=@v", d[14]);
-
-                                DateTime fApertura, fCierre;
-                                if (!DateTime.TryParseExact(d[5], "d/M/yyyy",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out fApertura))
-                                    throw new Exception("Fecha apertura inválida");
-
-                                if (!DateTime.TryParseExact(d[6], "d/M/yyyy",
-                                    CultureInfo.InvariantCulture, DateTimeStyles.None, out fCierre))
-                                    throw new Exception("Fecha cierre inválida");
-
-                                int fojas = 0;
-                                int.TryParse(d[7], out fojas);
-
-                                string sql = @"
-INSERT INTO Control
-(anioControl, CodUniAdm, nomUniAdm, noExpediente, nExpediente,
- fApertura, fCierre, nForjas, nLegajos,
- idSeccion, idSubSeccion, idInstituto, idUbicacion, idEstatus, idClasificacion,
- formClasificatoria, Observaciones, enlace)
-VALUES
-(@anio,@cod,@nomUA,@noExp,@nomExp,
- @fa,@fc,@fojas,@legajos,
- @sec,@sub,@inst,@ubi,@est,@clas,
- @form,@obs,@enlace)";
-
-                                using (SqlCommand cmd = new SqlCommand(sql, conn))
-                                {
-                                    cmd.Parameters.AddWithValue("@anio", anio);
-                                    cmd.Parameters.AddWithValue("@cod", d[1]);
-                                    cmd.Parameters.AddWithValue("@nomUA", d[2]);
-                                    cmd.Parameters.AddWithValue("@noExp", d[3]);
-                                    cmd.Parameters.AddWithValue("@nomExp", d[4]);
-                                    cmd.Parameters.AddWithValue("@fa", fApertura);
-                                    cmd.Parameters.AddWithValue("@fc", fCierre);
-                                    cmd.Parameters.AddWithValue("@fojas", fojas);
-                                    cmd.Parameters.AddWithValue("@legajos", d[8]);
-                                    cmd.Parameters.AddWithValue("@sec", idSeccion);
-                                    cmd.Parameters.AddWithValue("@sub", idSubSeccion);
-                                    cmd.Parameters.AddWithValue("@inst", idInstituto);
-                                    cmd.Parameters.AddWithValue("@ubi", idUbicacion);
-                                    cmd.Parameters.AddWithValue("@est", idEstatus);
-                                    cmd.Parameters.AddWithValue("@clas", idClasificacion);
-                                    cmd.Parameters.AddWithValue("@form", d[15]);
-                                    cmd.Parameters.AddWithValue("@obs", d[16]);
-                                    cmd.Parameters.AddWithValue("@enlace", d[17]);
-
-                                    cmd.ExecuteNonQuery();
-                                    insertados++;
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                errores.AppendLine("Línea " + linea + ": " + ex.Message);
-                            }
-                        }
-                    }
-                }
-
-                File.WriteAllText("ErroresImportacion.txt", errores.ToString());
-                MessageBox.Show("Insertados: " + insertados +
-                                "\nErrores: " + errores.ToString().Split('\n').Length);
-            }
-
-            private int ObtenerId(SqlConnection c, string sql, string valor)
-            {
-                using (SqlCommand cmd = new SqlCommand(sql, c))
-                {
-                    cmd.Parameters.AddWithValue("@v", valor.Trim());
-                    object r = cmd.ExecuteScalar();
-                    if (r == null) throw new Exception("No existe: " + valor);
-                    return Convert.ToInt32(r);
-                }
-            }
-        }
-
+        
 
 
         private void CargarExpedientesBD()
@@ -287,8 +262,6 @@ VALUES
                     expedientesBD.Add(dr[0].ToString().Trim());
             }
         }
-
-
         private void InsertarDatos()
         {
             if (dtValidos.Rows.Count == 0)
@@ -336,9 +309,6 @@ VALUES
                 }
             }
         }
-
-
-
 
 
         private void ValidarDatos()
@@ -411,7 +381,6 @@ VALUES
             );
         }
 
-
         private void MarcarErrores()
         {
             foreach (DataGridViewRow row in dgvControl.Rows)
@@ -437,10 +406,6 @@ VALUES
                     sw.WriteLine(string.Join(";", row.ItemArray));
             }
         }
-
-
-
-
 
         private void CargarCatalogos()
         {
@@ -480,10 +445,6 @@ VALUES
         }
 
 
-
-
-
-
         private void CargarTabla()
         {
             try
@@ -503,7 +464,15 @@ VALUES
     c.nForjas,
     c.nLegajos,
 
-    -- SUSTITUCIÓN DE IDS (MISMO ORDEN)
+    -- 🔹 IDS (OCULTOS)
+    c.idSeccion,
+    c.idSubSeccion,
+    c.idInstituto,
+    c.idUbicacion,
+    c.idEstatus,
+    c.idClasificacion,
+
+    -- 🔹 DESCRIPCIONES (VISIBLES)
     s.claveSeccion        AS claveSeccion,
     ss.claveSubSeccion    AS claveSubSeccion,
     i.claveInstituto      AS claveInstituto,
@@ -527,6 +496,23 @@ ORDER BY c.idControl DESC";
                     DataTable dt = new DataTable();
                     da.Fill(dt);
                     dgvControl.DataSource = dt;
+
+                    string[] columnasOcultas =
+{
+    "idSeccion",
+    "idSubSeccion",
+    "idInstituto",
+    "idUbicacion",
+    "idEstatus",
+    "idClasificacion"
+};
+
+                    foreach (string col in columnasOcultas)
+                    {
+                        if (dgvControl.Columns.Contains(col))
+                            dgvControl.Columns[col].Visible = false;
+                    }
+
 
                     dgvControl.Columns["idControl"].HeaderText = "Identificador";
                     dgvControl.Columns["anioControl"].HeaderText = "Año del Expediente";
@@ -553,8 +539,6 @@ ORDER BY c.idControl DESC";
                 MessageBox.Show("Error al cargar tabla:\n" + ex.Message);
             }
         }
-
-
 
         private void CargarArchivos()
         {
@@ -588,7 +572,7 @@ ORDER BY c.idControl DESC";
             cboAño.Items.Clear();
 
             int anioActual = DateTime.Now.Year;
-            int anioInicio = anioActual - 5;  // puedes ajustar este rango
+            int anioInicio = anioActual - 10;  // puedes ajustar este rango
             int anioFin = anioActual + 1;  // por si necesitas capturar el siguiente año
 
             for (int anio = anioInicio; anio <= anioFin; anio++)
@@ -633,7 +617,6 @@ ORDER BY c.idControl DESC";
             }
         }
 
-
         private void CargarSecciones()
         {
             using (SqlConnection cn = new SqlConnection(connectionString))
@@ -649,9 +632,6 @@ ORDER BY c.idControl DESC";
                 cboSeccion.SelectedIndex = -1;
             }
         }
-
-
-
 
         private void CargarSubSeccionesPorSeccion(int idSeccion)
         {
@@ -675,8 +655,6 @@ ORDER BY c.idControl DESC";
                 cboSubSeccion.SelectedIndex = -1;
             }
         }
-
-
 
         private void CargarUbicaciones()
         {
@@ -730,8 +708,6 @@ ORDER BY c.idControl DESC";
                 }
             }
         }
-
-
 
         private void CargarNombUnidAdmin()
         {
@@ -832,61 +808,6 @@ ORDER BY c.idControl DESC";
                 $"{claveInstituto}/{claveSeccion}/{claveSubSeccion}/{numeroExpediente}";
         }
 
-
-
-
-
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void CArchivos_Load_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboAño_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void cboSeccion_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!combosListos) return;
@@ -903,11 +824,6 @@ ORDER BY c.idControl DESC";
             GenerarFormulaClasificatoria();
         }
 
-
-        private void cboUbicacion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
 
         bool bloqueado = false;
 
@@ -950,26 +866,6 @@ ORDER BY c.idControl DESC";
 
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtFormulaClasificatoria_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void txtFojas_TextChanged(object sender, EventArgs e)
         {
             int cursor = txtFojas.SelectionStart;
@@ -981,11 +877,6 @@ ORDER BY c.idControl DESC";
                 txtFojas.Text = limpio;
                 txtFojas.SelectionStart = Math.Min(cursor, txtFojas.Text.Length);
             }
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void txtObservaciones_TextChanged(object sender, EventArgs e)
@@ -1023,16 +914,6 @@ ORDER BY c.idControl DESC";
 
         }
 
-        private void cboInstituto_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dgvControl_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void btnEditar_Click(object sender, EventArgs e)
         {
 
@@ -1050,59 +931,80 @@ ORDER BY c.idControl DESC";
             DataGridViewRow row = dgvControl.Rows[e.RowIndex];
 
             // ID
-            txtID.Text = row.Cells["idControl"].Value.ToString();
+            txtID.Text = row.Cells["idControl"].Value?.ToString();
 
-            // AÑO  
-            cboAño.Text = row.Cells["anioControl"].Value.ToString();
+            // AÑO
+            cboAño.Text = row.Cells["anioControl"].Value?.ToString();
 
-            // CODIGO Y NOMBRE UNIDAD ADMINISTRATIVA  
-            cboCodUnidAdmin.SelectedValue = row.Cells["CodUniAdm"].Value;
-            cboNombUniAdmin.Text = row.Cells["nomUniAdm"].Value.ToString();
+            // UNIDAD ADMINISTRATIVA
+            // Solo asignar Text si es texto; no usar SelectedValue si es string
+            cboCodUnidAdmin.Text = row.Cells["CodUniAdm"].Value?.ToString();
+            cboNombUniAdmin.Text = row.Cells["nomUniAdm"].Value?.ToString();
 
-            // EXPEDIENTES  
-            txtnoExpediente.Text = row.Cells["noExpediente"].Value.ToString();
-            txtnExpendiente.Text = row.Cells["nExpediente"].Value.ToString();
+            // EXPEDIENTES
+            txtnoExpediente.Text = row.Cells["noExpediente"].Value?.ToString();
+            txtnExpendiente.Text = row.Cells["nExpediente"].Value?.ToString();
 
             // FECHAS
-            dtpfApertura.Value = Convert.ToDateTime(row.Cells["fApertura"].Value);
-            dtpfCierre.Value = Convert.ToDateTime(row.Cells["fCierre"].Value);
+            if (row.Cells["fApertura"].Value != DBNull.Value && row.Cells["fApertura"].Value != null)
+                dtpfApertura.Value = Convert.ToDateTime(row.Cells["fApertura"].Value);
 
-            // FOJAS Y LEGAJOS  
-            txtFojas.Text = row.Cells["nForjas"].Value.ToString();
-            txtLegajos.Text = row.Cells["nLegajos"].Value.ToString();
+            if (row.Cells["fCierre"].Value != DBNull.Value && row.Cells["fCierre"].Value != null)
+            {
+                dtpfCierre.Value = Convert.ToDateTime(row.Cells["fCierre"].Value);
+                dtpfCierre.Checked = true;
+            }
+            else
+            {
+                dtpfCierre.Checked = false; // MUY IMPORTANTE
+            }
 
-            // SECCIÓN
-            if (row.Cells["idSeccion"].Value != DBNull.Value)
-                cboSeccion.SelectedValue = row.Cells["idSeccion"].Value;
+            // FOJAS Y LEGAJOS
+            txtFojas.Text = row.Cells["nForjas"].Value?.ToString();
+            txtLegajos.Text = row.Cells["nLegajos"].Value?.ToString();
 
+            // UBICACIÓN (ID = int)
+            if (row.Cells["idUbicacion"].Value != null && row.Cells["idUbicacion"].Value != DBNull.Value)
+                AsignarComboSeguro(cboUbicacion, Convert.ToInt32(row.Cells["idUbicacion"].Value));
 
-            // SUBSECCIÓN
-            if (row.Cells["idSubSeccion"].Value != DBNull.Value)
-                cboSubSeccion.SelectedValue = row.Cells["idSubSeccion"].Value;
+            // INSTITUTO (ID = int)
+            if (row.Cells["idInstituto"].Value != null && row.Cells["idInstituto"].Value != DBNull.Value)
+                AsignarComboSeguro(cboInstituto, Convert.ToInt32(row.Cells["idInstituto"].Value));
 
-            // UBICACIÓN
-            if (row.Cells["idUbicacion"].Value != DBNull.Value)
-                cboUbicacion.SelectedValue = row.Cells["idUbicacion"].Value;
+            // ESTATUS (ID = int)
+            if (row.Cells["idEstatus"].Value != null && row.Cells["idEstatus"].Value != DBNull.Value)
+                AsignarComboSeguro(cboEstatus, Convert.ToInt32(row.Cells["idEstatus"].Value));
 
-            // INSTITUTO
-            if (row.Cells["idInstituto"].Value != DBNull.Value)
-                cboInstituto.SelectedValue = row.Cells["idInstituto"].Value;
-
-            // ESTATUS
-            if (row.Cells["idEstatus"].Value != DBNull.Value)
-                cboEstatus.SelectedValue = row.Cells["idEstatus"].Value;
-
-            // CLASIFICACIÓN
-            if (row.Cells["idClasificacion"].Value != DBNull.Value)
-                cboClasificacion.SelectedValue = row.Cells["idClasificacion"].Value;
+            // CLASIFICACIÓN (ID = int)
+            if (row.Cells["idClasificacion"].Value != null && row.Cells["idClasificacion"].Value != DBNull.Value)
+                AsignarComboSeguro(cboClasificacion, Convert.ToInt32(row.Cells["idClasificacion"].Value));
 
             // FORMULA Y OBSERVACIONES
-            txtFormulaClasificatoria.Text = row.Cells["formClasificatoria"].Value.ToString();
-            txtObservaciones.Text = row.Cells["Observaciones"].Value.ToString();
+            txtFormulaClasificatoria.Text = row.Cells["formClasificatoria"].Value?.ToString();
+            txtObservaciones.Text = row.Cells["Observaciones"].Value?.ToString();
+
+            // DOCUMENTOS
+            if (int.TryParse(txtID.Text, out int idControl))
+                CargarDocumentos(idControl);
 
         }
 
-        
+        private void AsignarComboSeguro(ComboBox combo, object valor)
+        {
+            if (valor == null || valor == DBNull.Value) return;
+
+            try
+            {
+                combo.SelectedValue = Convert.ToInt32(valor);
+            }
+            catch
+            {
+                combo.SelectedIndex = -1; // Si no existe, deselecciona
+            }
+        }
+
+
+
         private void btnLimpiar_Click(object sender, EventArgs e)
         {
             LimpiarCampos();
@@ -1217,7 +1119,7 @@ ORDER BY c.idControl DESC";
                     cmd.Parameters.AddWithValue("@noExp", txtnoExpediente.Text);
                     cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
                     cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
-                    cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
+                    cmd.Parameters.AddWithValue("@fCierre",dtpfCierre.Checked ? (object)dtpfCierre.Value : DBNull.Value);
                     cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
                     cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
 
@@ -1253,15 +1155,16 @@ ORDER BY c.idControl DESC";
                 }
 
                 if (cboSeccion.SelectedValue == null ||
-    cboSubSeccion.SelectedValue == null ||
-    cboUbicacion.SelectedValue == null ||
-    cboInstituto.SelectedValue == null ||
-    cboEstatus.SelectedValue == null ||
-    cboClasificacion.SelectedValue == null)
+     cboSubSeccion.SelectedValue == null ||
+     cboUbicacion.SelectedValue == null ||
+     cboInstituto.SelectedValue == null ||
+     cboEstatus.SelectedValue == null ||
+     cboClasificacion.SelectedValue == null)
                 {
                     MessageBox.Show("Completa todos los campos obligatorios.");
                     return;
                 }
+
 
 
                 // =====================
@@ -1442,57 +1345,6 @@ ORDER BY c.idControl DESC";
             }
         }
 
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtID_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label14_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label18_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label17_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label15_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void txtnoExpediente_TextChanged(object sender, EventArgs e)
         {
             int cursor = txtnoExpediente.SelectionStart;
@@ -1543,36 +1395,6 @@ ORDER BY c.idControl DESC";
             }
         }
 
-        private void cboEstatus_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboClasificacion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboAño_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label16_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtLegajos_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnExportar_Click(object sender, EventArgs e)
         {
             ExportarCSV();
@@ -1580,14 +1402,15 @@ ORDER BY c.idControl DESC";
 
         private void btnImportar_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "CSV (*.csv)|*.csv";
-
-            if (ofd.ShowDialog() == DialogResult.OK)
+            using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ImportadorCSV imp = new ImportadorCSV();
-                imp.ImportarCSV(ofd.FileName);
-                MessageBox.Show("Importación completada");
+                ofd.Filter = "Archivos CSV|*.csv";
+                ofd.Title = "Selecciona el archivo CSV";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    CSVHelper.ImportarCSV(ofd.FileName);
+                }
             }
         }
 
@@ -1627,20 +1450,110 @@ ORDER BY c.idControl DESC";
             }
         }
 
-        private void cboAño_DropDownStyleChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cboCodUnidAdmin_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void btnSubirDocumento_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtID.Text))
+            {
+                MessageBox.Show("Selecciona un expediente primero.");
+                return;
+            }
+
+            // 🔐 SOLO ADMIN (AJUSTA EL ID)
+            if (SessionData.IdTipoUsuario != 1)
+            {
+                MessageBox.Show("No tienes permisos para subir documentos.");
+                return;
+            }
+
+            int idControl = int.Parse(txtID.Text);
+            int anio = int.Parse(cboAño.Text);
+            string noExpediente = txtnoExpediente.Text;
+
+            SubirDocumentosControl(idControl, anio, noExpediente, connectionString);
+
+            MessageBox.Show("Documento(s) subido(s) correctamente.");
+        }
+
+        private void dgvDocumentos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            string ruta = dgvDocumentos.Rows[e.RowIndex]
+                .Cells["RutaArchivo"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(ruta) || !File.Exists(ruta))
+            {
+                MessageBox.Show("El archivo no existe o fue movido.");
+                return;
+            }
+
+            PrevisualizarDocumento(ruta);
+        }
+
+        private void btnDescargarDocumento_Click(object sender, EventArgs e)
+        {
+            // 🔐 VALIDACIÓN DE PERMISOS
+            if (SessionData.IdTipoUsuario != 1) // 1 = ADMIN
+            {
+                MessageBox.Show(
+                    "Solo los administradores pueden descargar documentos.",
+                    "Acceso denegado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            // ✅ VALIDACIÓN DE SELECCIÓN
+            if (dgvDocumentos.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un documento.", "Aviso",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string rutaOrigen = dgvDocumentos.CurrentRow
+                .Cells["RutaArchivo"].Value?.ToString();
+
+            string nombreArchivo = dgvDocumentos.CurrentRow
+                .Cells["NombreArchivo"].Value?.ToString();
+
+            if (string.IsNullOrEmpty(rutaOrigen) || !File.Exists(rutaOrigen))
+            {
+                MessageBox.Show("El archivo no existe en el sistema.",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            SaveFileDialog save = new SaveFileDialog();
+            save.FileName = nombreArchivo;
+            save.Filter = "Todos los archivos (*.*)|*.*";
+
+            if (save.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    File.Copy(rutaOrigen, save.FileName, true);
+
+                    MessageBox.Show("Documento descargado correctamente.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al descargar:\n" + ex.Message,
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
+
+        
     }
     }
 
