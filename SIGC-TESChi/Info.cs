@@ -24,6 +24,18 @@ namespace SIGC_TESChi
             }
 
             cmbFuentes.SelectedItem = FontManager.FuenteActual.FontFamily.Name;
+
+            // 🔐 PERMISOS
+            bool esAdmin = Permisos.EsAdministrador;
+
+            btnBackup.Enabled = esAdmin;
+            btnRestaurar.Enabled = esAdmin;
+
+            if (!esAdmin)
+            {
+                btnBackup.Text = "Backup (Solo admin)";
+                btnRestaurar.Text = "Restaurar (Solo admin)";
+            }
         }
 
         private void cboxModoOscuro_CheckedChanged(object sender, EventArgs e)
@@ -39,6 +51,72 @@ namespace SIGC_TESChi
 
             // SOLO AVISA
             FuenteCambiada?.Invoke(cmbFuentes.SelectedItem.ToString());
+        }
+
+        private void btnBackup_Click(object sender, EventArgs e)
+        {
+            if (!Permisos.EsAdministrador)
+            {
+                MessageBox.Show(
+                    "No tienes permisos para realizar respaldos.",
+                    "Acceso denegado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Stop
+                );
+                return;
+            }
+
+            try
+            {
+                BackupManager.EjecutarBackupCompleto();
+                MessageBox.Show("Respaldo realizado correctamente ✔", "Backup");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+        }
+
+        private void btnRestaurar_Click(object sender, EventArgs e)
+        {
+            if (!Permisos.EsAdministrador)
+            {
+                MessageBox.Show(
+                    "No tienes permisos para restaurar respaldos.",
+                    "Acceso denegado",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Stop
+                );
+                return;
+            }
+
+            OpenFileDialog ofd = new OpenFileDialog
+            {
+                Filter = "Respaldo SIGC (*.zip)|*.zip"
+            };
+
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            DialogResult r = MessageBox.Show(
+                "⚠️ ESTA ACCIÓN SOBREESCRIBIRÁ TODA LA INFORMACIÓN.\n\n¿Deseas continuar?",
+                "Confirmar restauración",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (r != DialogResult.Yes)
+                return;
+
+            try
+            {
+                BackupManager.RestaurarBackup(ofd.FileName);
+                MessageBox.Show("Restauración completada correctamente ✔", "Restore");
+                Application.Restart();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al restaurar");
+            }
         }
     }
 }

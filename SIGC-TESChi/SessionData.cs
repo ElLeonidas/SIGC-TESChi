@@ -14,4 +14,11 @@ namespace SIGC_TESChi
         public static int IdTipoUsuario { get; set; }
     }
 
+    public static class Permisos
+    {
+        public static bool EsAdministrador =>
+            SessionData.IdTipoUsuario == 1;
+    }
+
+
 }

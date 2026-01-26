@@ -87,6 +87,26 @@ namespace SIGC_TESChi
             MostrarUC(ucLobby); // Vista inicial
         }
 
+        //BACKUP
+
+        private void Menu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                BackupManager.EjecutarBackupCompleto();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "El sistema se cerró, pero ocurrió un problema al respaldar:\n" + ex.Message,
+                    "Respaldo automático",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+        }
+
+
         private void InicializarTimerInactividad()
         {
             inactivityTimer = new System.Windows.Forms.Timer();
