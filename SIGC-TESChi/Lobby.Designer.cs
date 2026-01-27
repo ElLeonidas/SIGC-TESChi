@@ -53,6 +53,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.cmbTipoEvento = new System.Windows.Forms.ComboBox();
             this.pnlLobby.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEventos)).BeginInit();
@@ -66,7 +67,7 @@
             this.pnlLobby.Controls.Add(this.panel3);
             this.pnlLobby.Controls.Add(this.panel2);
             this.pnlLobby.Location = new System.Drawing.Point(0, 0);
-            this.pnlLobby.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pnlLobby.Margin = new System.Windows.Forms.Padding(2);
             this.pnlLobby.Name = "pnlLobby";
             this.pnlLobby.Size = new System.Drawing.Size(938, 682);
             this.pnlLobby.TabIndex = 1;
@@ -76,7 +77,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.dgvEventos);
             this.panel3.Location = new System.Drawing.Point(337, 2);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(596, 674);
             this.panel3.TabIndex = 3;
@@ -86,7 +87,7 @@
             this.dgvEventos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvEventos.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvEventos.Location = new System.Drawing.Point(0, 0);
-            this.dgvEventos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvEventos.Margin = new System.Windows.Forms.Padding(2);
             this.dgvEventos.Name = "dgvEventos";
             this.dgvEventos.RowHeadersWidth = 51;
             this.dgvEventos.RowTemplate.Height = 24;
@@ -96,6 +97,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.cmbTipoEvento);
             this.panel2.Controls.Add(this.mthCalendario);
             this.panel2.Controls.Add(this.txtTipo);
             this.panel2.Controls.Add(this.nudMinutos);
@@ -117,7 +119,7 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(328, 674);
             this.panel2.TabIndex = 2;
@@ -125,23 +127,24 @@
             // mthCalendario
             // 
             this.mthCalendario.Location = new System.Drawing.Point(50, 64);
-            this.mthCalendario.Margin = new System.Windows.Forms.Padding(7, 7, 7, 7);
+            this.mthCalendario.Margin = new System.Windows.Forms.Padding(7);
             this.mthCalendario.Name = "mthCalendario";
             this.mthCalendario.TabIndex = 0;
             // 
             // txtTipo
             // 
-            this.txtTipo.Location = new System.Drawing.Point(103, 358);
-            this.txtTipo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTipo.Location = new System.Drawing.Point(51, 629);
+            this.txtTipo.Margin = new System.Windows.Forms.Padding(2);
             this.txtTipo.Name = "txtTipo";
             this.txtTipo.Size = new System.Drawing.Size(196, 20);
             this.txtTipo.TabIndex = 5;
+            this.txtTipo.Visible = false;
             this.txtTipo.TextChanged += new System.EventHandler(this.txtTipo_TextChanged);
             // 
             // nudMinutos
             // 
             this.nudMinutos.Location = new System.Drawing.Point(151, 500);
-            this.nudMinutos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nudMinutos.Margin = new System.Windows.Forms.Padding(2);
             this.nudMinutos.Name = "nudMinutos";
             this.nudMinutos.Size = new System.Drawing.Size(46, 20);
             this.nudMinutos.TabIndex = 23;
@@ -150,7 +153,7 @@
             // 
             this.chkAlerta.AutoSize = true;
             this.chkAlerta.Location = new System.Drawing.Point(103, 466);
-            this.chkAlerta.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.chkAlerta.Margin = new System.Windows.Forms.Padding(2);
             this.chkAlerta.Name = "chkAlerta";
             this.chkAlerta.Size = new System.Drawing.Size(35, 17);
             this.chkAlerta.TabIndex = 22;
@@ -161,16 +164,17 @@
             // 
             this.cmbModalidad.FormattingEnabled = true;
             this.cmbModalidad.Location = new System.Drawing.Point(103, 409);
-            this.cmbModalidad.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.cmbModalidad.Margin = new System.Windows.Forms.Padding(2);
             this.cmbModalidad.Name = "cmbModalidad";
             this.cmbModalidad.Size = new System.Drawing.Size(196, 21);
             this.cmbModalidad.TabIndex = 20;
             this.cmbModalidad.SelectedIndexChanged += new System.EventHandler(this.cmbModalidad_SelectedIndexChanged);
+            this.cmbModalidad.Leave += new System.EventHandler(this.cmbModalidad_Leave);
             // 
             // txtTitulo
             // 
             this.txtTitulo.Location = new System.Drawing.Point(98, 250);
-            this.txtTitulo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtTitulo.Margin = new System.Windows.Forms.Padding(2);
             this.txtTitulo.Name = "txtTitulo";
             this.txtTitulo.Size = new System.Drawing.Size(196, 20);
             this.txtTitulo.TabIndex = 17;
@@ -179,7 +183,7 @@
             // dtpHora
             // 
             this.dtpHora.Location = new System.Drawing.Point(98, 303);
-            this.dtpHora.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpHora.Margin = new System.Windows.Forms.Padding(2);
             this.dtpHora.Name = "dtpHora";
             this.dtpHora.Size = new System.Drawing.Size(196, 20);
             this.dtpHora.TabIndex = 16;
@@ -188,7 +192,7 @@
             // 
             this.txtUsuario.Enabled = false;
             this.txtUsuario.Location = new System.Drawing.Point(106, 27);
-            this.txtUsuario.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtUsuario.Margin = new System.Windows.Forms.Padding(2);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(196, 20);
             this.txtUsuario.TabIndex = 14;
@@ -198,7 +202,7 @@
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLimpiar.Location = new System.Drawing.Point(202, 556);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(45, 49);
             this.btnLimpiar.TabIndex = 2;
@@ -210,7 +214,7 @@
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnModificar.Location = new System.Drawing.Point(152, 556);
-            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(45, 49);
             this.btnModificar.TabIndex = 13;
@@ -222,7 +226,7 @@
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnEliminar.Location = new System.Drawing.Point(103, 556);
-            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(45, 49);
             this.btnEliminar.TabIndex = 12;
@@ -234,7 +238,7 @@
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAgregar.Location = new System.Drawing.Point(53, 556);
-            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(45, 49);
             this.btnAgregar.TabIndex = 11;
@@ -329,12 +333,20 @@
             this.label1.TabIndex = 2;
             this.label1.Text = "Titulo:";
             // 
+            // cmbTipoEvento
+            // 
+            this.cmbTipoEvento.FormattingEnabled = true;
+            this.cmbTipoEvento.Location = new System.Drawing.Point(130, 360);
+            this.cmbTipoEvento.Name = "cmbTipoEvento";
+            this.cmbTipoEvento.Size = new System.Drawing.Size(121, 21);
+            this.cmbTipoEvento.TabIndex = 24;
+            // 
             // Lobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnlLobby);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Lobby";
             this.Size = new System.Drawing.Size(937, 681);
             this.Load += new System.EventHandler(this.Lobby_Load);
@@ -373,5 +385,6 @@
         private System.Windows.Forms.NumericUpDown nudMinutos;
         private System.Windows.Forms.DataGridView dgvEventos;
         private System.Windows.Forms.TextBox txtTipo;
+        private System.Windows.Forms.ComboBox cmbTipoEvento;
     }
 }

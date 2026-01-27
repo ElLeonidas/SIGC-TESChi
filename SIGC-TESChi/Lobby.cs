@@ -58,6 +58,9 @@ namespace SIGC_TESChi
             ConfigurarDGV();
             CargarEventosDelMes();
             IniciarAlertaTimer();
+
+            CargarTiposEvento();
+
         }
 
         private void ConfigurarDGV()
@@ -79,6 +82,26 @@ namespace SIGC_TESChi
             dgvEventos.SelectionChanged += DgvEventos_SelectionChanged;
         }
 
+        private void CargarTiposEvento()
+        {
+            cmbTipoEvento.Items.Clear();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string sql = "SELECT DISTINCT tipo FROM Agenda ORDER BY tipo";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                conn.Open();
+                SqlDataReader r = cmd.ExecuteReader();
+
+                while (r.Read())
+                {
+                    cmbTipoEvento.Items.Add(r["tipo"].ToString());
+                }
+            }
+        }
+
+
         //VALIDACIÓN
         private bool ValidarFormulario()
         {
@@ -89,12 +112,13 @@ namespace SIGC_TESChi
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(txtTipo.Text))
+            if (string.IsNullOrWhiteSpace(cmbTipoEvento.Text))
             {
                 MessageBox.Show("Ingrese el tipo de evento.");
-                txtTipo.Focus();
+                cmbTipoEvento.Focus();
                 return false;
             }
+
 
             if (cmbModalidad.SelectedIndex == -1)
             {
@@ -130,7 +154,7 @@ namespace SIGC_TESChi
                     cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text.Trim());
                     cmd.Parameters.AddWithValue("@fecha", mthCalendario.SelectionStart.Date);
                     cmd.Parameters.AddWithValue("@hora", dtpHora.Value.TimeOfDay);
-                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@tipo", cmbTipoEvento.Text.Trim());
                     cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem.ToString());
                     cmd.Parameters.AddWithValue("@idUsuario", SessionData.IdUsuario);
                     cmd.Parameters.AddWithValue("@idTipoUsuario", SessionData.IdTipoUsuario);
@@ -171,7 +195,7 @@ namespace SIGC_TESChi
                     cmd.Parameters.AddWithValue("@titulo", txtTitulo.Text.Trim());
                     cmd.Parameters.AddWithValue("@fecha", mthCalendario.SelectionStart.Date);
                     cmd.Parameters.AddWithValue("@hora", dtpHora.Value.TimeOfDay);
-                    cmd.Parameters.AddWithValue("@tipo", txtTipo.Text.Trim());
+                    cmd.Parameters.AddWithValue("@tipo", cmbTipoEvento.Text.Trim());
                     cmd.Parameters.AddWithValue("@modalidad", cmbModalidad.SelectedItem.ToString());
                     cmd.Parameters.AddWithValue("@alerta", chkAlerta.Checked);
                     cmd.Parameters.AddWithValue("@minutos", (int)nudMinutos.Value);
@@ -214,7 +238,7 @@ namespace SIGC_TESChi
         private void LimpiarFormulario()
         {
             txtTitulo.Clear();
-            txtTipo.Clear();
+            cmbTipoEvento.Text = "";
             cmbModalidad.SelectedIndex = -1;
             chkAlerta.Checked = true;
             nudMinutos.Value = 10;
@@ -263,7 +287,7 @@ namespace SIGC_TESChi
 
             var r = dgvEventos.SelectedRows[0];
             txtTitulo.Text = r.Cells["titulo"].Value.ToString();
-            txtTipo.Text = r.Cells["tipo"].Value.ToString();
+            cmbTipoEvento.Text = r.Cells["tipo"].Value.ToString();
             cmbModalidad.SelectedItem = r.Cells["modalidad"].Value.ToString();
             dtpHora.Value = DateTime.Today.Add(TimeSpan.Parse(r.Cells["hora"].Value.ToString()));
         }
@@ -381,6 +405,19 @@ namespace SIGC_TESChi
         private void cmbModalidad_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void cmbModalidad_Leave(object sender, EventArgs e)
+        {
+            string texto = cmbTipoEvento.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(texto))
+                return;
+
+            if (!cmbTipoEvento.Items.Contains(texto))
+            {
+                cmbTipoEvento.Items.Add(texto);
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Windows.Forms;
 
 namespace SIGC_TESChi
@@ -17,15 +19,10 @@ namespace SIGC_TESChi
 
         private void Info_Load(object sender, EventArgs e)
         {
-            // Cargar fuentes
-            foreach (FontFamily font in FontFamily.Families)
-            {
-                cmbFuentes.Items.Add(font.Name);
-            }
+            CargarFuentes();
 
             cmbFuentes.SelectedItem = FontManager.FuenteActual.FontFamily.Name;
 
-            // 🔐 PERMISOS
             bool esAdmin = Permisos.EsAdministrador;
 
             btnBackup.Enabled = esAdmin;
@@ -37,6 +34,16 @@ namespace SIGC_TESChi
                 btnRestaurar.Text = "Restaurar (Solo admin)";
             }
         }
+
+        private void CargarFuentes()
+        {
+            cmbFuentes.DataSource = null;
+            cmbFuentes.Items.Clear();
+
+            cmbFuentes.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbFuentes.DataSource = FontManager.ObtenerTop10Fuentes();
+        }
+
 
         private void cboxModoOscuro_CheckedChanged(object sender, EventArgs e)
         {
