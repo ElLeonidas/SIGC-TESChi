@@ -45,6 +45,7 @@
             this.txtSubseccion = new System.Windows.Forms.TextBox();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnAgregar = new System.Windows.Forms.Button();
+            this.cmbSeccion = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaSubsecciones)).BeginInit();
@@ -90,6 +91,7 @@
             // panel2
             // 
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel2.Controls.Add(this.cmbSeccion);
             this.panel2.Controls.Add(this.txtClaveSubseccion);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.label4);
@@ -110,7 +112,7 @@
             // 
             // txtClaveSubseccion
             // 
-            this.txtClaveSubseccion.Location = new System.Drawing.Point(272, 82);
+            this.txtClaveSubseccion.Location = new System.Drawing.Point(272, 65);
             this.txtClaveSubseccion.Margin = new System.Windows.Forms.Padding(2);
             this.txtClaveSubseccion.Name = "txtClaveSubseccion";
             this.txtClaveSubseccion.Size = new System.Drawing.Size(269, 20);
@@ -132,7 +134,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(131, 81);
+            this.label4.Location = new System.Drawing.Point(131, 64);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(139, 17);
@@ -143,7 +145,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(94, 119);
+            this.label2.Location = new System.Drawing.Point(94, 102);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(179, 17);
@@ -165,7 +167,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(76, 47);
+            this.label3.Location = new System.Drawing.Point(76, 30);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(200, 17);
@@ -186,7 +188,7 @@
             // txtID
             // 
             this.txtID.Enabled = false;
-            this.txtID.Location = new System.Drawing.Point(272, 46);
+            this.txtID.Location = new System.Drawing.Point(272, 29);
             this.txtID.Margin = new System.Windows.Forms.Padding(2);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(269, 20);
@@ -205,7 +207,7 @@
             // 
             // txtSubseccion
             // 
-            this.txtSubseccion.Location = new System.Drawing.Point(272, 119);
+            this.txtSubseccion.Location = new System.Drawing.Point(272, 102);
             this.txtSubseccion.Margin = new System.Windows.Forms.Padding(2);
             this.txtSubseccion.Name = "txtSubseccion";
             this.txtSubseccion.Size = new System.Drawing.Size(269, 20);
@@ -234,6 +236,14 @@
             this.btnAgregar.TabIndex = 17;
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click_1);
+            // 
+            // cmbSeccion
+            // 
+            this.cmbSeccion.FormattingEnabled = true;
+            this.cmbSeccion.Location = new System.Drawing.Point(274, 137);
+            this.cmbSeccion.Name = "cmbSeccion";
+            this.cmbSeccion.Size = new System.Drawing.Size(121, 21);
+            this.cmbSeccion.TabIndex = 24;
             // 
             // SubSecciones
             // 
@@ -270,5 +280,6 @@
         private System.Windows.Forms.TextBox txtSubseccion;
         private System.Windows.Forms.Button btnEliminar;
         private System.Windows.Forms.Button btnAgregar;
+        private System.Windows.Forms.ComboBox cmbSeccion;
     }
 }

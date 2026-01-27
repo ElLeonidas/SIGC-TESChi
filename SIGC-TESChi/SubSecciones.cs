@@ -24,6 +24,7 @@ namespace SIGC_TESChi
 
             Load += SubSecciones_Load;
 
+
             // Inicializamos el ToolTip
             toolTip = new ToolTip();
             toolTip.AutoPopDelay = 5000;  // Visible 5 segundos
@@ -60,6 +61,7 @@ namespace SIGC_TESChi
         private void SubSecciones_Load(object sender, EventArgs e)
         {
             CargarSubSecciones();
+            CargarSeccionesCombo();
         }
 
         //EVENTOS 
@@ -130,58 +132,161 @@ namespace SIGC_TESChi
             txtClaveSubseccion.Focus();
         }
 
+        private void CargarSeccionesCombo()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    string sql = @"
+                SELECT idSeccion, dSeccion
+                FROM Seccion
+                ORDER BY dSeccion";
+
+                    using (SqlCommand cmd = new SqlCommand(sql, conn))
+                    using (SqlDataReader dr = cmd.ExecuteReader())
+                    {
+                        DataTable dt = new DataTable();
+                        dt.Load(dr);
+
+                        cmbSeccion.DataSource = dt;
+                        cmbSeccion.DisplayMember = "dSeccion";   // lo que ve el usuario
+                        cmbSeccion.ValueMember = "idSeccion";    // lo que usa el sistema
+                        cmbSeccion.SelectedIndex = -1;           // nada seleccionado por defecto
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error al cargar las secciones:\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
+        }
+
+
         private void AgregarSubSeccion()
         {
             if (string.IsNullOrWhiteSpace(txtClaveSubseccion.Text) ||
                 string.IsNullOrWhiteSpace(txtSubseccion.Text))
             {
-                MessageBox.Show("Ingresa la clave y la SubSección.");
+                MessageBox.Show(
+                    "Ingresa la clave y la descripción de la SubSección.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
 
+            if (cmbSeccion.SelectedValue == null)
+            {
+                MessageBox.Show(
+                    "Selecciona una sección válida.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                return;
+            }
+
+            string clave = txtClaveSubseccion.Text.Trim();
+            string descripcion = txtSubseccion.Text.Trim();
+            int idSeccion = Convert.ToInt32(cmbSeccion.SelectedValue);
+
             try
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    con.Open();
+                    conn.Open();
 
-                    string checkQuery = "SELECT COUNT(*) FROM SubSeccion WHERE claveSubSeccion = @clave";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, con);
-                    checkCmd.Parameters.AddWithValue("@clave", txtClaveSubseccion.Text);
+                    // 🔎 Validar duplicado (clave + sección)
+                    string checkQuery = @"
+                SELECT COUNT(1)
+                FROM SubSeccion
+                WHERE claveSubSeccion = @clave
+                  AND idSeccion = @idSeccion";
 
-                    int existe = (int)checkCmd.ExecuteScalar();
-                    if (existe > 0)
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
-                        MessageBox.Show("⚠️ Esta SubSección ya existe.");
-                        return;
+                        checkCmd.Parameters.AddWithValue("@clave", clave);
+                        checkCmd.Parameters.AddWithValue("@idSeccion", idSeccion);
+
+                        if ((int)checkCmd.ExecuteScalar() > 0)
+                        {
+                            MessageBox.Show(
+                                "⚠️ Esta SubSección ya existe en la sección seleccionada.",
+                                "Duplicado",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
                     }
 
-                    string query = "INSERT INTO SubSeccion (claveSubSeccion, dSubSeccion) VALUES (@clave, @desc)";
-                    SqlCommand cmd = new SqlCommand(query, con);
-                    cmd.Parameters.AddWithValue("@clave", txtClaveSubseccion.Text);
-                    cmd.Parameters.AddWithValue("@desc", txtSubseccion.Text);
-                    cmd.ExecuteNonQuery();
+                    // 💾 INSERT correcto (con FK)
+                    string insertQuery = @"
+                INSERT INTO SubSeccion
+                (idSeccion, claveSubSeccion, dSubSeccion)
+                VALUES
+                (@idSeccion, @clave, @descripcion)";
+
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@idSeccion", idSeccion);
+                        cmd.Parameters.AddWithValue("@clave", clave);
+                        cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
 
-                // 🔴 HISTORIAL (INSERT)
-                string datosNuevos = $"Clave={txtClaveSubseccion.Text}, SubSeccion={txtSubseccion.Text}";
+                // 🧾 HISTORIAL
+                string datosNuevos =
+                    $"idSeccion={idSeccion}, claveSubSeccion={clave}, dSubSeccion={descripcion}";
+
                 HistorialHelper.RegistrarCambio(
                     "SubSeccion",
-                    txtClaveSubseccion.Text,
+                    clave,     // llave lógica
                     "INSERT",
-                    null,
+                    "",
                     datosNuevos
                 );
 
-                MessageBox.Show("✅ SubSección agregada correctamente.");
+                MessageBox.Show(
+                    "✅ SubSección agregada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
                 CargarSubSecciones();
                 LimpiarCampos();
             }
+            catch (SqlException ex) when (ex.Number == 547)
+            {
+                MessageBox.Show(
+                    "La sección seleccionada no existe.",
+                    "Error de referencia",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show(
+                    "Error al agregar la SubSección:\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
+
 
 
         private void ModificarSubSeccion()
@@ -420,5 +525,6 @@ namespace SIGC_TESChi
         {
 
         }
+
     }
 }

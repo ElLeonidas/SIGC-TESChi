@@ -339,5 +339,15 @@ namespace SIGC_TESChi
                 txtClasificacion.SelectionStart = Math.Min(cursor, txtClasificacion.Text.Length);
             }
         }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            ModificarClasificacion();
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            EliminarClasificacion();
+        }
     }
 }

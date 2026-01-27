@@ -60,7 +60,7 @@
             this.panel1.Controls.Add(this.panel3);
             this.panel1.Controls.Add(this.panel2);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(938, 682);
             this.panel1.TabIndex = 0;
@@ -70,7 +70,7 @@
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.tablaInstitucion);
             this.panel3.Location = new System.Drawing.Point(2, 191);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(930, 485);
             this.panel3.TabIndex = 2;
@@ -82,7 +82,7 @@
             this.tablaInstitucion.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tablaInstitucion.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tablaInstitucion.Location = new System.Drawing.Point(0, 0);
-            this.tablaInstitucion.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tablaInstitucion.Margin = new System.Windows.Forms.Padding(2);
             this.tablaInstitucion.Name = "tablaInstitucion";
             this.tablaInstitucion.ReadOnly = true;
             this.tablaInstitucion.RowHeadersWidth = 51;
@@ -106,7 +106,7 @@
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Location = new System.Drawing.Point(2, 2);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(929, 166);
             this.panel2.TabIndex = 1;
@@ -116,7 +116,7 @@
             this.btnLimpiar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLimpiar.BackgroundImage")));
             this.btnLimpiar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnLimpiar.Location = new System.Drawing.Point(784, 65);
-            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLimpiar.Margin = new System.Windows.Forms.Padding(2);
             this.btnLimpiar.Name = "btnLimpiar";
             this.btnLimpiar.Size = new System.Drawing.Size(45, 49);
             this.btnLimpiar.TabIndex = 11;
@@ -127,7 +127,7 @@
             this.btnModificar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnModificar.BackgroundImage")));
             this.btnModificar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnModificar.Location = new System.Drawing.Point(735, 65);
-            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(45, 49);
             this.btnModificar.TabIndex = 10;
@@ -138,7 +138,7 @@
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
             this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnBuscar.Location = new System.Drawing.Point(686, 65);
-            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(45, 49);
             this.btnBuscar.TabIndex = 9;
@@ -149,7 +149,7 @@
             this.btnEliminar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEliminar.BackgroundImage")));
             this.btnEliminar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnEliminar.Location = new System.Drawing.Point(636, 65);
-            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnEliminar.Margin = new System.Windows.Forms.Padding(2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(45, 49);
             this.btnEliminar.TabIndex = 8;
@@ -160,7 +160,7 @@
             this.btnAgregar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAgregar.BackgroundImage")));
             this.btnAgregar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnAgregar.Location = new System.Drawing.Point(586, 65);
-            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnAgregar.Margin = new System.Windows.Forms.Padding(2);
             this.btnAgregar.Name = "btnAgregar";
             this.btnAgregar.Size = new System.Drawing.Size(45, 49);
             this.btnAgregar.TabIndex = 7;
@@ -169,7 +169,7 @@
             // txtNombre
             // 
             this.txtNombre.Location = new System.Drawing.Point(258, 115);
-            this.txtNombre.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtNombre.Margin = new System.Windows.Forms.Padding(2);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(269, 20);
             this.txtNombre.TabIndex = 6;
@@ -178,7 +178,7 @@
             // txtAbreviatura
             // 
             this.txtAbreviatura.Location = new System.Drawing.Point(258, 80);
-            this.txtAbreviatura.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtAbreviatura.Margin = new System.Windows.Forms.Padding(2);
             this.txtAbreviatura.Name = "txtAbreviatura";
             this.txtAbreviatura.Size = new System.Drawing.Size(269, 20);
             this.txtAbreviatura.TabIndex = 5;
@@ -188,7 +188,7 @@
             // 
             this.txtID.Enabled = false;
             this.txtID.Location = new System.Drawing.Point(258, 48);
-            this.txtID.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtID.Margin = new System.Windows.Forms.Padding(2);
             this.txtID.Name = "txtID";
             this.txtID.Size = new System.Drawing.Size(269, 20);
             this.txtID.TabIndex = 4;
@@ -233,9 +233,9 @@
             this.label1.Location = new System.Drawing.Point(-2, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(225, 18);
+            this.label1.Size = new System.Drawing.Size(217, 18);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Registro de  Instrucciones";
+            this.label1.Text = "Registro de Instituciones";
             // 
             // institutoBindingSource
             // 
@@ -246,7 +246,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "Institucion";
             this.Size = new System.Drawing.Size(937, 681);
             this.panel1.ResumeLayout(false);

@@ -114,6 +114,7 @@
             this.btnTest_Click.TabIndex = 9;
             this.btnTest_Click.Text = "test";
             this.btnTest_Click.UseVisualStyleBackColor = true;
+            this.btnTest_Click.Visible = false;
             this.btnTest_Click.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // btnDetallesCambio
@@ -124,6 +125,7 @@
             this.btnDetallesCambio.TabIndex = 8;
             this.btnDetallesCambio.Text = "button1";
             this.btnDetallesCambio.UseVisualStyleBackColor = true;
+            this.btnDetallesCambio.Visible = false;
             this.btnDetallesCambio.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnBuscar

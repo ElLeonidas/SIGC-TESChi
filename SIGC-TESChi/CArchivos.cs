@@ -120,6 +120,7 @@ namespace SIGC_TESChi
             CargarNombUnidAdmin();
             CargarInstitutos();
             CargarClasificacion();
+            
 
             combosListos = true;
 
@@ -626,9 +627,9 @@ ORDER BY c.idControl DESC";
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                cboSeccion.DisplayMember = "nombreSeccion";
+                cboSeccion.ValueMember = "idSeccion";
                 cboSeccion.DataSource = dt;
-                cboSeccion.DisplayMember = "claveSeccion"; // lo que VE el usuario (2C)
-                cboSeccion.ValueMember = "idSeccion";      // lo que VA a SQL (INT)
                 cboSeccion.SelectedIndex = -1;
             }
         }
@@ -917,7 +918,7 @@ ORDER BY c.idControl DESC";
         private void btnEditar_Click(object sender, EventArgs e)
         {
 
-           Editar();
+           ModificarControl();
 
            CargarTabla();
 
@@ -930,62 +931,91 @@ ORDER BY c.idControl DESC";
 
             DataGridViewRow row = dgvControl.Rows[e.RowIndex];
 
-            // ID
+            // 🔹 ID
             txtID.Text = row.Cells["idControl"].Value?.ToString();
 
-            // AÑO
+            // 🔹 AÑO
             cboAño.Text = row.Cells["anioControl"].Value?.ToString();
 
-            // UNIDAD ADMINISTRATIVA
-            // Solo asignar Text si es texto; no usar SelectedValue si es string
+            // 🔹 UNIDAD ADMINISTRATIVA
             cboCodUnidAdmin.Text = row.Cells["CodUniAdm"].Value?.ToString();
             cboNombUniAdmin.Text = row.Cells["nomUniAdm"].Value?.ToString();
 
-            // EXPEDIENTES
+            // 🔹 EXPEDIENTES
             txtnoExpediente.Text = row.Cells["noExpediente"].Value?.ToString();
             txtnExpendiente.Text = row.Cells["nExpediente"].Value?.ToString();
 
-            // FECHAS
-            if (row.Cells["fApertura"].Value != DBNull.Value && row.Cells["fApertura"].Value != null)
+            // 🔹 FECHAS
+            if (row.Cells["fApertura"].Value != DBNull.Value)
                 dtpfApertura.Value = Convert.ToDateTime(row.Cells["fApertura"].Value);
 
-            if (row.Cells["fCierre"].Value != DBNull.Value && row.Cells["fCierre"].Value != null)
+            if (row.Cells["fCierre"].Value != DBNull.Value)
             {
                 dtpfCierre.Value = Convert.ToDateTime(row.Cells["fCierre"].Value);
                 dtpfCierre.Checked = true;
             }
             else
             {
-                dtpfCierre.Checked = false; // MUY IMPORTANTE
+                dtpfCierre.Checked = false;
             }
 
-            // FOJAS Y LEGAJOS
+            // 🔹 FOJAS Y LEGAJOS
             txtFojas.Text = row.Cells["nForjas"].Value?.ToString();
             txtLegajos.Text = row.Cells["nLegajos"].Value?.ToString();
 
-            // UBICACIÓN (ID = int)
-            if (row.Cells["idUbicacion"].Value != null && row.Cells["idUbicacion"].Value != DBNull.Value)
+
+            // =====================
+            // 🔥 SECCIÓN Y SUBSECCIÓN (CLAVE)
+            // =====================
+
+            // 🔹 SECCIÓN
+            if (row.Cells["idSeccion"].Value != DBNull.Value)
+            {
+                int idSeccion = Convert.ToInt32(row.Cells["idSeccion"].Value);
+
+                AsignarComboSeguro(cboSeccion, idSeccion);
+
+                // ⚠️ IMPORTANTE: cargar SubSecciones según la Sección
+                CargarSubSecciones(idSeccion);
+            }
+
+            // 🔹 SUBSECCIÓN
+            if (row.Cells["idSubSeccion"].Value != DBNull.Value)
+            {
+                int idSubSeccion = Convert.ToInt32(row.Cells["idSubSeccion"].Value);
+                AsignarComboSeguro(cboSubSeccion, idSubSeccion);
+            }
+
+
+            // =====================
+            // 🔹 OTROS COMBOS
+            // =====================
+
+            // UBICACIÓN
+            if (row.Cells["idUbicacion"].Value != DBNull.Value)
                 AsignarComboSeguro(cboUbicacion, Convert.ToInt32(row.Cells["idUbicacion"].Value));
 
-            // INSTITUTO (ID = int)
-            if (row.Cells["idInstituto"].Value != null && row.Cells["idInstituto"].Value != DBNull.Value)
+            // INSTITUTO
+            if (row.Cells["idInstituto"].Value != DBNull.Value)
                 AsignarComboSeguro(cboInstituto, Convert.ToInt32(row.Cells["idInstituto"].Value));
 
-            // ESTATUS (ID = int)
-            if (row.Cells["idEstatus"].Value != null && row.Cells["idEstatus"].Value != DBNull.Value)
+            // ESTATUS
+            if (row.Cells["idEstatus"].Value != DBNull.Value)
                 AsignarComboSeguro(cboEstatus, Convert.ToInt32(row.Cells["idEstatus"].Value));
 
-            // CLASIFICACIÓN (ID = int)
-            if (row.Cells["idClasificacion"].Value != null && row.Cells["idClasificacion"].Value != DBNull.Value)
+            // CLASIFICACIÓN
+            if (row.Cells["idClasificacion"].Value != DBNull.Value)
                 AsignarComboSeguro(cboClasificacion, Convert.ToInt32(row.Cells["idClasificacion"].Value));
 
-            // FORMULA Y OBSERVACIONES
+
+            // 🔹 FORMULA Y OBSERVACIONES
             txtFormulaClasificatoria.Text = row.Cells["formClasificatoria"].Value?.ToString();
             txtObservaciones.Text = row.Cells["Observaciones"].Value?.ToString();
 
-            // DOCUMENTOS
+            // 🔹 DOCUMENTOS
             if (int.TryParse(txtID.Text, out int idControl))
                 CargarDocumentos(idControl);
+
 
         }
 
@@ -1000,6 +1030,47 @@ ORDER BY c.idControl DESC";
             catch
             {
                 combo.SelectedIndex = -1; // Si no existe, deselecciona
+            }
+        }
+
+        private void CargarSubSecciones(int idSeccion)
+        {
+            cboSubSeccion.DataSource = null;
+            cboSubSeccion.Items.Clear();
+
+            string cs = @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+
+            using (SqlConnection cn = new SqlConnection(cs))
+            {
+                cn.Open();
+
+                string query = @"
+            SELECT 
+                idSubSeccion,
+                dSubSeccion
+            FROM SubSeccion
+            WHERE idSeccion = @idSeccion";
+
+                using (SqlCommand cmd = new SqlCommand(query, cn))
+                {
+                    cmd.Parameters.Add("@idSeccion", SqlDbType.Int).Value = idSeccion;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    if (dt.Rows.Count == 0)
+                    {
+                        cboSubSeccion.DataSource = null;
+                        return;
+                    }
+
+                    cboSubSeccion.DisplayMember = "nombreSubSeccion";
+                    cboSubSeccion.ValueMember = "idSubSeccion";
+                    cboSubSeccion.DataSource = dt;
+
+                    cboSubSeccion.SelectedIndex = -1;
+                }
             }
         }
 
@@ -1192,102 +1263,153 @@ ORDER BY c.idControl DESC";
         }
 
 
-
-
-        private void Editar()
+        private void ModificarControl()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
-                MessageBox.Show("Selecciona un registro para editar.");
+                MessageBox.Show("Selecciona un registro.");
                 return;
             }
 
-            string datosAntes = "";
-
             try
             {
-                using (SqlConnection cn = new SqlConnection(connectionString))
+                string datosAnteriores = "";
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    cn.Open();
+                    conn.Open();
 
-                    // 1️⃣ Obtener datos antes
-                    using (SqlCommand cmdSelect = new SqlCommand(
-                        "SELECT anioControl, CodUniAdm, noExpediente FROM Control WHERE idControl = @id", cn))
+                    // 🔴 OBTENER DATOS ANTERIORES
+                    string selectQuery = @"
+                SELECT 
+                    anioControl, CodUniAdm, nomUniAdm,
+                    noExpediente, nExpediente,
+                    fApertura, fCierre,
+                    nForjas, nLegajos,
+                    idSeccion, idSubSeccion,
+                    idInstituto, idUbicacion,
+                    idEstatus, idClasificacion,
+                    formClasificatoria, Observaciones
+                FROM Control
+                WHERE idControl = @id";
+
+                    SqlCommand selectCmd = new SqlCommand(selectQuery, conn);
+                    selectCmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    using (SqlDataReader dr = selectCmd.ExecuteReader())
                     {
-                        cmdSelect.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
-
-                        using (SqlDataReader dr = cmdSelect.ExecuteReader())
+                        if (dr.Read())
                         {
-                            if (dr.Read())
-                            {
-                                datosAntes =
-                                    $"Año={dr["anioControl"]}, Unidad={dr["CodUniAdm"]}, Expediente={dr["noExpediente"]}";
-                            }
+                            datosAnteriores =
+                                $"Año={dr["anioControl"]} | " +
+                                $"CodUA={dr["CodUniAdm"]} | " +
+                                $"NomUA={dr["nomUniAdm"]} | " +
+                                $"NoExp={dr["noExpediente"]} | " +
+                                $"Exp={dr["nExpediente"]} | " +
+                                $"Fojas={dr["nForjas"]} | " +
+                                $"Legajos={dr["nLegajos"]} | " +
+                                $"Seccion={dr["idSeccion"]} | " +
+                                $"SubSeccion={dr["idSubSeccion"]} | " +
+                                $"Instituto={dr["idInstituto"]} | " +
+                                $"Ubicacion={dr["idUbicacion"]} | " +
+                                $"Estatus={dr["idEstatus"]} | " +
+                                $"Clasificacion={dr["idClasificacion"]}";
                         }
                     }
 
-                    // 2️⃣ Update
-                    using (SqlCommand cmd = new SqlCommand(
-                        @"UPDATE Control SET
+                    // 🟡 UPDATE
+                    string updateQuery = @"
+                UPDATE Control SET
                     anioControl = @anio,
-                    CodUniAdm = @codAdm,
-                    nomUniAdm = @nomAdm,
+                    CodUniAdm = @codUA,
+                    nomUniAdm = @nomUA,
                     noExpediente = @noExp,
                     nExpediente = @nExp,
                     fApertura = @fApertura,
                     fCierre = @fCierre,
-                    nForjas = @forjas,
+                    nForjas = @fojas,
                     nLegajos = @legajos,
-                    idSeccion = @seccion,
-                    idSubSeccion = @subSeccion,
-                    idUbicacion = @ubicacion,
-                    idInstituto = @instituto,
-                    formClasificatoria = @formClasif,
-                    Observaciones = @obs,
-                    idEstatus = @estatus,
-                    idClasificacion = @clasif
-                WHERE idControl = @id", cn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", int.Parse(txtID.Text));
-                        cmd.Parameters.AddWithValue("@anio", int.Parse(cboAño.Text));
-                        cmd.Parameters.AddWithValue("@codAdm", cboCodUnidAdmin.SelectedValue);
-                        cmd.Parameters.AddWithValue("@nomAdm", cboNombUniAdmin.Text);
-                        cmd.Parameters.AddWithValue("@noExp", txtnoExpediente.Text);
-                        cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
-                        cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
-                        cmd.Parameters.AddWithValue("@fCierre", dtpfCierre.Value);
-                        cmd.Parameters.AddWithValue("@forjas", int.Parse(txtFojas.Text));
-                        cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
-                        cmd.Parameters.AddWithValue("@seccion", cboSeccion.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@subSeccion", cboSubSeccion.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@ubicacion", cboUbicacion.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@instituto", cboInstituto.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@estatus", cboEstatus.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@clasif", cboClasificacion.SelectedValue ?? (object)DBNull.Value);
-                        cmd.Parameters.AddWithValue("@formClasif", txtFormulaClasificatoria.Text);
-                        cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
+                    idSeccion = @idSeccion,
+                    idSubSeccion = @idSubSeccion,
+                    idInstituto = @idInstituto,
+                    idUbicacion = @idUbicacion,
+                    idEstatus = @idEstatus,
+                    idClasificacion = @idClasificacion,
+                    formClasificatoria = @formula,
+                    Observaciones = @obs
+                WHERE idControl = @id";
 
-                        cmd.ExecuteNonQuery();
-                    }
+                    SqlCommand cmd = new SqlCommand(updateQuery, conn);
+
+                    cmd.Parameters.AddWithValue("@anio", cboAño.Text);
+                    cmd.Parameters.AddWithValue("@codUA", cboCodUnidAdmin.Text);
+                    cmd.Parameters.AddWithValue("@nomUA", cboNombUniAdmin.Text);
+                    cmd.Parameters.AddWithValue("@noExp", txtnoExpediente.Text);
+                    cmd.Parameters.AddWithValue("@nExp", txtnExpendiente.Text);
+
+                    cmd.Parameters.AddWithValue("@fApertura", dtpfApertura.Value);
+
+                    cmd.Parameters.AddWithValue("@fCierre",
+                        dtpfCierre.Checked ? (object)dtpfCierre.Value : DBNull.Value);
+
+                    cmd.Parameters.AddWithValue("@fojas",
+                        string.IsNullOrWhiteSpace(txtFojas.Text) ? 0 : int.Parse(txtFojas.Text));
+
+                    cmd.Parameters.AddWithValue("@legajos", txtLegajos.Text);
+
+                    cmd.Parameters.AddWithValue("@idSeccion", cboSeccion.SelectedValue);
+                    cmd.Parameters.AddWithValue("@idSubSeccion", cboSubSeccion.SelectedValue);
+                    cmd.Parameters.AddWithValue("@idInstituto", cboInstituto.SelectedValue);
+                    cmd.Parameters.AddWithValue("@idUbicacion", cboUbicacion.SelectedValue);
+                    cmd.Parameters.AddWithValue("@idEstatus", cboEstatus.SelectedValue);
+                    cmd.Parameters.AddWithValue("@idClasificacion", cboClasificacion.SelectedValue);
+
+                    cmd.Parameters.AddWithValue("@formula", txtFormulaClasificatoria.Text);
+                    cmd.Parameters.AddWithValue("@obs", txtObservaciones.Text);
+                    cmd.Parameters.AddWithValue("@id", txtID.Text);
+
+                    cmd.ExecuteNonQuery();
                 }
 
                 // 🔴 HISTORIAL (UPDATE)
+                string datosNuevos = ObtenerDatosControl();
+
                 HistorialHelper.RegistrarCambio(
                     "Control",
                     txtID.Text,
                     "UPDATE",
-                    datosAntes,
-                    $"Año={cboAño.Text}, Unidad={cboCodUnidAdmin.Text}, Expediente={txtnoExpediente.Text}"
+                    datosAnteriores,
+                    datosNuevos
                 );
 
-                MessageBox.Show("Registro actualizado correctamente.");
+                MessageBox.Show("✅ Registro actualizado correctamente.");
                 CargarTabla();
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al editar:\n" + ex.Message);
+                MessageBox.Show("Error al modificar:\n" + ex.Message);
             }
         }
+
+        private string ObtenerDatosControl()
+        {
+            return
+                $"Año={cboAño.Text} | " +
+                $"CodUA={cboCodUnidAdmin.Text} | " +
+                $"NomUA={cboNombUniAdmin.Text} | " +
+                $"NoExp={txtnoExpediente.Text} | " +
+                $"Exp={txtnExpendiente.Text} | " +
+                $"Fojas={txtFojas.Text} | " +
+                $"Legajos={txtLegajos.Text} | " +
+                $"Seccion={cboSeccion.Text} | " +
+                $"SubSeccion={cboSubSeccion.Text} | " +
+                $"Instituto={cboInstituto.Text} | " +
+                $"Ubicacion={cboUbicacion.Text} | " +
+                $"Estatus={cboEstatus.Text} | " +
+                $"Clasificacion={cboClasificacion.Text}";
+        }
+
 
 
         private void LimpiarCampos()
@@ -1311,6 +1433,10 @@ ORDER BY c.idControl DESC";
             dtpfApertura.Value = DateTime.Now;
             dtpfCierre.Value = DateTime.Now;
         }
+
+        
+
+
 
         private void ExportarCSV()
         {
@@ -1553,7 +1679,18 @@ ORDER BY c.idControl DESC";
 
         }
 
-        
+        private void cboSeccion_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (cboSeccion.SelectedValue == null)
+                return;
+
+            if (cboSeccion.SelectedValue is DataRowView)
+                return;
+
+            int idSeccion = Convert.ToInt32(cboSeccion.SelectedValue);
+            CargarSubSecciones(idSeccion);
+
+        }
     }
     }
 

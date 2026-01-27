@@ -6,6 +6,8 @@ namespace SIGC_TESChi
 {
     public static class HistorialHelper
     {
+        public static event Action HistorialActualizado;
+
         private static string connectionString =
             @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
 
@@ -19,7 +21,7 @@ namespace SIGC_TESChi
                 string datosAnteriores,
                 string datosNuevos)
 
-           
+                
 
 
         {
@@ -61,6 +63,9 @@ namespace SIGC_TESChi
                         cmd.Parameters.AddWithValue("@idUsuarioApp", SessionData.IdUsuario);
 
                         cmd.ExecuteNonQuery();
+
+                        HistorialActualizado?.Invoke();
+
                     }
                 }
             }
@@ -69,6 +74,8 @@ namespace SIGC_TESChi
                 MessageBox.Show("Error al registrar cambio: " + ex.Message);
             }
         }
+
+
 
     }
 }

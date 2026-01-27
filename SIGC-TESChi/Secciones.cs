@@ -148,11 +148,20 @@ namespace SIGC_TESChi
 
         private void AgregarSeccion()
         {
-            if (string.IsNullOrWhiteSpace(txtClaveSeccion.Text) || string.IsNullOrWhiteSpace(txtSeccion.Text))
+            if (string.IsNullOrWhiteSpace(txtClaveSeccion.Text) ||
+                string.IsNullOrWhiteSpace(txtSeccion.Text))
             {
-                MessageBox.Show("Ingresa la clave y la descripción de la sección.");
+                MessageBox.Show(
+                    "Ingresa la clave y la descripción de la sección.",
+                    "Validación",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
                 return;
             }
+
+            string clave = txtClaveSeccion.Text.Trim();
+            string descripcion = txtSeccion.Text.Trim();
 
             try
             {
@@ -160,41 +169,68 @@ namespace SIGC_TESChi
                 {
                     conn.Open();
 
-                    string checkQuery = "SELECT COUNT(*) FROM Seccion WHERE claveSeccion = @clave";
-                    SqlCommand checkCmd = new SqlCommand(checkQuery, conn);
-                    checkCmd.Parameters.AddWithValue("@clave", txtClaveSeccion.Text);
-                    int existe = (int)checkCmd.ExecuteScalar();
+                    // 🔎 Verificar si la clave ya existe
+                    string checkQuery =
+                        "SELECT COUNT(1) FROM Seccion WHERE claveSeccion = @clave";
 
-                    if (existe > 0)
+                    using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
-                        MessageBox.Show("⚠️ Esta clave ya existe.");
-                        return;
+                        checkCmd.Parameters.AddWithValue("@clave", clave);
+
+                        if ((int)checkCmd.ExecuteScalar() > 0)
+                        {
+                            MessageBox.Show(
+                                "⚠️ La clave de la sección ya existe.",
+                                "Duplicado",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                            return;
+                        }
                     }
 
-                    string query = "INSERT INTO Seccion (claveSeccion, dSeccion) VALUES (@clave, @desc)";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@clave", txtClaveSeccion.Text);
-                    cmd.Parameters.AddWithValue("@desc", txtSeccion.Text);
-                    cmd.ExecuteNonQuery();
+                    // 💾 Insertar sección
+                    string insertQuery =
+                        "INSERT INTO Seccion (claveSeccion, dSeccion) VALUES (@clave, @descripcion)";
+
+                    using (SqlCommand cmd = new SqlCommand(insertQuery, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@clave", clave);
+                        cmd.Parameters.AddWithValue("@descripcion", descripcion);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
 
-                // 🔴 HISTORIAL (INSERT)
-                string datosNuevos = $"Clave={txtClaveSeccion.Text}, Seccion={txtSeccion.Text}";
+                // 🧾 HISTORIAL (INSERT)
+                string datosNuevos =
+                    $"claveSeccion={clave}, dSeccion={descripcion}";
+
                 HistorialHelper.RegistrarCambio(
                     "Seccion",
-                    txtClaveSeccion.Text,
+                    clave,              // llave lógica
                     "INSERT",
-                    null,
+                    "",
                     datosNuevos
                 );
 
-                MessageBox.Show("✅ Sección agregada correctamente.");
+                MessageBox.Show(
+                    "✅ Sección agregada correctamente.",
+                    "Éxito",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+
                 CargarSecciones();
                 LimpiarCampos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show(
+                    "Error al agregar la sección:\n" + ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 

@@ -18,6 +18,8 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            HistorialHelper.HistorialActualizado += RefrescarHistorial;
+
             dgvHistorial.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvHistorial.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgvHistorial.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -38,6 +40,18 @@ namespace SIGC_TESChi
             btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
 
         }
+
+        public void RefrescarHistorial()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(RefrescarHistorial));
+                return;
+            }
+
+            CargarHistorial();
+        }
+
 
         private void Historial_Load(object sender, EventArgs e)
         {
