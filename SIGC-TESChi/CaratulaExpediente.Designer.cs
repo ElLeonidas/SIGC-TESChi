@@ -30,6 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CaratulaExpediente));
             this.pnlCaratula = new System.Windows.Forms.Panel();
+            this.lblFondoDocumentalImpresion = new System.Windows.Forms.Label();
+            this.lblNombreUnidadImpresion = new System.Windows.Forms.Label();
+            this.lblCodigoUnidadImpresion = new System.Windows.Forms.Label();
             this.cboContable = new System.Windows.Forms.CheckBox();
             this.cboxJuridicoLegal = new System.Windows.Forms.CheckBox();
             this.cboFiscal = new System.Windows.Forms.CheckBox();
@@ -62,9 +65,6 @@
             this.dtpApertura = new System.Windows.Forms.DateTimePicker();
             this.btnImprimir = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.lblCodigoUnidadImpresion = new System.Windows.Forms.Label();
-            this.lblNombreUnidadImpresion = new System.Windows.Forms.Label();
-            this.lblFondoDocumentalImpresion = new System.Windows.Forms.Label();
             this.pnlCaratula.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -112,6 +112,30 @@
             this.pnlCaratula.Size = new System.Drawing.Size(781, 1021);
             this.pnlCaratula.TabIndex = 61;
             this.pnlCaratula.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlCaratula_Paint);
+            // 
+            // lblFondoDocumentalImpresion
+            // 
+            this.lblFondoDocumentalImpresion.AutoSize = true;
+            this.lblFondoDocumentalImpresion.Location = new System.Drawing.Point(237, 561);
+            this.lblFondoDocumentalImpresion.Name = "lblFondoDocumentalImpresion";
+            this.lblFondoDocumentalImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblFondoDocumentalImpresion.TabIndex = 137;
+            // 
+            // lblNombreUnidadImpresion
+            // 
+            this.lblNombreUnidadImpresion.AutoSize = true;
+            this.lblNombreUnidadImpresion.Location = new System.Drawing.Point(227, 210);
+            this.lblNombreUnidadImpresion.Name = "lblNombreUnidadImpresion";
+            this.lblNombreUnidadImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblNombreUnidadImpresion.TabIndex = 136;
+            // 
+            // lblCodigoUnidadImpresion
+            // 
+            this.lblCodigoUnidadImpresion.AutoSize = true;
+            this.lblCodigoUnidadImpresion.Location = new System.Drawing.Point(226, 172);
+            this.lblCodigoUnidadImpresion.Name = "lblCodigoUnidadImpresion";
+            this.lblCodigoUnidadImpresion.Size = new System.Drawing.Size(0, 13);
+            this.lblCodigoUnidadImpresion.TabIndex = 135;
             // 
             // cboContable
             // 
@@ -415,31 +439,8 @@
             this.button1.TabIndex = 61;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // lblCodigoUnidadImpresion
-            // 
-            this.lblCodigoUnidadImpresion.AutoSize = true;
-            this.lblCodigoUnidadImpresion.Location = new System.Drawing.Point(226, 172);
-            this.lblCodigoUnidadImpresion.Name = "lblCodigoUnidadImpresion";
-            this.lblCodigoUnidadImpresion.Size = new System.Drawing.Size(0, 13);
-            this.lblCodigoUnidadImpresion.TabIndex = 135;
-            // 
-            // lblNombreUnidadImpresion
-            // 
-            this.lblNombreUnidadImpresion.AutoSize = true;
-            this.lblNombreUnidadImpresion.Location = new System.Drawing.Point(227, 210);
-            this.lblNombreUnidadImpresion.Name = "lblNombreUnidadImpresion";
-            this.lblNombreUnidadImpresion.Size = new System.Drawing.Size(0, 13);
-            this.lblNombreUnidadImpresion.TabIndex = 136;
-            // 
-            // lblFondoDocumentalImpresion
-            // 
-            this.lblFondoDocumentalImpresion.AutoSize = true;
-            this.lblFondoDocumentalImpresion.Location = new System.Drawing.Point(237, 561);
-            this.lblFondoDocumentalImpresion.Name = "lblFondoDocumentalImpresion";
-            this.lblFondoDocumentalImpresion.Size = new System.Drawing.Size(0, 13);
-            this.lblFondoDocumentalImpresion.TabIndex = 137;
             // 
             // CaratulaExpediente
             // 

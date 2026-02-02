@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -59,7 +60,111 @@ namespace SIGC_TESChi
         private void Institucion_Load(object sender, EventArgs e)
         {
             CargarInstituciones();
+
+            AplicarTemaLobby();
         }
+
+        #region DISEÑO
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        private void EstiloBoton(Button btn, Color fondo)
+        {
+            btn.BackColor = fondo;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+
+            btn.ImageAlign = ContentAlignment.MiddleCenter;
+            btn.Text = "";
+
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(fondo);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(fondo);
+
+            RedondearBoton(btn, 20);
+        }
+
+        private void AplicarTemaLobby()
+        {
+            // =========================
+            // 🎨 COLORES BASE
+            // =========================
+            Color colorPrimario = Color.FromArgb(30, 58, 138);
+            Color colorSecundario = Color.FromArgb(59, 130, 246);
+            Color colorFondo = Color.FromArgb(243, 244, 246);
+            Color colorTexto = Color.FromArgb(17, 24, 39);
+            Color colorGris = Color.FromArgb(107, 114, 128);
+
+            // =========================
+            // 📦 PANEL PRINCIPAL
+            // =========================
+            panel1.BackColor = colorFondo;
+
+            // =========================
+            // 🧾 HEADER
+            // =========================
+            //pnlTabla.Height = 60;
+            //pnlTabla.BackColor = colorPrimario;
+
+            lblTitulo.ForeColor = Color.Black;
+            lblTitulo.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
+
+            // =========================
+            // 🔤 LABELS
+            // =========================
+            Label[] labels =
+            {
+                lblTitulo, label2, label3, label4
+            };
+
+            foreach (Label lbl in labels)
+            {
+                lbl.ForeColor = colorTexto;
+                lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            }
+
+            // =========================
+            // 🖱 BOTONES
+            // =========================
+            EstiloBoton(btnAgregar, colorSecundario);
+            EstiloBoton(btnModificar, Color.FromArgb(245, 158, 11)); // Naranja
+            EstiloBoton(btnEliminar, Color.FromArgb(239, 68, 68));   // Rojo
+            EstiloBoton(btnLimpiar, colorGris);
+            EstiloBoton(btnBuscar, Color.FromArgb(125, 141, 127));
+            //EstiloBoton(btnExportarPDF, Color.FromArgb(155, 211, 171));
+
+            // =========================
+            // 📊 DATAGRIDVIEW
+            // =========================
+            tablaInstitucion.BackgroundColor = colorFondo;
+            tablaInstitucion.BorderStyle = BorderStyle.None;
+            tablaInstitucion.EnableHeadersVisualStyles = false;
+            tablaInstitucion.ColumnHeadersDefaultCellStyle.BackColor = colorPrimario;
+            tablaInstitucion.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            tablaInstitucion.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            tablaInstitucion.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            tablaInstitucion.RowHeadersVisible = false;
+
+            tablaInstitucion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaInstitucion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaInstitucion.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaInstitucion.Dock = DockStyle.Fill;
+
+        }
+
+
+        #endregion
 
         // MÉTODOS PRINCIPALES
         private void CargarInstituciones()
@@ -390,6 +495,16 @@ namespace SIGC_TESChi
                 txtNombre.Text = limpio;
                 txtNombre.SelectionStart = Math.Min(cursor, txtNombre.Text.Length);
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

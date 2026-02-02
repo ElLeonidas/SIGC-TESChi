@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -14,11 +17,6 @@ namespace SIGC_TESChi
         public Lobby()
         {
             InitializeComponent();
-
-            dgvEventos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvEventos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvEventos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgvEventos.Dock = DockStyle.Fill;
 
             toolTip = new ToolTip
             {
@@ -36,16 +34,17 @@ namespace SIGC_TESChi
             btnEliminar.MouseLeave += (s, e) => toolTip.Hide(btnEliminar);
             btnLimpiar.MouseEnter += (s, e) => toolTip.Show("Limpiar formulario", btnLimpiar);
             btnLimpiar.MouseLeave += (s, e) => toolTip.Hide(btnLimpiar);
+
         }
 
         private void Lobby_Load(object sender, EventArgs e)
         {
+
             txtUsuario.Text = SessionData.NombreCompleto;
             txtUsuario.ReadOnly = true;
 
             chkAlerta.Checked = true;
             nudMinutos.Value = 10;
-            txtTipo.MaxLength = 100;
             cmbModalidad.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbModalidad.Items.AddRange(new string[] { "Presencial", "En línea" });
 
@@ -61,7 +60,133 @@ namespace SIGC_TESChi
 
             CargarTiposEvento();
 
+            AplicarTemaLobby();
+
+
         }
+
+        #region DISEÑO
+
+        
+
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        private void EstiloBoton(Button btn, Color fondo)
+        {
+            btn.BackColor = fondo;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+
+            btn.ImageAlign = ContentAlignment.MiddleCenter;
+            btn.Text = "";
+
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(fondo);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(fondo);
+
+            RedondearBoton(btn, 20);
+        }
+
+
+
+        private void AplicarTemaLobby()
+        {
+            // =========================
+            // 🎨 COLORES BASE
+            // =========================
+            Color colorPrimario = Color.FromArgb(30, 58, 138);
+            Color colorSecundario = Color.FromArgb(59, 130, 246);
+            Color colorFondo = Color.FromArgb(243, 244, 246);
+            Color colorTexto = Color.FromArgb(17, 24, 39);
+            Color colorGris = Color.FromArgb(107, 114, 128);
+
+            // =========================
+            // 📦 PANEL PRINCIPAL
+            // =========================
+            pnlLobby.BackColor = colorFondo;
+
+            // =========================
+            // 🧾 HEADER
+            // =========================
+            //pnlTabla.Height = 60;
+            //pnlTabla.BackColor = colorPrimario;
+
+            lblTitulo.ForeColor = Color.Black;
+            lblTitulo.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
+
+
+            // =========================
+            // 📅 CALENDARIO
+            // =========================
+            mthCalendario.BackColor = Color.White;
+            mthCalendario.ForeColor = colorTexto;
+
+            // =========================
+            // 🔤 LABELS
+            // =========================
+            Label[] labels =
+            {
+                label1, label2, label3, label4,
+                label5, label6, label7
+            };
+
+            foreach (Label lbl in labels)
+            {
+                lbl.ForeColor = colorTexto;
+                lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            }
+
+            // =========================
+            // ✏ INPUTS (TextBox + ComboBox)
+            // =========================
+
+           
+
+
+            // =========================
+            // 🖱 BOTONES
+            // =========================
+            EstiloBoton(btnAgregar, colorSecundario);
+            EstiloBoton(btnModificar, Color.FromArgb(245, 158, 11)); // Naranja
+            EstiloBoton(btnEliminar, Color.FromArgb(239, 68, 68));   // Rojo
+            EstiloBoton(btnLimpiar, colorGris);
+
+            // =========================
+            // 📊 DATAGRIDVIEW
+            // =========================
+            dgvEventos.BackgroundColor = colorFondo;
+            dgvEventos.BorderStyle = BorderStyle.None;
+            dgvEventos.EnableHeadersVisualStyles = false;
+            dgvEventos.ColumnHeadersDefaultCellStyle.BackColor = colorPrimario;
+            dgvEventos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvEventos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            dgvEventos.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            dgvEventos.RowHeadersVisible = false; 
+
+            dgvEventos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEventos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvEventos.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvEventos.Dock = DockStyle.Fill;
+
+        }
+
+        
+
+
+
+        #endregion
 
         private void ConfigurarDGV()
         {
@@ -377,30 +502,7 @@ namespace SIGC_TESChi
             }
         }
 
-        private void txtTipo_TextChanged(object sender, EventArgs e)
-        {
-            int cursor = txtTipo.SelectionStart;
-
-            // 1️⃣ Eliminar caracteres especiales (permitir letras, números, acentos y espacios)
-            string limpio = Regex.Replace(
-                txtTipo.Text,
-                @"[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]",
-                ""
-            );
-
-            // 2️⃣ Reemplazar múltiples espacios por uno solo
-            limpio = Regex.Replace(limpio, @"\s{2,}", " ");
-
-            // 3️⃣ Evitar espacios al inicio
-            limpio = limpio.TrimStart();
-
-            // 4️⃣ Aplicar cambios solo si hay diferencia
-            if (txtTipo.Text != limpio)
-            {
-                txtTipo.Text = limpio;
-                txtTipo.SelectionStart = Math.Min(cursor, txtTitulo.Text.Length);
-            }
-        }
+       
 
         private void cmbModalidad_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -418,6 +520,26 @@ namespace SIGC_TESChi
             {
                 cmbTipoEvento.Items.Add(texto);
             }
+        }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

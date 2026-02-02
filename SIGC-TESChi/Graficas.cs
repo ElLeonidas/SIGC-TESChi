@@ -1,17 +1,17 @@
-﻿using System;
+﻿using PdfSharp.Drawing;
+// PDF
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Printing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using System.Drawing.Printing;
-
-// PDF
-using PdfSharp.Pdf;
-using PdfSharp.Drawing;
-using System.IO;
 
 namespace SIGC_TESChi
 {
@@ -32,6 +32,8 @@ namespace SIGC_TESChi
             CargarClasificaciones();
             toolTip = new ToolTip();
 
+            Load += Graficas_Load;
+
             printDocument1.PrintPage += printDocument1_PrintPage;
 
             // Inicializamos el ToolTip
@@ -47,6 +49,93 @@ namespace SIGC_TESChi
             btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar la Grafica", btnBuscar);
             btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
         }
+
+        private void Graficas_Load(object sender, EventArgs e)
+        {
+            AplicarTemaLobby();
+        }
+
+        #region DISEÑO
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        private void EstiloBoton(Button btn, Color fondo)
+        {
+            btn.BackColor = fondo;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+
+            btn.ImageAlign = ContentAlignment.MiddleCenter;
+            btn.Text = "";
+
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(fondo);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(fondo);
+
+            RedondearBoton(btn, 20);
+        }
+
+        private void AplicarTemaLobby()
+        {
+            // =========================
+            // 🎨 COLORES BASE
+            // =========================
+            Color colorPrimario = Color.FromArgb(30, 58, 138);
+            Color colorSecundario = Color.FromArgb(59, 130, 246);
+            Color colorFondo = Color.FromArgb(243, 244, 246);
+            Color colorTexto = Color.FromArgb(17, 24, 39);
+            Color colorGris = Color.FromArgb(107, 114, 128);
+
+            // =========================
+            // 📦 PANEL PRINCIPAL
+            // =========================
+            panel1.BackColor = colorFondo;
+
+            // =========================
+            // 🧾 HEADER
+            // =========================
+            //pnlTabla.Height = 60;
+            //pnlTabla.BackColor = colorPrimario;
+
+            lblTitulo.ForeColor = Color.Black;
+            lblTitulo.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
+
+            // =========================
+            // 🔤 LABELS
+            // =========================
+            Label[] labels =
+            {
+                lblTitulo, label2, label3, label4, label6, label7
+            };
+
+            foreach (Label lbl in labels)
+            {
+                lbl.ForeColor = colorTexto;
+                lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            }
+
+            // =========================
+            // 🖱 BOTONES
+            // =========================
+            
+            EstiloBoton(btnBuscar, Color.FromArgb(125, 141, 127));
+            EstiloBoton(btnExportarPDF, Color.FromArgb(155, 211, 171));
+
+            
+            }
+
+        #endregion
 
         private void CapturarGrafica()
         {
@@ -405,6 +494,11 @@ namespace SIGC_TESChi
             {
                 printDocument1.Print();
             }
+        }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

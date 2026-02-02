@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -54,7 +55,109 @@ namespace SIGC_TESChi
         private void Clasificacion_Load(object sender, EventArgs e)
         {
             CargarClasificacion();
+            AplicarTemaLobby();
         }
+
+        #region DISEÑO
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        private void EstiloBoton(Button btn, Color fondo)
+        {
+            btn.BackColor = fondo;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+
+            btn.ImageAlign = ContentAlignment.MiddleCenter;
+            btn.Text = "";
+
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(fondo);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(fondo);
+
+            RedondearBoton(btn, 20);
+        }
+
+        private void AplicarTemaLobby()
+        {
+            // =========================
+            // 🎨 COLORES BASE
+            // =========================
+            Color colorPrimario = Color.FromArgb(30, 58, 138);
+            Color colorSecundario = Color.FromArgb(59, 130, 246);
+            Color colorFondo = Color.FromArgb(243, 244, 246);
+            Color colorTexto = Color.FromArgb(17, 24, 39);
+            Color colorGris = Color.FromArgb(107, 114, 128);
+
+            // =========================
+            // 📦 PANEL PRINCIPAL
+            // =========================
+            panel1.BackColor = colorFondo;
+
+            // =========================
+            // 🧾 HEADER
+            // =========================
+            //pnlTabla.Height = 60;
+            //pnlTabla.BackColor = colorPrimario;
+
+            lblTitulo.ForeColor = Color.Black;
+            lblTitulo.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
+
+            // =========================
+            // 🔤 LABELS
+            // =========================
+            Label[] labels =
+            {
+                lblTitulo, label2, label3,
+            };
+
+            foreach (Label lbl in labels)
+            {
+                lbl.ForeColor = colorTexto;
+                lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            }
+
+            // =========================
+            // 🖱 BOTONES
+            // =========================
+            EstiloBoton(btnAgregar, colorSecundario);
+            EstiloBoton(btnModificar, Color.FromArgb(245, 158, 11)); // Naranja
+            EstiloBoton(btnEliminar, Color.FromArgb(239, 68, 68));   // Rojo
+            EstiloBoton(btnLimpiar, colorGris);
+            EstiloBoton(btnBuscar, Color.FromArgb(125, 141, 127));
+            //EstiloBoton(btnExportarPDF, Color.FromArgb(155, 211, 171));
+
+            // =========================
+            // 📊 DATAGRIDVIEW
+            // =========================
+            tablaClasificacion.BackgroundColor = colorFondo;
+            tablaClasificacion.BorderStyle = BorderStyle.None;
+            tablaClasificacion.EnableHeadersVisualStyles = false;
+            tablaClasificacion.ColumnHeadersDefaultCellStyle.BackColor = colorPrimario;
+            tablaClasificacion.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            tablaClasificacion.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            tablaClasificacion.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            tablaClasificacion.RowHeadersVisible = false;
+
+            tablaClasificacion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaClasificacion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaClasificacion.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaClasificacion.Dock = DockStyle.Fill;
+
+        }
+
+        #endregion
 
         //CARGAR
         private void CargarClasificacion()
@@ -348,6 +451,11 @@ namespace SIGC_TESChi
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             EliminarClasificacion();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

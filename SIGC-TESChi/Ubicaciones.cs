@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,10 +22,10 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
-            tablaUbicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            tablaUbicaciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            tablaUbicaciones.ColumnHeadersDefaultCellStyle.Alignment =DataGridViewContentAlignment.MiddleCenter;
-            tablaUbicaciones.Dock = DockStyle.Fill;
+            //tablaUbicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //tablaUbicaciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //tablaUbicaciones.ColumnHeadersDefaultCellStyle.Alignment =DataGridViewContentAlignment.MiddleCenter;
+            //tablaUbicaciones.Dock = DockStyle.Fill;
 
             Load += Ubicaciones_Load;
 
@@ -71,7 +72,116 @@ namespace SIGC_TESChi
         private void Ubicaciones_Load(object sender, EventArgs e)
         {
             CargarUbicaciones();
+
+            AplicarTemaLobby();
+
         }
+
+        #region DISEÑO
+
+        private void RedondearBoton(Button btn, int radio)
+        {
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radio, radio, 180, 90);
+            path.AddArc(btn.Width - radio, 0, radio, radio, 270, 90);
+            path.AddArc(btn.Width - radio, btn.Height - radio, radio, radio, 0, 90);
+            path.AddArc(0, btn.Height - radio, radio, radio, 90, 90);
+            path.CloseAllFigures();
+
+            btn.Region = new Region(path);
+        }
+
+        private void EstiloBoton(Button btn, Color fondo)
+        {
+            btn.BackColor = fondo;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.UseVisualStyleBackColor = false;
+
+            btn.ImageAlign = ContentAlignment.MiddleCenter;
+            btn.Text = "";
+
+            btn.FlatAppearance.MouseOverBackColor = ControlPaint.Light(fondo);
+            btn.FlatAppearance.MouseDownBackColor = ControlPaint.Dark(fondo);
+
+            RedondearBoton(btn, 20);
+        }
+
+
+
+        private void AplicarTemaLobby()
+        {
+            // =========================
+            // 🎨 COLORES BASE
+            // =========================
+            Color colorPrimario = Color.FromArgb(30, 58, 138);
+            Color colorSecundario = Color.FromArgb(59, 130, 246);
+            Color colorFondo = Color.FromArgb(243, 244, 246);
+            Color colorTexto = Color.FromArgb(17, 24, 39);
+            Color colorGris = Color.FromArgb(107, 114, 128);
+
+            // =========================
+            // 📦 PANEL PRINCIPAL
+            // =========================
+            panel1.BackColor = colorFondo;
+
+            // =========================
+            // 🧾 HEADER
+            // =========================
+            //pnlTabla.Height = 60;
+            //pnlTabla.BackColor = colorPrimario;
+
+            lblTitulo.ForeColor = Color.Black;
+            lblTitulo.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+            lblTitulo.TextAlign = ContentAlignment.MiddleLeft;
+
+
+            
+
+            // =========================
+            // 🔤 LABELS
+            // =========================
+            Label[] labels =
+            {
+                lblTitulo, label2, label3
+            };
+
+            foreach (Label lbl in labels)
+            {
+                lbl.ForeColor = colorTexto;
+                lbl.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            }
+
+            // =========================
+            // 🖱 BOTONES
+            // =========================
+            EstiloBoton(btnAgregar, colorSecundario);
+            EstiloBoton(btnModificar, Color.FromArgb(245, 158, 11)); // Naranja
+            EstiloBoton(btnEliminar, Color.FromArgb(239, 68, 68));   // Rojo
+            EstiloBoton(btnLimpiar, colorGris);
+            EstiloBoton(btnBuscar, Color.FromArgb(125, 141, 127));
+            EstiloBoton(btnExportarPDF, Color.FromArgb(155, 211, 171));
+
+            // =========================
+            // 📊 DATAGRIDVIEW
+            // =========================
+            tablaUbicaciones.BackgroundColor = colorFondo;
+            tablaUbicaciones.BorderStyle = BorderStyle.None;
+            tablaUbicaciones.EnableHeadersVisualStyles = false;
+            tablaUbicaciones.ColumnHeadersDefaultCellStyle.BackColor = colorPrimario;
+            tablaUbicaciones.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            tablaUbicaciones.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            tablaUbicaciones.DefaultCellStyle.Font = new Font("Segoe UI", 9);
+            tablaUbicaciones.RowHeadersVisible = false;
+
+            tablaUbicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            tablaUbicaciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaUbicaciones.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            tablaUbicaciones.Dock = DockStyle.Fill;
+
+        }
+
+        #endregion
 
         #region BOTONES
 
@@ -103,6 +213,7 @@ namespace SIGC_TESChi
         }
 
         #endregion
+
 
 
         #region METODOS
@@ -430,6 +541,26 @@ namespace SIGC_TESChi
                 txtUbicacion.Text = limpio;
                 txtUbicacion.SelectionStart = Math.Min(cursor, txtUbicacion.Text.Length);
             }
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAgregar_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnExportarPDF_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
 
         }
     }

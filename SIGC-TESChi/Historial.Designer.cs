@@ -37,7 +37,7 @@
             this.btnTest_Click = new System.Windows.Forms.Button();
             this.btnDetallesCambio = new System.Windows.Forms.Button();
             this.btnBuscar = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
@@ -93,7 +93,7 @@
             this.panel2.Controls.Add(this.btnTest_Click);
             this.panel2.Controls.Add(this.btnDetallesCambio);
             this.panel2.Controls.Add(this.btnBuscar);
-            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.lblTitulo);
             this.panel2.Controls.Add(this.label5);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.dtpHasta);
@@ -108,7 +108,7 @@
             // 
             // btnTest_Click
             // 
-            this.btnTest_Click.Location = new System.Drawing.Point(808, 113);
+            this.btnTest_Click.Location = new System.Drawing.Point(848, 131);
             this.btnTest_Click.Name = "btnTest_Click";
             this.btnTest_Click.Size = new System.Drawing.Size(75, 23);
             this.btnTest_Click.TabIndex = 9;
@@ -119,7 +119,7 @@
             // 
             // btnDetallesCambio
             // 
-            this.btnDetallesCambio.Location = new System.Drawing.Point(808, 41);
+            this.btnDetallesCambio.Location = new System.Drawing.Point(848, 3);
             this.btnDetallesCambio.Name = "btnDetallesCambio";
             this.btnDetallesCambio.Size = new System.Drawing.Size(75, 23);
             this.btnDetallesCambio.TabIndex = 8;
@@ -131,8 +131,8 @@
             // btnBuscar
             // 
             this.btnBuscar.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBuscar.BackgroundImage")));
-            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnBuscar.Location = new System.Drawing.Point(457, 102);
+            this.btnBuscar.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnBuscar.Location = new System.Drawing.Point(796, 58);
             this.btnBuscar.Margin = new System.Windows.Forms.Padding(2);
             this.btnBuscar.Name = "btnBuscar";
             this.btnBuscar.Size = new System.Drawing.Size(49, 53);
@@ -140,22 +140,22 @@
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click_1);
             // 
-            // label1
+            // lblTitulo
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(-2, 0);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(157, 18);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Historial de Cambios ";
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Georgia", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitulo.Location = new System.Drawing.Point(-2, 0);
+            this.lblTitulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(157, 18);
+            this.lblTitulo.TabIndex = 1;
+            this.lblTitulo.Text = "Historial de Cambios ";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(484, 66);
+            this.label5.Location = new System.Drawing.Point(532, 58);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 17);
@@ -166,7 +166,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(364, 44);
+            this.label2.Location = new System.Drawing.Point(68, 56);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 17);
@@ -175,7 +175,7 @@
             // 
             // dtpHasta
             // 
-            this.dtpHasta.Location = new System.Drawing.Point(540, 66);
+            this.dtpHasta.Location = new System.Drawing.Point(535, 77);
             this.dtpHasta.Margin = new System.Windows.Forms.Padding(2);
             this.dtpHasta.Name = "dtpHasta";
             this.dtpHasta.Size = new System.Drawing.Size(193, 20);
@@ -184,7 +184,7 @@
             // cmbTabla
             // 
             this.cmbTabla.FormattingEnabled = true;
-            this.cmbTabla.Location = new System.Drawing.Point(424, 41);
+            this.cmbTabla.Location = new System.Drawing.Point(71, 75);
             this.cmbTabla.Margin = new System.Windows.Forms.Padding(2);
             this.cmbTabla.Name = "cmbTabla";
             this.cmbTabla.Size = new System.Drawing.Size(151, 21);
@@ -192,7 +192,7 @@
             // 
             // dtpDesde
             // 
-            this.dtpDesde.Location = new System.Drawing.Point(270, 66);
+            this.dtpDesde.Location = new System.Drawing.Point(278, 77);
             this.dtpDesde.Margin = new System.Windows.Forms.Padding(2);
             this.dtpDesde.Name = "dtpDesde";
             this.dtpDesde.Size = new System.Drawing.Size(187, 20);
@@ -202,7 +202,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Georgia", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(175, 66);
+            this.label3.Location = new System.Drawing.Point(275, 58);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(90, 17);
@@ -236,7 +236,7 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblTitulo;
         private System.Windows.Forms.ComboBox cmbTabla;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label5;

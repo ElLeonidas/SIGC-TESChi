@@ -11,28 +11,33 @@ namespace SIGC_TESChi
         // Eventos
         public event Action<bool> ModoOscuroCambiado;
         public event Action<string> FuenteCambiada; //  NUEVO
+        public event Action<string> TamanoCambiado;
+
 
         public Info()
         {
             InitializeComponent();
         }
 
+        private bool cargando = true;
+
         private void Info_Load(object sender, EventArgs e)
         {
-            CargarFuentes();
+            cargando = true;
 
+            cmbTamaño.Items.AddRange(new object[]
+            {
+        "Pequeño",
+        "Normal",
+        "Grande"
+            });
+            cmbTamaño.SelectedIndex = 1;
+
+            CargarFuentes();
             cmbFuentes.SelectedItem = FontManager.FuenteActual.FontFamily.Name;
 
-            bool esAdmin = Permisos.EsAdministrador;
+            cargando = false;
 
-            btnBackup.Enabled = esAdmin;
-            btnRestaurar.Enabled = esAdmin;
-
-            if (!esAdmin)
-            {
-                btnBackup.Text = "Backup (Solo admin)";
-                btnRestaurar.Text = "Restaurar (Solo admin)";
-            }
         }
 
         private void CargarFuentes()
@@ -43,6 +48,7 @@ namespace SIGC_TESChi
             cmbFuentes.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbFuentes.DataSource = FontManager.ObtenerTop10Fuentes();
         }
+
 
 
         private void cboxModoOscuro_CheckedChanged(object sender, EventArgs e)
@@ -124,6 +130,19 @@ namespace SIGC_TESChi
             {
                 MessageBox.Show(ex.Message, "Error al restaurar");
             }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbTamaño_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cargando || cmbTamaño.SelectedItem == null)
+                return;
+
+            TamanoCambiado?.Invoke(cmbTamaño.SelectedItem.ToString());
         }
     }
 }

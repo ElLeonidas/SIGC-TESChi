@@ -20,6 +20,9 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
+            txtPassword.UseSystemPasswordChar = true;
+
+
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.DoubleBuffered = true;

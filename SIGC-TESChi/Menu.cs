@@ -30,6 +30,7 @@ namespace SIGC_TESChi
         private int tiempoAviso = 30 * 1000; // 30 segundos de aviso
         private bool avisoMostrado = false;
 
+        private Info info;
 
         public Menu()
         {
@@ -44,7 +45,9 @@ namespace SIGC_TESChi
 
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.KeyPreview = true;
+            this.KeyPreview = true; 
+
+
         }
 
         private void InicializarUserControls()
@@ -67,6 +70,7 @@ namespace SIGC_TESChi
             // Evento modo oscuro
             ucInfo.ModoOscuroCambiado += Info_ModoOscuroCambiado;
             ucInfo.FuenteCambiada += Info_FuenteCambiada;
+            ucInfo.TamanoCambiado += Info_TamanoCambiado;
 
             // Agregar todos al panel
             AgregarUC(ucLobby);
@@ -216,6 +220,7 @@ namespace SIGC_TESChi
 
         private void Menu_Load(object sender, EventArgs e)
         {
+
             switch (SessionData.IdTipoUsuario)
             {
                 case 1: // Administrador
@@ -291,11 +296,18 @@ namespace SIGC_TESChi
         // =========================
         // 🔤 CAMBIO DE FUENTE
         // =========================
-        private void Info_FuenteCambiada(string nombreFuente)
+        private void Info_FuenteCambiada(string fuente)
         {
-            FontManager.CambiarFuente(nombreFuente);
+            FontManager.CambiarFuente(fuente);
             FontManager.AplicarFuente(this);
         }
+
+        private void Info_TamanoCambiado(string tamano)
+        {
+            FontManager.CambiarModoTamano(tamano);
+            FontManager.AplicarFuente(this);
+        }
+
 
         // =========================
         // 🔘 BOTONES
