@@ -214,16 +214,11 @@ namespace SIGC_TESChi
 
         #endregion
 
-
-
         #region METODOS
         //MÉTODOS 
 
         private void CargarUbicaciones()
         {
-
-
-
             try
             {
                 using (SqlConnection con = new SqlConnection(connectionString))

@@ -19,10 +19,7 @@ namespace SIGC_TESChi
                 string llave,
                 string tipoAccion,
                 string datosAnteriores,
-                string datosNuevos)
-
-                
-
+                string datosNuevos)             
 
         {
             if (SessionData.IdUsuario <= 0)
@@ -33,9 +30,7 @@ namespace SIGC_TESChi
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error 
                 );
-                MessageBox.Show(
-    $"ID Usuario sesión: {SessionData.IdUsuario}\nUsuario: {SessionData.Username}"
-);
+                MessageBox.Show($"ID Usuario sesión: {SessionData.IdUsuario}\nUsuario: {SessionData.Username}");
                 return;
             }
 

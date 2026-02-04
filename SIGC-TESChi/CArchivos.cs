@@ -105,6 +105,9 @@ namespace SIGC_TESChi
             btnBuscar.MouseEnter += (s, e) => toolTip.Show("Boton para Buscar Expediente", btnBuscar);
             btnBuscar.MouseLeave += (s, e) => toolTip.Hide(btnBuscar);
 
+            dgvDocumentos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDocumentos.MultiSelect = false;
+
         }
 
         private void CArchivos_Load(object sender, EventArgs e)
@@ -255,10 +258,10 @@ namespace SIGC_TESChi
         //EXPEDIENTES EN PDF
 
         public static void SubirDocumentosControl(
-    int idControl,
-    int anioControl,
-    string noExpediente,
-    string connectionString)
+            int idControl,
+            int anioControl,
+            string noExpediente,
+            string connectionString)
         {
             OpenFileDialog ofd = new OpenFileDialog
             {
@@ -368,9 +371,6 @@ WHERE idControl = @id";
 
             combosListos = true;
         }
-
-        
-
 
         private void CargarExpedientesBD()
         {
@@ -1706,7 +1706,7 @@ ORDER BY c.idControl DESC";
 
         }
 
-        private void btnSubirDocumento_Click(object sender, EventArgs e)
+        private void SubirDocumento()
         {
             if (string.IsNullOrWhiteSpace(txtID.Text))
             {
@@ -1730,6 +1730,11 @@ ORDER BY c.idControl DESC";
             MessageBox.Show("Documento(s) subido(s) correctamente.");
         }
 
+        private void btnSubirDocumento_Click(object sender, EventArgs e)
+        {
+            SubirDocumento();
+        }
+
         private void dgvDocumentos_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
@@ -1746,7 +1751,7 @@ ORDER BY c.idControl DESC";
             PrevisualizarDocumento(ruta);
         }
 
-        private void btnDescargarDocumento_Click(object sender, EventArgs e)
+        private void DescargarDocumento()
         {
             // 🔐 VALIDACIÓN DE PERMISOS
             if (SessionData.IdTipoUsuario != 1) // 1 = ADMIN
@@ -1800,6 +1805,12 @@ ORDER BY c.idControl DESC";
                         "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void btnDescargarDocumento_Click(object sender, EventArgs e)
+        {
+
+            DescargarDocumento();
 
         }
 
@@ -1834,6 +1845,81 @@ ORDER BY c.idControl DESC";
         private void panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void EliminarDocumentoBD(int idDocumento)
+        {
+            using (SqlConnection cn = new SqlConnection(connectionString))
+            using (SqlCommand cmd = new SqlCommand(
+                "DELETE FROM DocumentoControl WHERE idDocumento = @idDocumento", cn))
+            {
+                cmd.Parameters.Add("@idDocumento", SqlDbType.Int).Value = idDocumento;
+
+                cn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        private void BorrarDocumento()
+        {
+            // 🔐 SOLO ADMIN
+            if (SessionData.IdTipoUsuario != 1)
+            {
+                MessageBox.Show("No tienes permisos para eliminar documentos.",
+                    "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // ✅ VALIDAR SELECCIÓN REAL
+            if (dgvDocumentos.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Seleccione un documento.",
+                    "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DataGridViewRow fila = dgvDocumentos.SelectedRows[0];
+
+            int idDocumento = Convert.ToInt32(fila.Cells["idDocumento"].Value);
+            string rutaArchivo = fila.Cells["RutaArchivo"].Value?.ToString();
+            string nombreArchivo = fila.Cells["NombreArchivo"].Value?.ToString();
+
+            DialogResult r = MessageBox.Show(
+                $"¿Desea eliminar el documento?\n\n{nombreArchivo}",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning
+            );
+
+            if (r != DialogResult.Yes) return;
+
+            try
+            {
+                // 🗑️ BORRAR ARCHIVO
+                if (!string.IsNullOrEmpty(rutaArchivo) && File.Exists(rutaArchivo))
+                {
+                    File.Delete(rutaArchivo);
+                }
+
+                // 🗑️ BORRAR BD
+                EliminarDocumentoBD(idDocumento);
+
+                MessageBox.Show("Documento eliminado correctamente.",
+                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // 🔄 RECARGAR
+                CargarDocumentos(int.Parse(txtID.Text));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar:\n" + ex.Message,
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnBorrarDocumento_Click(object sender, EventArgs e)
+        {
+            BorrarDocumento();
         }
     }
     }

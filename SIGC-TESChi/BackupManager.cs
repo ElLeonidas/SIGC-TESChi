@@ -84,9 +84,9 @@ public static class BackupManager
         string rutaBak = Path.Combine(RutaBD, $"DB_{fecha}.bak");
 
         string sql = $@"
-BACKUP DATABASE {NombreBD}
-TO DISK = '{rutaBak}'
-WITH INIT, FORMAT";
+            BACKUP DATABASE {NombreBD}
+            TO DISK = '{rutaBak}'
+            WITH INIT, FORMAT";
 
         using (SqlConnection cn = new SqlConnection(
             @"Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;"))
@@ -192,15 +192,14 @@ WITH INIT, FORMAT";
     private static void RestaurarBaseDatos(string rutaBak)
     {
         string sql = $@"
-USE master;
-ALTER DATABASE {NombreBD} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+            USE master;
+            ALTER DATABASE {NombreBD} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 
-RESTORE DATABASE {NombreBD}
-FROM DISK = '{rutaBak}'
-WITH REPLACE;
+            RESTORE DATABASE {NombreBD}
+            FROM DISK = '{rutaBak}'
+            WITH REPLACE;
 
-ALTER DATABASE {NombreBD} SET MULTI_USER;
-";
+            ALTER DATABASE {NombreBD} SET MULTI_USER;";
 
         using (SqlConnection cn = new SqlConnection(
             @"Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;"))
