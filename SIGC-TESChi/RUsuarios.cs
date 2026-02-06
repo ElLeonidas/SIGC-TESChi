@@ -288,13 +288,19 @@ namespace SIGC_TESChi
                 return;
             }
 
+            if (comboTipoUsuario.SelectedIndex == -1)
+            {
+                MessageBox.Show("⚠️ Selecciona un tipo de usuario.");
+                return;
+            }
+
             if (ExisteUsuario(txtNombreAcceso.Text.Trim()))
             {
                 MessageBox.Show("⚠️ Este usuario ya está registrado.");
                 return;
             }
 
-            string tipo = comboTipoUsuario.SelectedItem.ToString().Split(' ')[0];
+            int idTipoUsuario = Convert.ToInt32(comboTipoUsuario.SelectedValue);
 
             string hashPassword = CrearHashPBKDF2(txtContrasena.Text.Trim());
 
@@ -305,21 +311,27 @@ namespace SIGC_TESChi
                 string q = @"
 INSERT INTO Usuario
 (Username, Nombre, Apaterno, Amaterno, Contrasena, idTipoUsuario)
-VALUES (@u,@n,@ap,@am,@c,@t)";
+VALUES (@u, @n, @ap, @am, @c, @t)";
 
-                SqlCommand cmd = new SqlCommand(q, con);
-                cmd.Parameters.AddWithValue("@u", txtNombreAcceso.Text.Trim());
-                cmd.Parameters.AddWithValue("@n", txtUsuario.Text.Trim());
-                cmd.Parameters.AddWithValue("@ap", txtApaterno.Text.Trim());
-                cmd.Parameters.AddWithValue("@am", txtAmaterno.Text.Trim());
-                cmd.Parameters.AddWithValue("@c", hashPassword); // 🔐 HASH
-                cmd.Parameters.AddWithValue("@t", tipo);
-                cmd.ExecuteNonQuery();
+                using (SqlCommand cmd = new SqlCommand(q, con))
+                {
+                    cmd.Parameters.Add("@u", SqlDbType.NVarChar).Value = txtNombreAcceso.Text.Trim();
+                    cmd.Parameters.Add("@n", SqlDbType.NVarChar).Value = txtUsuario.Text.Trim();
+                    cmd.Parameters.Add("@ap", SqlDbType.NVarChar).Value = txtApaterno.Text.Trim();
+                    cmd.Parameters.Add("@am", SqlDbType.NVarChar).Value = txtAmaterno.Text.Trim();
+                    cmd.Parameters.Add("@c", SqlDbType.NVarChar).Value = hashPassword;
+                    cmd.Parameters.Add("@t", SqlDbType.Int).Value = idTipoUsuario;
+
+                    cmd.ExecuteNonQuery();
+                }
             }
 
             string datosNuevos =
-                $"Username={txtNombreAcceso.Text}, Nombre={txtUsuario.Text}, " +
-                $"Apaterno={txtApaterno.Text}, Amaterno={txtAmaterno.Text}, Tipo={tipo}";
+                $"Username={txtNombreAcceso.Text.Trim()}, " +
+                $"Nombre={txtUsuario.Text.Trim()}, " +
+                $"Apaterno={txtApaterno.Text.Trim()}, " +
+                $"Amaterno={txtAmaterno.Text.Trim()}, " +
+                $"TipoID={idTipoUsuario}";
 
             HistorialHelper.RegistrarCambio(
                 "Usuario",
@@ -329,10 +341,12 @@ VALUES (@u,@n,@ap,@am,@c,@t)";
                 datosNuevos
             );
 
-            MessageBox.Show("✅ Usuario agregado.");
+            MessageBox.Show("✅ Usuario agregado correctamente.");
+
             CargarUsuarios();
             LimpiarCampos();
         }
+
 
         private void ModificarUsuario()
         {
