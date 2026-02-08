@@ -12,12 +12,21 @@ namespace SIGC_TESChi
         public static string Username { get; set; }
         public static string NombreCompleto { get; set; }
         public static int IdTipoUsuario { get; set; }
+
+        public enum RolUsuario
+        {
+            Administrador = 1,
+            Licenciada = 2,
+            Servicio = 3
+        }
+
     }
 
     public static class Permisos
     {
         public static bool EsAdministrador =>
             SessionData.IdTipoUsuario == 1;
+            
     }
 
 

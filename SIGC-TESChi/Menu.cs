@@ -204,18 +204,38 @@ namespace SIGC_TESChi
         {
             int rol = SessionData.IdTipoUsuario;
 
-            if (uc == ucHistorial && rol == 3)
-                return false;
+            // ADMINISTRADOR → TODO
+            if (rol == 1)
+                return true;
 
-            if (uc == ucTipoUsuarios && rol != 1)
-                return false;
+            // LICENCIADA
+            if (rol == 2)
+            {
+                if (uc == ucRUsuarios ||
+                    uc == ucTipoUsuarios)
+                    return false;
 
-            if (uc == ucRUsuarios && rol != 1)
-                return false;
+                return true;
+            }
 
-            return true;
+            // SERVICIO
+            if (rol == 3)
+            {
+                if (uc == ucRUsuarios ||
+                    uc == ucSecciones ||
+                    uc == ucUbicaciones ||
+                    uc == ucSubSecciones ||
+                    uc == ucHistorial ||
+                    uc == ucInstitucion ||
+                    uc == ucUnidadA ||
+                    uc == ucClasificacion)
+                    return false;
+
+                return true;
+            }
+
+            return false;
         }
-
 
 
         private void Menu_Load(object sender, EventArgs e)
@@ -234,8 +254,14 @@ namespace SIGC_TESChi
 
                 case 3: // Servicio
                     btnRUsuarios.Enabled = false;
-                    btnTipoUsuarios.Enabled = false;
+                    btnSecciones.Enabled = false;
+                    btnUbicaciones.Enabled = false;
+                    btnSubSecciones.Enabled = false;
                     btnHistorial.Enabled = false;
+                    btnInstitucion.Enabled = false;
+                    btnUnidadA.Enabled = false;
+                    btnClasificacion.Enabled = false;
+
                     break;
             }
         }
