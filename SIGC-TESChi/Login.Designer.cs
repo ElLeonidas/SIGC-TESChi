@@ -19,69 +19,122 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmLogin));
             this.pnlCard = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pnlLogin = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.btnCerrarPrograma = new System.Windows.Forms.Button();
-            this.btnOcultar = new System.Windows.Forms.Button();
+            this.pnlPassword = new System.Windows.Forms.Panel();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.btnOcultar = new System.Windows.Forms.Button();
+            this.picPassword = new System.Windows.Forms.PictureBox();
+            this.pnlUsuario = new System.Windows.Forms.Panel();
             this.txtUsuario = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.picUsuario = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnCerrarPrograma = new System.Windows.Forms.Button();
             this.btnLogin = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlCard.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlLogin.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.pnlPassword.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPassword)).BeginInit();
+            this.pnlUsuario.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picUsuario)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlCard
             // 
+            this.pnlCard.BackColor = System.Drawing.Color.Transparent;
             this.pnlCard.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlCard.BackgroundImage")));
             this.pnlCard.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pnlCard.Controls.Add(this.pictureBox1);
             this.pnlCard.Controls.Add(this.pnlLogin);
-            this.pnlCard.Location = new System.Drawing.Point(123, 84);
+            this.pnlCard.Location = new System.Drawing.Point(12, 12);
             this.pnlCard.Name = "pnlCard";
-            this.pnlCard.Size = new System.Drawing.Size(600, 500);
+            this.pnlCard.Size = new System.Drawing.Size(660, 437);
             this.pnlCard.TabIndex = 0;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.BackgroundImage")));
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox1.Location = new System.Drawing.Point(452, 62);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(93, 113);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
             // 
             // pnlLogin
             // 
+            this.pnlLogin.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlLogin.Controls.Add(this.pnlPassword);
+            this.pnlLogin.Controls.Add(this.pnlUsuario);
             this.pnlLogin.Controls.Add(this.button1);
-            this.pnlLogin.Controls.Add(this.pictureBox3);
-            this.pnlLogin.Controls.Add(this.pictureBox2);
             this.pnlLogin.Controls.Add(this.btnCerrarPrograma);
-            this.pnlLogin.Controls.Add(this.btnOcultar);
-            this.pnlLogin.Controls.Add(this.txtPassword);
-            this.pnlLogin.Controls.Add(this.txtUsuario);
-            this.pnlLogin.Controls.Add(this.label3);
-            this.pnlLogin.Controls.Add(this.label2);
             this.pnlLogin.Controls.Add(this.btnLogin);
             this.pnlLogin.Controls.Add(this.label1);
-            this.pnlLogin.Location = new System.Drawing.Point(117, 160);
+            this.pnlLogin.Location = new System.Drawing.Point(135, 50);
             this.pnlLogin.Name = "pnlLogin";
-            this.pnlLogin.Size = new System.Drawing.Size(446, 310);
+            this.pnlLogin.Size = new System.Drawing.Size(391, 336);
             this.pnlLogin.TabIndex = 0;
+            // 
+            // pnlPassword
+            // 
+            this.pnlPassword.Controls.Add(this.txtPassword);
+            this.pnlPassword.Controls.Add(this.btnOcultar);
+            this.pnlPassword.Controls.Add(this.picPassword);
+            this.pnlPassword.Location = new System.Drawing.Point(19, 187);
+            this.pnlPassword.Name = "pnlPassword";
+            this.pnlPassword.Size = new System.Drawing.Size(359, 42);
+            this.pnlPassword.TabIndex = 12;
+            // 
+            // txtPassword
+            // 
+            this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPassword.Font = new System.Drawing.Font("Georgia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPassword.ForeColor = System.Drawing.Color.Black;
+            this.txtPassword.Location = new System.Drawing.Point(50, 15);
+            this.txtPassword.Name = "txtPassword";
+            this.txtPassword.Size = new System.Drawing.Size(270, 13);
+            this.txtPassword.TabIndex = 5;
+            this.txtPassword.UseSystemPasswordChar = true;
+            // 
+            // btnOcultar
+            // 
+            this.btnOcultar.Location = new System.Drawing.Point(326, 10);
+            this.btnOcultar.Name = "btnOcultar";
+            this.btnOcultar.Size = new System.Drawing.Size(23, 23);
+            this.btnOcultar.TabIndex = 6;
+            this.btnOcultar.UseVisualStyleBackColor = true;
+            // 
+            // picPassword
+            // 
+            this.picPassword.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picPassword.BackgroundImage")));
+            this.picPassword.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.picPassword.Location = new System.Drawing.Point(5, 9);
+            this.picPassword.Name = "picPassword";
+            this.picPassword.Size = new System.Drawing.Size(25, 25);
+            this.picPassword.TabIndex = 9;
+            this.picPassword.TabStop = false;
+            // 
+            // pnlUsuario
+            // 
+            this.pnlUsuario.Controls.Add(this.txtUsuario);
+            this.pnlUsuario.Controls.Add(this.picUsuario);
+            this.pnlUsuario.Location = new System.Drawing.Point(19, 121);
+            this.pnlUsuario.Name = "pnlUsuario";
+            this.pnlUsuario.Size = new System.Drawing.Size(359, 42);
+            this.pnlUsuario.TabIndex = 11;
+            // 
+            // txtUsuario
+            // 
+            this.txtUsuario.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.txtUsuario.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtUsuario.Font = new System.Drawing.Font("Georgia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUsuario.Location = new System.Drawing.Point(79, 17);
+            this.txtUsuario.Name = "txtUsuario";
+            this.txtUsuario.Size = new System.Drawing.Size(270, 13);
+            this.txtUsuario.TabIndex = 4;
+            // 
+            // picUsuario
+            // 
+            this.picUsuario.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picUsuario.BackgroundImage")));
+            this.picUsuario.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.picUsuario.Location = new System.Drawing.Point(6, 8);
+            this.picUsuario.Name = "picUsuario";
+            this.picUsuario.Size = new System.Drawing.Size(25, 25);
+            this.picUsuario.TabIndex = 8;
+            this.picUsuario.TabStop = false;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(349, 257);
+            this.button1.Location = new System.Drawing.Point(293, 263);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
@@ -90,92 +143,22 @@
             this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox3.BackgroundImage")));
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(39, 179);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox3.TabIndex = 9;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
-            this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox2.Location = new System.Drawing.Point(39, 111);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 25);
-            this.pictureBox2.TabIndex = 8;
-            this.pictureBox2.TabStop = false;
-            // 
             // btnCerrarPrograma
             // 
             this.btnCerrarPrograma.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCerrarPrograma.BackgroundImage")));
             this.btnCerrarPrograma.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btnCerrarPrograma.Location = new System.Drawing.Point(421, 3);
+            this.btnCerrarPrograma.Location = new System.Drawing.Point(356, 12);
             this.btnCerrarPrograma.Name = "btnCerrarPrograma";
             this.btnCerrarPrograma.Size = new System.Drawing.Size(22, 23);
             this.btnCerrarPrograma.TabIndex = 7;
             this.btnCerrarPrograma.UseVisualStyleBackColor = true;
             // 
-            // btnOcultar
-            // 
-            this.btnOcultar.Location = new System.Drawing.Point(386, 177);
-            this.btnOcultar.Name = "btnOcultar";
-            this.btnOcultar.Size = new System.Drawing.Size(23, 23);
-            this.btnOcultar.TabIndex = 6;
-            this.btnOcultar.UseVisualStyleBackColor = true;
-            // 
-            // txtPassword
-            // 
-            this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtPassword.Font = new System.Drawing.Font("Georgia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPassword.ForeColor = System.Drawing.Color.Black;
-            this.txtPassword.Location = new System.Drawing.Point(212, 177);
-            this.txtPassword.Multiline = true;
-            this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(154, 20);
-            this.txtPassword.TabIndex = 5;
-            this.txtPassword.UseSystemPasswordChar = true;
-            // 
-            // txtUsuario
-            // 
-            this.txtUsuario.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtUsuario.Font = new System.Drawing.Font("Georgia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUsuario.Location = new System.Drawing.Point(212, 111);
-            this.txtUsuario.Multiline = true;
-            this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(153, 20);
-            this.txtUsuario.TabIndex = 4;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Georgia", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(88, 173);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 24);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Contraseña:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Georgia", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(88, 111);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 24);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Usuario:";
-            // 
             // btnLogin
             // 
             this.btnLogin.Font = new System.Drawing.Font("Georgia", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLogin.Location = new System.Drawing.Point(192, 235);
+            this.btnLogin.Location = new System.Drawing.Point(126, 252);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(77, 47);
+            this.btnLogin.Size = new System.Drawing.Size(140, 47);
             this.btnLogin.TabIndex = 1;
             this.btnLogin.Text = "Iniciar Sesión";
             this.btnLogin.UseVisualStyleBackColor = true;
@@ -183,29 +166,33 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Georgia", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.label1.Location = new System.Drawing.Point(180, 46);
+            this.label1.Font = new System.Drawing.Font("Georgia", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(137, 34);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(97, 31);
+            this.label1.Size = new System.Drawing.Size(114, 38);
             this.label1.TabIndex = 0;
             this.label1.Text = "Login";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 661);
+            this.ClientSize = new System.Drawing.Size(684, 461);
             this.Controls.Add(this.pnlCard);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.pnlCard.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.pnlPassword.ResumeLayout(false);
+            this.pnlPassword.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picPassword)).EndInit();
+            this.pnlUsuario.ResumeLayout(false);
+            this.pnlUsuario.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picUsuario)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -219,12 +206,11 @@
         private System.Windows.Forms.Button btnOcultar;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtUsuario;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnCerrarPrograma;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox picUsuario;
+        private System.Windows.Forms.PictureBox picPassword;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Panel pnlPassword;
+        private System.Windows.Forms.Panel pnlUsuario;
     }
 }
