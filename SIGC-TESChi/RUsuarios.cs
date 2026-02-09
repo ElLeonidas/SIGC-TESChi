@@ -23,6 +23,8 @@ namespace SIGC_TESChi
 
             txtContrasena.UseSystemPasswordChar = true;
 
+            ConfigurarDataGridViewOscuro(TablaUsuarios);
+
             //TablaUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //TablaUsuarios.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             //TablaUsuarios.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -75,12 +77,55 @@ namespace SIGC_TESChi
 
             CargarTiposUsuario();
             CargarUsuarios();
-
             AplicarTemaLobby();
+
+            TablaUsuarios.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            TablaUsuarios.AllowUserToResizeColumns = false;
+            TablaUsuarios.AllowUserToResizeRows = false;
+            TablaUsuarios.RowHeadersVisible = false;
+
 
         }
 
         #region DISEÑO
+
+        void ConfigurarDataGridViewOscuro(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+
+            // Fondo general
+            dgv.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dgv.GridColor = Color.FromArgb(45, 45, 48);
+
+            // Filas
+            dgv.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dgv.DefaultCellStyle.ForeColor = Color.Gainsboro;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Filas alternas
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(36, 36, 36);
+
+            // Encabezados
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersHeight = 40;
+
+            // Filas
+            dgv.RowTemplate.Height = 36;
+            dgv.RowHeadersVisible = false;
+
+            // Comportamiento
+            dgv.AllowUserToResizeColumns = false;
+            dgv.AllowUserToResizeRows = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+
+            // Auto ajuste
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
 
         private void RedondearBoton(Button btn, int radio)
         {

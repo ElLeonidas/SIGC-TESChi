@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -13,6 +14,8 @@ namespace SIGC_TESChi
         private string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
         private Timer alertaTimer;
         private ToolTip toolTip;
+        private DataTable dtEventos;
+
 
         public Lobby()
         {
@@ -39,6 +42,17 @@ namespace SIGC_TESChi
 
         private void Lobby_Load(object sender, EventArgs e)
         {
+            ConfigurarDGV();        // 1️⃣ primero
+            CargarTiposEvento();
+            CargarEventosDelMes();  // 2️⃣ luego datos
+            AplicarTemaLobby();     // 3️⃣ al final el diseño
+
+            ConfigurarDataGridViewOscuro(dgvEventos);
+
+            dgvEventos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvEventos.AllowUserToResizeColumns = false;
+            dgvEventos.AllowUserToResizeRows = false;
+            dgvEventos.RowHeadersVisible = false;
 
             txtUsuario.Text = SessionData.NombreCompleto;
             txtUsuario.ReadOnly = true;
@@ -54,20 +68,49 @@ namespace SIGC_TESChi
             mthCalendario.MaxSelectionCount = 1;
             mthCalendario.SelectionStart = DateTime.Today;
 
-            ConfigurarDGV();
-            CargarEventosDelMes();
-            IniciarAlertaTimer();
-
-            CargarTiposEvento();
-
-            AplicarTemaLobby();
-
 
         }
 
         #region DISEÑO
 
-        
+
+        void ConfigurarDataGridViewOscuro(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+
+            // Fondo general
+            dgv.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dgv.GridColor = Color.FromArgb(45, 45, 48);
+
+            // Filas
+            dgv.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dgv.DefaultCellStyle.ForeColor = Color.Gainsboro;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Filas alternas
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(36, 36, 36);
+
+            // Encabezados
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersHeight = 40;
+
+            // Filas
+            dgv.RowTemplate.Height = 36;
+            dgv.RowHeadersVisible = false;
+
+            // Comportamiento
+            dgv.AllowUserToResizeColumns = false;
+            dgv.AllowUserToResizeRows = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+
+            // Auto ajuste
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
 
 
         private void RedondearBoton(Button btn, int radio)
@@ -149,13 +192,6 @@ namespace SIGC_TESChi
             }
 
             // =========================
-            // ✏ INPUTS (TextBox + ComboBox)
-            // =========================
-
-           
-
-
-            // =========================
             // 🖱 BOTONES
             // =========================
             EstiloBoton(btnAgregar, colorSecundario);
@@ -173,7 +209,7 @@ namespace SIGC_TESChi
             dgvEventos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgvEventos.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
             dgvEventos.DefaultCellStyle.Font = new Font("Segoe UI", 9);
-            dgvEventos.RowHeadersVisible = false; 
+            dgvEventos.RowHeadersVisible = false;
 
             dgvEventos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvEventos.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -182,7 +218,7 @@ namespace SIGC_TESChi
 
         }
 
-        
+
 
 
 
@@ -190,21 +226,21 @@ namespace SIGC_TESChi
 
         private void ConfigurarDGV()
         {
-            dgvEventos.Columns.Clear();
+            dgvEventos.ReadOnly = true;
+            dgvEventos.EditMode = DataGridViewEditMode.EditProgrammatically;
+
+            dgvEventos.AllowUserToAddRows = false;
+            dgvEventos.AllowUserToDeleteRows = false;
+            dgvEventos.AllowUserToResizeColumns = false;
+            dgvEventos.AllowUserToResizeRows = false;
+
             dgvEventos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvEventos.MultiSelect = false;
-            dgvEventos.ReadOnly = true;
-            dgvEventos.AllowUserToAddRows = false;
 
-            dgvEventos.Columns.Add("idEvento", "ID");
-            dgvEventos.Columns.Add("fecha", "Fecha");
-            dgvEventos.Columns.Add("hora", "Hora");
-            dgvEventos.Columns.Add("titulo", "Título");
-            dgvEventos.Columns.Add("tipo", "Tipo");
-            dgvEventos.Columns.Add("modalidad", "Modalidad");
+            dgvEventos.RowHeadersVisible = false;
+            dgvEventos.EnableHeadersVisualStyles = false;
 
-            dgvEventos.Columns["idEvento"].Visible = false;
-            dgvEventos.SelectionChanged += DgvEventos_SelectionChanged;
+            dgvEventos.CellBeginEdit += (s, e) => e.Cancel = true;
         }
 
         private void CargarTiposEvento()
@@ -225,7 +261,6 @@ namespace SIGC_TESChi
                 }
             }
         }
-
 
         //VALIDACIÓN
         private bool ValidarFormulario()
@@ -374,17 +409,23 @@ namespace SIGC_TESChi
         //CARGA
         private void CargarEventosDelMes()
         {
-            dgvEventos.Rows.Clear();
-
             int mes = mthCalendario.SelectionStart.Month;
             int anio = mthCalendario.SelectionStart.Year;
 
+            DataTable dt = new DataTable();
+            dt.Columns.Add("idEvento", typeof(int));
+            dt.Columns.Add("Fecha");
+            dt.Columns.Add("Hora");
+            dt.Columns.Add("Título");
+            dt.Columns.Add("Tipo");
+            dt.Columns.Add("Modalidad");
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string sql = @"SELECT idEvento, titulo, fecha, hora, tipo, modalidad, alertaActiva
-                               FROM Agenda
-                               WHERE MONTH(fecha)=@mes AND YEAR(fecha)=@anio
-                               ORDER BY fecha, hora";
+                string sql = @"SELECT idEvento, titulo, fecha, hora, tipo, modalidad
+                       FROM Agenda
+                       WHERE MONTH(fecha)=@mes AND YEAR(fecha)=@anio
+                       ORDER BY fecha, hora";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@mes", mes);
@@ -395,26 +436,32 @@ namespace SIGC_TESChi
 
                 while (r.Read())
                 {
-                    string fecha = Convert.ToDateTime(r["fecha"]).ToString("dd/MM/yyyy");
-                    string hora = DateTime.Today.Add((TimeSpan)r["hora"]).ToString("HH:mm");
-
-                    int i = dgvEventos.Rows.Add(r["idEvento"], fecha, hora, r["titulo"], r["tipo"], r["modalidad"]);
-
-                    if ((bool)r["alertaActiva"])
-                        dgvEventos.Rows[i].DefaultCellStyle.BackColor = System.Drawing.Color.LightYellow;
+                    dt.Rows.Add(
+                        r["idEvento"],
+                        Convert.ToDateTime(r["fecha"]).ToString("dd/MM/yyyy"),
+                        DateTime.Today.Add((TimeSpan)r["hora"]).ToString("HH:mm"),
+                        r["titulo"],
+                        r["tipo"],
+                        r["modalidad"]
+                    );
                 }
             }
+
+            dgvEventos.DataSource = dt;
+            dgvEventos.Columns["idEvento"].Visible = false;
         }
+
 
         private void DgvEventos_SelectionChanged(object sender, EventArgs e)
         {
             if (dgvEventos.SelectedRows.Count == 0) return;
 
-            var r = dgvEventos.SelectedRows[0];
-            txtTitulo.Text = r.Cells["titulo"].Value.ToString();
-            cmbTipoEvento.Text = r.Cells["tipo"].Value.ToString();
-            cmbModalidad.SelectedItem = r.Cells["modalidad"].Value.ToString();
-            dtpHora.Value = DateTime.Today.Add(TimeSpan.Parse(r.Cells["hora"].Value.ToString()));
+            DataGridViewRow r = dgvEventos.SelectedRows[0];
+
+            txtTitulo.Text = r.Cells["Título"].Value.ToString();
+            cmbTipoEvento.Text = r.Cells["Tipo"].Value.ToString();
+            cmbModalidad.Text = r.Cells["Modalidad"].Value.ToString();
+            dtpHora.Value = DateTime.Today.Add(TimeSpan.Parse(r.Cells["Hora"].Value.ToString()));
         }
 
         //ALERTAS
@@ -501,8 +548,6 @@ namespace SIGC_TESChi
                 txtTitulo.SelectionStart = Math.Min(cursor, txtTitulo.Text.Length);
             }
         }
-
-       
 
         private void cmbModalidad_SelectedIndexChanged(object sender, EventArgs e)
         {

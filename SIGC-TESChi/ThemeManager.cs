@@ -3,17 +3,17 @@ using System.Windows.Forms;
 
 public static class ThemeManager
 {
-
     private static readonly Color Fondo = Color.FromArgb(32, 32, 32);
     private static readonly Color FondoSecundario = Color.FromArgb(45, 45, 45);
     private static readonly Color Texto = Color.White;
 
-
     public static void AplicarModoOscuro(Control control)
     {
+        // 🔒 BLOQUEO TOTAL
         if (control is DataGridView)
-            return; // 🔥 JAMÁS tocarlo
+            return;
 
+        // Formas contenedoras
         if (control is Form || control is UserControl || control is Panel)
         {
             control.BackColor = Fondo;
@@ -22,18 +22,21 @@ public static class ThemeManager
 
         foreach (Control c in control.Controls)
         {
+            // 🔥 JAMÁS TOCAR DATAGRIDVIEW NI SUS HIJOS
             if (c is DataGridView)
-                continue; // 🔥 NI ENTRAR
+                continue;
 
             if (c is TextBox txt)
             {
                 txt.BackColor = FondoSecundario;
                 txt.ForeColor = Texto;
+                txt.BorderStyle = BorderStyle.FixedSingle;
             }
             else if (c is ComboBox cmb)
             {
                 cmb.BackColor = FondoSecundario;
                 cmb.ForeColor = Texto;
+                cmb.FlatStyle = FlatStyle.Flat;
             }
             else if (c is Button btn)
             {
@@ -46,19 +49,22 @@ public static class ThemeManager
             }
             else
             {
-                c.BackColor = Fondo;
-                c.ForeColor = Texto;
+                // ⚠️ SOLO SI NO ES CONTENEDOR RARO
+                if (!(c is Panel))
+                {
+                    c.BackColor = Fondo;
+                    c.ForeColor = Texto;
+                }
             }
 
-            if (c.HasChildren)
+            // ⛔ NO BAJAR SI ES DATAGRIDVIEW
+            if (c.HasChildren && !(c is DataGridView))
                 AplicarModoOscuro(c);
         }
     }
 
-
     public static void AplicarModoClaro(Control control)
     {
-        // ❌ NO TOCAR DATAGRIDVIEW
         if (control is DataGridView)
             return;
 
@@ -67,8 +73,8 @@ public static class ThemeManager
 
         foreach (Control c in control.Controls)
         {
-            AplicarModoClaro(c);
+            if (!(c is DataGridView))
+                AplicarModoClaro(c);
         }
     }
-
 }

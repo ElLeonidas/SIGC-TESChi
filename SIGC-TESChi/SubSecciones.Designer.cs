@@ -33,6 +33,7 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.tablaSubsecciones = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
             this.cmbSeccion = new System.Windows.Forms.ComboBox();
             this.txtClaveSubseccion = new System.Windows.Forms.TextBox();
             this.lblTitulo = new System.Windows.Forms.Label();
@@ -46,7 +47,6 @@
             this.txtSubseccion = new System.Windows.Forms.TextBox();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.btnAgregar = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tablaSubsecciones)).BeginInit();
@@ -112,6 +112,17 @@
             this.panel2.Size = new System.Drawing.Size(930, 166);
             this.panel2.TabIndex = 0;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Georgia", 10.2F);
+            this.label5.Location = new System.Drawing.Point(302, 98);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(127, 17);
+            this.label5.TabIndex = 25;
+            this.label5.Text = "Seccion Vinculada:";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
             // cmbSeccion
             // 
             this.cmbSeccion.FormattingEnabled = true;
@@ -136,9 +147,9 @@
             this.lblTitulo.Location = new System.Drawing.Point(-2, 0);
             this.lblTitulo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(188, 18);
+            this.lblTitulo.Size = new System.Drawing.Size(221, 18);
             this.lblTitulo.TabIndex = 12;
-            this.lblTitulo.Text = "Registro de Secciones";
+            this.lblTitulo.Text = "Registro de SubSecciones";
             // 
             // label4
             // 
@@ -247,17 +258,6 @@
             this.btnAgregar.TabIndex = 17;
             this.btnAgregar.UseVisualStyleBackColor = true;
             this.btnAgregar.Click += new System.EventHandler(this.btnAgregar_Click_1);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Georgia", 10.2F);
-            this.label5.Location = new System.Drawing.Point(302, 98);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(127, 17);
-            this.label5.TabIndex = 25;
-            this.label5.Text = "Seccion Vinculada:";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // SubSecciones
             // 

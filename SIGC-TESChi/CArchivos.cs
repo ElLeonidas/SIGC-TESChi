@@ -132,10 +132,72 @@ namespace SIGC_TESChi
 
             AplicarTemaLobby();
 
+            dgvControl.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvControl.AllowUserToResizeColumns = false;
+            dgvControl.AllowUserToResizeRows = false;
+            dgvControl.RowHeadersVisible = false;
+
+            dgvControl.ReadOnly = true;
+            dgvControl.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dgvControl.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvControl.MultiSelect = false;
+
+
+            dgvDocumentos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvDocumentos.AllowUserToResizeColumns = false;
+            dgvDocumentos.AllowUserToResizeRows = false;
+            dgvDocumentos.RowHeadersVisible = false;
+
+            dgvControl.ReadOnly = true;
+            dgvControl.EditMode = DataGridViewEditMode.EditProgrammatically;
+            dgvControl.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvControl.MultiSelect = false;
+
+            ConfigurarDataGridViewOscuro(dgvControl);
+            ConfigurarDataGridViewOscuro(dgvDocumentos);
+
+
         }
 
         #region DISEÑO
 
+        void ConfigurarDataGridViewOscuro(DataGridView dgv)
+        {
+            dgv.EnableHeadersVisualStyles = false;
+
+            // Fondo general
+            dgv.BackgroundColor = Color.FromArgb(30, 30, 30);
+            dgv.GridColor = Color.FromArgb(45, 45, 48);
+
+            // Filas
+            dgv.DefaultCellStyle.BackColor = Color.FromArgb(30, 30, 30);
+            dgv.DefaultCellStyle.ForeColor = Color.Gainsboro;
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(60, 60, 60);
+            dgv.DefaultCellStyle.SelectionForeColor = Color.White;
+
+            // Filas alternas
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(36, 36, 36);
+
+            // Encabezados
+            dgv.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(45, 45, 48);
+            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dgv.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ColumnHeadersHeight = 40;
+
+            // Filas
+            dgv.RowTemplate.Height = 36;
+            dgv.RowHeadersVisible = false;
+
+            // Comportamiento
+            dgv.AllowUserToResizeColumns = false;
+            dgv.AllowUserToResizeRows = false;
+            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgv.MultiSelect = false;
+
+            // Auto ajuste
+            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
         private void RedondearBoton(Button btn, int radio)
         {
             GraphicsPath path = new GraphicsPath();
