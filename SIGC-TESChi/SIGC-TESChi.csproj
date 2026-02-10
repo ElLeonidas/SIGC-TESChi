@@ -313,6 +313,7 @@
     <Compile Include="Graficas.Designer.cs">
       <DependentUpon>Graficas.cs</DependentUpon>
     </Compile>
+    <Compile Include="HashHelper.cs" />
     <Compile Include="Historial.cs">
       <SubType>UserControl</SubType>
     </Compile>

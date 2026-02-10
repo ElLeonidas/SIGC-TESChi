@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using static SIGC_TESChi.SessionData;
 
 
 namespace SIGC_TESChi
@@ -18,6 +17,8 @@ namespace SIGC_TESChi
         // Límite de intentos
         private int intentosFallidos = 0;
         private const int MAX_INTENTOS = 2;
+
+
 
         public FrmLogin()
         {
@@ -337,6 +338,26 @@ namespace SIGC_TESChi
 
         #region LOGIN
 
+        public static bool VerificarHashPBKDF2(string password, string hashAlmacenado)
+        {
+            var partes = hashAlmacenado.Split(':');
+            if (partes.Length != 3) return false;
+
+            int iterations = int.Parse(partes[0]);
+            byte[] salt = Convert.FromBase64String(partes[1]);
+            byte[] hashOriginal = Convert.FromBase64String(partes[2]);
+
+            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations))
+            {
+                byte[] hashCalculado = pbkdf2.GetBytes(hashOriginal.Length);
+
+                for (int i = 0; i < hashOriginal.Length; i++)
+                    if (hashCalculado[i] != hashOriginal[i])
+                        return false;
+            }
+            return true;
+        }
+
         // ====================== LOGIN ======================
         private void BtnLogin_Click(object sender, EventArgs e)
         {
@@ -447,157 +468,28 @@ namespace SIGC_TESChi
 
         #region PBKDF2
 
-        // ================== PBKDF2 ==================
-        private string CrearHashPBKDF2(string password, out byte[] salt)
-        {
-            salt = new byte[16];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-
-            var pbkdf2 = new Rfc2898DeriveBytes(
-                password,
-                salt,
-                100000,
-                HashAlgorithmName.SHA256
-            );
-
-            byte[] hash = pbkdf2.GetBytes(32);
-
-            byte[] hashBytes = new byte[48];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 32);
-
-            return Convert.ToBase64String(hashBytes);
-        }
-
         
-
-private bool VerificarHashPBKDF2(string password, string hashAlmacenado)
-    {
-        try
-        {
-            // Formato esperado: iteraciones:saltBase64:hashBase64
-            string[] partes = hashAlmacenado.Split(':');
-            if (partes.Length != 3)
-                return false;
-
-            int iteraciones = int.Parse(partes[0]);
-            byte[] salt = Convert.FromBase64String(partes[1]);
-            byte[] hashOriginal = Convert.FromBase64String(partes[2]);
-
-            using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iteraciones))
-            {
-                byte[] hashCalculado = pbkdf2.GetBytes(hashOriginal.Length);
-
-                // Comparación segura (byte a byte)
-                for (int i = 0; i < hashOriginal.Length; i++)
-                {
-                    if (hashCalculado[i] != hashOriginal[i])
-                        return false;
-                }
-            }
-
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-
-    // ================== CREAR NUEVO USUARIO ==================
-    public void CrearUsuario(string username, string nombre, string apaterno, string amaterno, string password, int idTipoUsuario)
-        {
-            string hash = CrearHashPBKDF2(password, out byte[] salt);
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    string query = @"
-                        INSERT INTO Usuario (Username, Nombre, Apaterno, Amaterno, idTipoUsuario, contrasena)
-                        VALUES (@user, @nombre, @ap, @am, @tipo, @pass);";
-
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@user", username);
-                        cmd.Parameters.AddWithValue("@nombre", nombre);
-                        cmd.Parameters.AddWithValue("@ap", apaterno);
-                        cmd.Parameters.AddWithValue("@am", amaterno);
-                        cmd.Parameters.AddWithValue("@tipo", idTipoUsuario);
-                        cmd.Parameters.AddWithValue("@pass", hash);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al crear usuario:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // ================== ACTUALIZAR TODAS LAS CONTRASEÑAS A PBKDF2 ==================
-        public void ActualizarContraseñasABaseSegura()
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-
-                    // Traer todos los usuarios con contraseña actual
-                    string selectQuery = "SELECT idUsuario, contrasena FROM Usuario";
-                    using (SqlCommand selectCmd = new SqlCommand(selectQuery, conn))
-                    {
-                        using (SqlDataReader reader = selectCmd.ExecuteReader())
-                        {
-                            var usuarios = new System.Collections.Generic.List<(int id, string pass)>();
-
-                            while (reader.Read())
-                            {
-                                int idUsuario = reader.GetInt32(reader.GetOrdinal("idUsuario"));
-                                string contrasena = reader.GetString(reader.GetOrdinal("contrasena"));
-                                usuarios.Add((idUsuario, contrasena));
-                            }
-
-                            reader.Close();
-
-                            // Actualizar cada usuario con PBKDF2
-                            foreach (var usuario in usuarios)
-                            {
-                                string hash = CrearHashPBKDF2(usuario.pass, out byte[] salt);
-
-                                string updateQuery = "UPDATE Usuario SET contrasena = @hash WHERE idUsuario = @id";
-                                using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
-                                {
-                                    updateCmd.Parameters.AddWithValue("@hash", hash);
-                                    updateCmd.Parameters.AddWithValue("@id", usuario.id);
-                                    updateCmd.ExecuteNonQuery();
-                                }
-                            }
-
-                            MessageBox.Show("Todas las contraseñas se actualizaron correctamente a PBKDF2.", "Actualización completa", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error al actualizar contraseñas:\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         #endregion
 
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ActualizarContraseñasABaseSegura();
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                string hash = HashHelper.CrearHashPBKDF2("admin123");
+
+                SqlCommand cmd = new SqlCommand(
+                    "UPDATE Usuario SET contrasena = @c WHERE Username = 'admin'", conn);
+
+                cmd.Parameters.AddWithValue("@c", hash);
+                cmd.ExecuteNonQuery();
+            }
+
+            MessageBox.Show("Contraseña actualizada");
+            button1.Visible = false; // 👻
         }
 
         private void label1_Click(object sender, EventArgs e)

@@ -259,8 +259,6 @@ namespace SIGC_TESChi
             comboTipoUsuario.SelectedIndex = -1;
         }
 
-
-
         private void CargarUsuarios()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -300,9 +298,6 @@ namespace SIGC_TESChi
                 TablaUsuarios.Columns["idTipoUsuario"].Visible = false;
             }
         }
-
-
-
 
         public static string CrearHashPBKDF2(string password)
         {

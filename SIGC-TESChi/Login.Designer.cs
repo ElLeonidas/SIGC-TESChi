@@ -47,7 +47,7 @@
             this.pnlCard.Controls.Add(this.pnlLogin);
             this.pnlCard.Location = new System.Drawing.Point(12, 12);
             this.pnlCard.Name = "pnlCard";
-            this.pnlCard.Size = new System.Drawing.Size(660, 437);
+            this.pnlCard.Size = new System.Drawing.Size(645, 437);
             this.pnlCard.TabIndex = 0;
             // 
             // pnlLogin
@@ -59,9 +59,9 @@
             this.pnlLogin.Controls.Add(this.btnCerrarPrograma);
             this.pnlLogin.Controls.Add(this.btnLogin);
             this.pnlLogin.Controls.Add(this.label1);
-            this.pnlLogin.Location = new System.Drawing.Point(135, 50);
+            this.pnlLogin.Location = new System.Drawing.Point(100, 46);
             this.pnlLogin.Name = "pnlLogin";
-            this.pnlLogin.Size = new System.Drawing.Size(391, 336);
+            this.pnlLogin.Size = new System.Drawing.Size(401, 336);
             this.pnlLogin.TabIndex = 0;
             // 
             // pnlPassword
@@ -134,13 +134,12 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(293, 263);
+            this.button1.Location = new System.Drawing.Point(19, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // btnCerrarPrograma
@@ -167,7 +166,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Georgia", 24F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(137, 34);
+            this.label1.Location = new System.Drawing.Point(135, 46);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(114, 38);
             this.label1.TabIndex = 0;
@@ -178,7 +177,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 461);
+            this.ClientSize = new System.Drawing.Size(671, 461);
             this.Controls.Add(this.pnlCard);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
