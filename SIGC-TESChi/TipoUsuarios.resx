@@ -126,4 +126,18 @@
   <metadata name="tipoUsuarioTableAdapterBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnYoutube.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGtSURBVFhH7dbLq41hFMfxT+S4lKMwZWCAgSIGyOVPUCaM
+        xchAKYexoSgz5oZGZMAImSAGCuV0DNwitxOSyLVVz1vH09qvs7HfqL3q2x781nqe336fy3oYxjD+4ZiF
+        hViKlViLDdiCreV3KpuwHuuwBquwAkuwCDPrCerYiPN4jo/4hu9/ka94hovYUU++HZ+TokEy1kwen+ZR
+        kjBoPpSlsTkRu2JXGDiQCF1xMgycSISuiE3vdCK0cRd78TTR+uVGGAgXtdDGrbJ55+IgXiU50+V+DHQ5
+        EdpoDDQxisN4l+T+irgXXEuENmoDTSzGsXK86ppeTEZhrEMttNHLQBOr8Tqpy3gbBTcToY1eBhaUpYhB
+        65pevInCq4nQRm1gHg718a+n8jIG+N1NOBv7ykaqc6bL4xjoXCK0cQd78DDR+uVeGDiVCF1xPQwcSYSu
+        OBsGdidCVxwNA8sToSu2NUfpSiIOmgcYaQwsK42hThoUcWfEG/SnmIOdOI4zuFT6RJz78fJse1Gazqfk
+        0foF70t3fIIJ3C5XfXzhC+XE7S99449jRmnJ88sTfhj/Z/wAz4V00+xXkvIAAAAASUVORK5CYII=
+</value>
+  </data>
 </root>
