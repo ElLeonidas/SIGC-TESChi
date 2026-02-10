@@ -10,13 +10,26 @@ namespace SIGC_TESChi
 {
     public partial class Clasificacion : UserControl
     {
-        string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        // Cadena de conexión
+        private string connectionString;
+
         private ToolTip toolTip;
 
         public Clasificacion()
         {
             InitializeComponent();
+
+            var cs = System.Configuration.ConfigurationManager
+                .ConnectionStrings["DB"];
+
+            if (cs == null)
+            {
+                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
+                Application.Exit();
+                return;
+            }
+
+            connectionString = cs.ConnectionString;
 
             tablaClasificacion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tablaClasificacion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;

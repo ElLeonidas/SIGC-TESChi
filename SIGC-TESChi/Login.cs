@@ -1,5 +1,4 @@
-﻿using Microsoft.IdentityModel.Protocols;
-using System;
+﻿using System;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -22,8 +21,6 @@ namespace SIGC_TESChi
         // Límite de intentos
         private int intentosFallidos = 0;
         private const int MAX_INTENTOS = 2;
-
-
 
         public FrmLogin()
         {

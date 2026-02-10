@@ -18,9 +18,8 @@ namespace SIGC_TESChi
     public partial class CArchivos : UserControl
     {
 
-        // 🔹 Cadena de conexión (ajústala si tu instancia/localdb es diferente)
-        string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        /// Cadena de conexión
+        private string connectionString;
 
         DataTable dtImportado;
         DataTable dtValidos;
@@ -51,6 +50,18 @@ namespace SIGC_TESChi
         public CArchivos()
         {
             InitializeComponent();
+
+            var cs = System.Configuration.ConfigurationManager
+                .ConnectionStrings["DB"];
+
+            if (cs == null)
+            {
+                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
+                Application.Exit();
+                return;
+            }
+
+            connectionString = cs.ConnectionString;
 
             // Eventos
             Load += CArchivos_Load;

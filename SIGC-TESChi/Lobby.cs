@@ -11,7 +11,8 @@ namespace SIGC_TESChi
 {
     public partial class Lobby : UserControl
     {
-        private string connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        private string connectionString;
+
         private Timer alertaTimer;
         private ToolTip toolTip;
         private DataTable dtEventos;
@@ -20,6 +21,19 @@ namespace SIGC_TESChi
         public Lobby()
         {
             InitializeComponent();
+
+            var cs = System.Configuration.ConfigurationManager
+              .ConnectionStrings["DB"];
+
+            if (cs == null)
+            {
+                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
+                Application.Exit();
+                return;
+            }
+
+            connectionString = cs.ConnectionString;
+
 
             toolTip = new ToolTip
             {
