@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Protocols;
+using System;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Security.Cryptography;
 using System.Windows.Forms;
+using System.Configuration;
+
 
 
 namespace SIGC_TESChi
 {
+
+
+
     public partial class FrmLogin : Form
     {
         // Cadena de conexión
-        string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        private string connectionString;
 
         // Límite de intentos
         private int intentosFallidos = 0;
@@ -23,6 +28,19 @@ namespace SIGC_TESChi
         public FrmLogin()
         {
             InitializeComponent();
+
+            var cs = System.Configuration.ConfigurationManager
+                .ConnectionStrings["DB"];
+
+            if (cs == null)
+            {
+                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
+                Application.Exit();
+                return;
+            }
+
+            connectionString = cs.ConnectionString;
+
 
             diseñologin();
 

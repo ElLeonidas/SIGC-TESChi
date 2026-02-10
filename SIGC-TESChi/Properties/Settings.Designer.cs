@@ -22,50 +22,5 @@ namespace SIGC_TESChi.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\SGCTESCHI.mdf" +
-            ";Integrated Security=True;Connect Timeout=30")]
-        public string SGCTESCHIConnectionString {
-            get {
-                return ((string)(this["SGCTESCHIConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\comot\\OneDrive\\Docum" +
-            "entos\\Programa\\SGCTESCHI\\SGCTESCHI\\SGCTESCHI.mdf;Integrated Security=True;Connec" +
-            "t Timeout=30")]
-        public string SGCTESCHIConnectionString5 {
-            get {
-                return ((string)(this["SGCTESCHIConnectionString5"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\\DBCONTRALORIA" +
-            ".mdf;Integrated Security=True;Connect Timeout=30")]
-        public string Consulta_Usuarios {
-            get {
-                return ((string)(this["Consulta_Usuarios"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=DBCONTRALORIA;Integrated Secur" +
-            "ity=True;Encrypt=True")]
-        public string DBCONTRALORIAConnectionString {
-            get {
-                return ((string)(this["DBCONTRALORIAConnectionString"]));
-            }
-        }
     }
 }
