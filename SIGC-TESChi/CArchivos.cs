@@ -19,7 +19,7 @@ namespace SIGC_TESChi
     {
 
         /// Cadena de conexión
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         DataTable dtImportado;
         DataTable dtValidos;
@@ -50,18 +50,6 @@ namespace SIGC_TESChi
         public CArchivos()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
 
             // Eventos
             Load += CArchivos_Load;
@@ -123,6 +111,13 @@ namespace SIGC_TESChi
 
         private void CArchivos_Load(object sender, EventArgs e)
         {
+
+            using (var con = Db.CreateConnection())
+            {
+                con.Open();
+                // consultas reales aquí
+            }
+
             CargarArchivos();
             LlenarComboAÑo();
             Refrescar();
@@ -1235,9 +1230,7 @@ ORDER BY c.idControl DESC";
             cboSubSeccion.DataSource = null;
             cboSubSeccion.Items.Clear();
 
-            string cs = @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
-
-            using (SqlConnection cn = new SqlConnection(cs))
+            using (SqlConnection cn = new SqlConnection(Program.ConnectionString))
             {
                 cn.Open();
 
@@ -1262,7 +1255,8 @@ ORDER BY c.idControl DESC";
                         return;
                     }
 
-                    cboSubSeccion.DisplayMember = "nombreSubSeccion";
+                    // OJO: tus columnas se llaman idSubSeccion y dSubSeccion
+                    cboSubSeccion.DisplayMember = "dSubSeccion";
                     cboSubSeccion.ValueMember = "idSubSeccion";
                     cboSubSeccion.DataSource = dt;
 
@@ -1270,7 +1264,6 @@ ORDER BY c.idControl DESC";
                 }
             }
         }
-
 
 
         private void btnLimpiar_Click(object sender, EventArgs e)

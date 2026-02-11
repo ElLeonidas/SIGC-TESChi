@@ -11,25 +11,13 @@ namespace SIGC_TESChi
     public partial class UnidadA : UserControl
     {
         // Cadena de conexión
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         private ToolTip toolTip;
 
         public UnidadA()
         {
-            InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
+            InitializeComponent();           
 
             tablaUnidadA.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tablaUnidadA.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;

@@ -6,17 +6,14 @@ using System.Security.Cryptography;
 using System.Windows.Forms;
 using System.Configuration;
 
-
-
 namespace SIGC_TESChi
 {
 
-
-
     public partial class FrmLogin : Form
     {
-        // Cadena de conexión
-        private string connectionString;
+        // Siempre toma la cadena ya inicializada en Program.Main()
+        private string connectionString => Program.ConnectionString;
+
 
         // Límite de intentos
         private int intentosFallidos = 0;
@@ -25,20 +22,6 @@ namespace SIGC_TESChi
         public FrmLogin()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
-
-
             diseñologin();
 
             txtUsuario.Enter += (s, e) => pnlUsuario.Invalidate();

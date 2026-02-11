@@ -13,7 +13,7 @@ namespace SIGC_TESChi
 {
     public partial class Ubicaciones : UserControl
     {
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         private ToolTip toolTip;
 
@@ -21,17 +21,8 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
+            
 
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
 
             //tablaUbicaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             //tablaUbicaciones.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;

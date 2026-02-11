@@ -11,7 +11,7 @@
     <AssemblyName>SIGC-TESChi</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <NuGetPackageImportStamp>
@@ -69,6 +69,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>IconoSIGCR.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>SIGC_TESChi.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Azure.Core, Version=1.47.1.0, Culture=neutral, PublicKeyToken=92742159e12e44c8, processorArchitecture=MSIL">
@@ -303,6 +306,7 @@
     <Compile Include="Clasificacion.Designer.cs">
       <DependentUpon>Clasificacion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Db.cs" />
     <Compile Include="DetallesCambio.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -344,6 +348,7 @@
     <Compile Include="Lobby.Designer.cs">
       <DependentUpon>Lobby.cs</DependentUpon>
     </Compile>
+    <Compile Include="LocalDbBootstrap.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -499,6 +504,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DBCONTRALORIA.mdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="DBCONTRALORIA_log.ldf" />
     <Content Include="favicon.ico" />
     <Content Include="Icon.ico" />
     <Content Include="IconContraloria.ico" />

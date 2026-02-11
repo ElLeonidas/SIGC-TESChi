@@ -17,8 +17,8 @@ namespace SIGC_TESChi
 {
     public partial class Graficas : UserControl
     {
-        string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        string connectionString = Program.ConnectionString;
+
         private ToolTip toolTip;
 
         private PrintDocument printDocument1 = new PrintDocument();

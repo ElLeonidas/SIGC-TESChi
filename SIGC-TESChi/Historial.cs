@@ -10,7 +10,7 @@ namespace SIGC_TESChi
     public partial class Historial : UserControl
     {
         // Cadena de conexión
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         private ToolTip toolTip;
 
@@ -18,18 +18,6 @@ namespace SIGC_TESChi
         public Historial()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
 
             HistorialHelper.HistorialActualizado += RefrescarHistorial;
 
@@ -68,6 +56,13 @@ namespace SIGC_TESChi
 
         private void Historial_Load(object sender, EventArgs e)
         {
+
+            using (var con = Db.CreateConnection())
+            {
+                con.Open();
+                // consultas reales aquí
+            }
+
             dgvHistorial.AllowUserToAddRows = false;
             dgvHistorial.ReadOnly = true;
             dgvHistorial.AutoGenerateColumns = true;

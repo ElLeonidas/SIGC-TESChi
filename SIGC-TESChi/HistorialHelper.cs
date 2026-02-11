@@ -8,8 +8,7 @@ namespace SIGC_TESChi
     {
         public static event Action HistorialActualizado;
 
-        private static string connectionString =
-            @"Server=(localdb)\MSSQLLocalDB;Database=DBCONTRALORIA;Trusted_Connection=True;";
+        private static string connectionString = Program.ConnectionString;
 
         /// <summary>
         /// Registra un cambio en la tabla HistorialCambios.

@@ -11,7 +11,7 @@ namespace SIGC_TESChi
 {
     public partial class Lobby : UserControl
     {
-        private string connectionString;
+        private string connectionString => Program.ConnectionString;
 
         private Timer alertaTimer;
         private ToolTip toolTip;
@@ -21,19 +21,6 @@ namespace SIGC_TESChi
         public Lobby()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-              .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
-
 
             toolTip = new ToolTip
             {

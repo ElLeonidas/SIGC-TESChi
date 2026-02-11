@@ -11,25 +11,13 @@ namespace SIGC_TESChi
     public partial class Clasificacion : UserControl
     {
         // Cadena de conexión
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         private ToolTip toolTip;
 
         public Clasificacion()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
 
             tablaClasificacion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             tablaClasificacion.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -67,6 +55,13 @@ namespace SIGC_TESChi
 
         private void Clasificacion_Load(object sender, EventArgs e)
         {
+
+            using (var con = Db.CreateConnection())
+            {
+                con.Open();
+                // consultas reales aquí
+            }
+
             CargarClasificacion();
             AplicarTemaLobby();
 

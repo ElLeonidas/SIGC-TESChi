@@ -19,7 +19,7 @@ namespace SIGC_TESChi
     {
 
         // Cadena de conexión
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         private PrintDocument printDocument1 = new PrintDocument();
         private Bitmap bmpCaratula; // aquí guardaremos la imagen del panel
@@ -49,18 +49,7 @@ namespace SIGC_TESChi
         {
             InitializeComponent();
 
-            var cs = System.Configuration.ConfigurationManager
-                .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
-
+            
             this.AutoScroll = true;
 
             this.Width = 800;
@@ -215,6 +204,14 @@ namespace SIGC_TESChi
 
         private void CaratulaExpediente_Load(object sender, EventArgs e)
         {
+
+            using (var con = Db.CreateConnection())
+            {
+                con.Open();
+                // consultas reales aquí
+            }
+
+
             CargarSecciones();
             CargarSubsecciones();
             CargarCodigoUnidadAdministrativa();

@@ -14,23 +14,11 @@ namespace SIGC_TESChi
     {
         private ToolTip toolTip;
 
-        private string connectionString;
+        private static string connectionString => Program.ConnectionString;
 
         public RUsuarios()
         {
             InitializeComponent();
-
-            var cs = System.Configuration.ConfigurationManager
-              .ConnectionStrings["DB"];
-
-            if (cs == null)
-            {
-                MessageBox.Show("No se encontró la cadena 'DB' en app.config");
-                Application.Exit();
-                return;
-            }
-
-            connectionString = cs.ConnectionString;
 
 
             txtContrasena.UseSystemPasswordChar = true;

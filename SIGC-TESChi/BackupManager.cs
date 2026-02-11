@@ -6,20 +6,50 @@ using System.Linq;
 
 public static class BackupManager
 {
-    private static string NombreBD = "DBCONTRALORIA";
-    private static string RutaArchivosSistema = @"C:\SIGC_Archivos"; // AJUSTA SI ES NECESARIO
+    // =========================
+    // 🔹 CONFIG PORTABLE
+    // =========================
+
+    // Carpeta base portable del sistema (BD + archivos) en AppData
+    private static string RutaAppDataSistema =>
+        Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SIGC-TESChi"
+        );
+
+    // Rutas de BD portable (MDF/LDF) en AppData
+    private static string RutaMdf => Path.Combine(RutaAppDataSistema, "DBCONTRALORIA.mdf");
+
+    // OJO: el nombre del LDF a veces cambia; intentamos el estándar primero y si no existe buscamos cualquiera .ldf
+    private static string RutaLdfPreferida => Path.Combine(RutaAppDataSistema, "DBCONTRALORIA_log.ldf");
+
+    private static string ObtenerLdfReal()
+    {
+        if (File.Exists(RutaLdfPreferida))
+            return RutaLdfPreferida;
+
+        var ldf = Directory.Exists(RutaAppDataSistema)
+            ? Directory.GetFiles(RutaAppDataSistema, "*.ldf", SearchOption.TopDirectoryOnly).FirstOrDefault()
+            : null;
+
+        return ldf; // puede ser null y está bien
+    }
+
+    // Archivos del sistema (si guardas PDFs, imágenes, etc.)
+    // Antes: C:\SIGC_Archivos (NO portable)
+    // Ahora: AppData\SIGC-TESChi\Archivos
+    private static string RutaArchivosSistema =>
+        Path.Combine(RutaAppDataSistema, "Archivos");
 
     // =========================
-    // 🔹 RUTAS INTELIGENTES
+    // 🔹 RUTAS INTELIGENTES DE BACKUP
     // =========================
 
     private static string ObtenerRutaOneDrive()
     {
         string ruta = Environment.GetEnvironmentVariable("OneDrive");
-
         if (!string.IsNullOrEmpty(ruta) && Directory.Exists(ruta))
             return Path.Combine(ruta, "SIGC_Backups");
-
         return null;
     }
 
@@ -41,14 +71,16 @@ public static class BackupManager
         get
         {
             string oneDrive = ObtenerRutaOneDrive();
-            if (oneDrive != null)
-                return oneDrive;
+            if (oneDrive != null) return oneDrive;
 
             string googleDrive = ObtenerRutaGoogleDrive();
-            if (googleDrive != null)
-                return googleDrive;
+            if (googleDrive != null) return googleDrive;
 
-            return @"C:\SIGC_Backups";
+            // Fallback PORTABLE: Documentos
+            return Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                "SIGC_Backups"
+            );
         }
     }
 
@@ -65,10 +97,10 @@ public static class BackupManager
 
         string fecha = DateTime.Now.ToString("yyyyMMdd_HHmmss");
 
-        string bakBD = BackupBaseDatos(fecha);
+        string mdfBak = BackupBaseDatosPorArchivos(fecha);
         string carpetaArchivos = BackupArchivos(fecha);
 
-        ComprimirBackup(fecha, bakBD, carpetaArchivos);
+        ComprimirBackup(fecha, mdfBak, carpetaArchivos);
         LimpiarBackupsAntiguos(30);
     }
 
@@ -77,29 +109,41 @@ public static class BackupManager
         Directory.CreateDirectory(RutaBase);
         Directory.CreateDirectory(RutaBD);
         Directory.CreateDirectory(RutaArchivos);
+
+        // También aseguramos la carpeta del sistema (AppData)
+        Directory.CreateDirectory(RutaAppDataSistema);
+        Directory.CreateDirectory(RutaArchivosSistema);
     }
 
-    private static string BackupBaseDatos(string fecha)
+    // =========================
+    // 🔹 BACKUP BD (PORTABLE: MDF/LDF)
+    // =========================
+
+    private static string BackupBaseDatosPorArchivos(string fecha)
     {
-        string rutaBak = Path.Combine(RutaBD, $"DB_{fecha}.bak");
+        // Libera locks/pools por si hubo conexiones recientes
+        SqlConnection.ClearAllPools();
 
-        string sql = $@"
-            BACKUP DATABASE {NombreBD}
-            TO DISK = '{rutaBak}'
-            WITH INIT, FORMAT";
+        if (!File.Exists(RutaMdf))
+            throw new Exception("No se encontró el archivo de base de datos DBCONTRALORIA.mdf en AppData.");
 
-        using (SqlConnection cn = new SqlConnection(
-            @"Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;"))
+        string destinoMdf = Path.Combine(RutaBD, $"DB_{fecha}.mdf.bak");
+        File.Copy(RutaMdf, destinoMdf, overwrite: true);
+
+        // LDF opcional
+        string ldfReal = ObtenerLdfReal();
+        if (!string.IsNullOrEmpty(ldfReal) && File.Exists(ldfReal))
         {
-            cn.Open();
-            using (SqlCommand cmd = new SqlCommand(sql, cn))
-            {
-                cmd.ExecuteNonQuery();
-            }
+            string destinoLdf = Path.Combine(RutaBD, $"DB_{fecha}.ldf.bak");
+            File.Copy(ldfReal, destinoLdf, overwrite: true);
         }
 
-        return rutaBak;
+        return destinoMdf;
     }
+
+    // =========================
+    // 🔹 BACKUP ARCHIVOS (PORTABLE)
+    // =========================
 
     private static string BackupArchivos(string fecha)
     {
@@ -120,14 +164,27 @@ public static class BackupManager
         return destino;
     }
 
-    private static void ComprimirBackup(string fecha, string bakBD, string carpetaArchivos)
+    // =========================
+    // 🔹 ZIP FINAL
+    // =========================
+
+    private static void ComprimirBackup(string fecha, string mdfBak, string carpetaArchivos)
     {
         string zipFinal = Path.Combine(RutaBase, $"SIGC_Backup_{fecha}.zip");
 
+        if (File.Exists(zipFinal))
+            File.Delete(zipFinal);
+
         using (ZipArchive zip = ZipFile.Open(zipFinal, ZipArchiveMode.Create))
         {
-            zip.CreateEntryFromFile(bakBD, Path.GetFileName(bakBD));
+            // BD (mdf/ldf backup)
+            zip.CreateEntryFromFile(mdfBak, Path.GetFileName(mdfBak));
 
+            string ldfBak = mdfBak.Replace(".mdf.bak", ".ldf.bak");
+            if (File.Exists(ldfBak))
+                zip.CreateEntryFromFile(ldfBak, Path.GetFileName(ldfBak));
+
+            // Archivos del sistema
             if (Directory.Exists(carpetaArchivos))
             {
                 foreach (string archivo in Directory.GetFiles(
@@ -151,20 +208,22 @@ public static class BackupManager
         foreach (string zip in Directory.GetFiles(RutaBase, "*.zip"))
         {
             if (File.GetCreationTime(zip) < DateTime.Now.AddDays(-dias))
-            {
                 File.Delete(zip);
-            }
         }
     }
 
     // =========================
-    // 🔹 RESTAURAR BACKUP
+    // 🔹 RESTAURAR BACKUP (PORTABLE)
     // =========================
 
     public static void RestaurarBackup(string rutaZip)
     {
         if (!File.Exists(rutaZip))
             throw new Exception("El archivo de respaldo no existe.");
+
+        // Recomendación: restaurar con la app sin conexiones abiertas.
+        // Si lo haces desde la app, cierra conexiones y evita tener formularios que mantengan conexiones vivas.
+        SqlConnection.ClearAllPools();
 
         string temp = Path.Combine(Path.GetTempPath(), "SIGC_Restore");
 
@@ -175,46 +234,45 @@ public static class BackupManager
 
         ZipFile.ExtractToDirectory(rutaZip, temp);
 
-        string bak = Directory.GetFiles(temp, "*.bak", SearchOption.AllDirectories)
-                              .FirstOrDefault();
+        // Buscar MDF backup dentro del zip extraído
+        string mdfBak = Directory.GetFiles(temp, "*.mdf.bak", SearchOption.AllDirectories)
+                                 .FirstOrDefault();
 
-        if (bak == null)
-            throw new Exception("No se encontró archivo .bak en el respaldo.");
+        if (mdfBak == null)
+            throw new Exception("No se encontró archivo .mdf.bak en el respaldo.");
 
-        RestaurarBaseDatos(bak);
+        RestaurarBaseDatosPorArchivos(mdfBak);
 
+        // Restaurar archivos
         string carpetaArchivos = Path.Combine(temp, "Archivos");
         RestaurarArchivos(carpetaArchivos);
 
         Directory.Delete(temp, true);
     }
 
-    private static void RestaurarBaseDatos(string rutaBak)
+    private static void RestaurarBaseDatosPorArchivos(string rutaMdfBak)
     {
-        string sql = $@"
-            USE master;
-            ALTER DATABASE {NombreBD} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+        SqlConnection.ClearAllPools();
 
-            RESTORE DATABASE {NombreBD}
-            FROM DISK = '{rutaBak}'
-            WITH REPLACE;
+        Directory.CreateDirectory(RutaAppDataSistema);
 
-            ALTER DATABASE {NombreBD} SET MULTI_USER;";
+        // Si la app tiene conexiones abiertas al MDF, esto puede fallar.
+        // Lo ideal: restaurar cuando el sistema esté cerrado o desde un modo "mantenimiento".
+        File.Copy(rutaMdfBak, RutaMdf, overwrite: true);
 
-        using (SqlConnection cn = new SqlConnection(
-            @"Server=(localdb)\MSSQLLocalDB;Database=master;Trusted_Connection=True;"))
+        string rutaLdfBak = rutaMdfBak.Replace(".mdf.bak", ".ldf.bak");
+        if (File.Exists(rutaLdfBak))
         {
-            cn.Open();
-            using (SqlCommand cmd = new SqlCommand(sql, cn))
-            {
-                cmd.ExecuteNonQuery();
-            }
+            // Copiamos el LDF estándar; si el real tenía otro nombre, igual funcionará al re-attach.
+            File.Copy(rutaLdfBak, RutaLdfPreferida, overwrite: true);
         }
     }
 
     private static void RestaurarArchivos(string origen)
     {
         if (!Directory.Exists(origen)) return;
+
+        Directory.CreateDirectory(RutaArchivosSistema);
 
         foreach (string archivo in Directory.GetFiles(
                      origen, "*.*", SearchOption.AllDirectories))
@@ -225,3 +283,4 @@ public static class BackupManager
         }
     }
 }
+
