@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Text;
 using System.Windows.Forms;
+using System.IO;
 
 namespace SIGC_TESChi
 {
@@ -26,11 +28,11 @@ namespace SIGC_TESChi
             cargando = true;
 
             cmbTamaño.Items.AddRange(new object[]
-            {
-        "Pequeño",
-        "Normal",
-        "Grande"
-            });
+                {
+            "Pequeño",
+            "Normal",
+            "Grande"
+                });
             cmbTamaño.SelectedIndex = 1;
 
             CargarFuentes();
@@ -49,8 +51,6 @@ namespace SIGC_TESChi
             cmbFuentes.DataSource = FontManager.ObtenerTop10Fuentes();
         }
 
-
-
         private void cboxModoOscuro_CheckedChanged(object sender, EventArgs e)
         {
             ModoOscuroCambiado?.Invoke(cboxModoOscuro.Checked);
@@ -66,32 +66,34 @@ namespace SIGC_TESChi
             FuenteCambiada?.Invoke(cmbFuentes.SelectedItem.ToString());
         }
 
+
         private void btnBackup_Click(object sender, EventArgs e)
         {
             if (!Permisos.EsAdministrador)
             {
-                MessageBox.Show(
-                    "No tienes permisos para realizar respaldos.",
-                    "Acceso denegado",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Stop
-                );
+                MessageBox.Show("No tienes permisos para realizar respaldos.", "Acceso denegado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
             }
 
             try
             {
                 BackupManager.EjecutarBackupCompleto();
-                MessageBox.Show("Respaldo realizado correctamente ✔", "Backup");
+                var ruta = BackupManager.ObtenerRutaCarpetaBackups();
+
+                MessageBox.Show("Respaldo realizado correctamente ✔\n\nSe guardó en:\n" + ruta,
+                    "Backup", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void btnRestaurar_Click(object sender, EventArgs e)
         {
+
             if (!Permisos.EsAdministrador)
             {
                 MessageBox.Show(
@@ -103,32 +105,69 @@ namespace SIGC_TESChi
                 return;
             }
 
-            OpenFileDialog ofd = new OpenFileDialog
+            using (OpenFileDialog ofd = new OpenFileDialog
             {
                 Filter = "Respaldo SIGC (*.zip)|*.zip"
-            };
-
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-
-            DialogResult r = MessageBox.Show(
-                "⚠️ ESTA ACCIÓN SOBREESCRIBIRÁ TODA LA INFORMACIÓN.\n\n¿Deseas continuar?",
-                "Confirmar restauración",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
-
-            if (r != DialogResult.Yes)
-                return;
-
-            try
+            })
             {
-                BackupManager.RestaurarBackup(ofd.FileName);
-                MessageBox.Show("Restauración completada correctamente ✔", "Restore");
-                Application.Restart();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error al restaurar");
+                if (ofd.ShowDialog() != DialogResult.OK)
+                    return;
+
+                DialogResult r = MessageBox.Show(
+                    "⚠️ ESTA ACCIÓN SOBREESCRIBIRÁ TODA LA INFORMACIÓN.\n\n" +
+                    "El sistema se cerrará para restaurar el respaldo y se abrirá nuevamente.\n\n" +
+                    "¿Deseas continuar?",
+                    "Confirmar restauración",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (r != DialogResult.Yes)
+                    return;
+
+                try
+                {
+                    // Nombre del proceso principal (sin .exe)
+                    // Ajusta si tu exe se llama diferente
+                    string procName = Path.GetFileNameWithoutExtension(Application.ExecutablePath);
+
+                    // Ruta del exe principal
+                    string exePath = Application.ExecutablePath;
+
+                    // RestoreTool debe estar junto al exe (en la carpeta instalada / bin)
+                    string restoreToolPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SIGC.RestoreTool.exe");
+
+                    MessageBox.Show("BaseDirectory:\n" + AppDomain.CurrentDomain.BaseDirectory +
+                     "\n\nExecutablePath:\n" + Application.ExecutablePath);
+
+
+                    if (!File.Exists(restoreToolPath))
+                    {
+                        MessageBox.Show(
+                            "No se encontró SIGC.RestoreTool.exe junto a la aplicación.\n" +
+                            "Asegúrate de incluirlo en el instalador/publicación.",
+                            "Falta componente",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    // Lanzar restaurador
+                    var psi = new ProcessStartInfo
+                    {
+                        FileName = restoreToolPath,
+                        Arguments = $"\"{ofd.FileName}\" \"{procName}\" \"{exePath}\" 30000",
+                        UseShellExecute = true
+                    };
+
+                    Process.Start(psi);
+
+                    // Cerrar la app para liberar MDF/LDF
+                    Environment.Exit(0);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error al iniciar restauración");
+                }
             }
         }
 

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+# Visual Studio Version 18
+VisualStudioVersion = 18.3.11505.172 d18.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIGC-TESChi", "SIGC-TESChi\SIGC-TESChi.csproj", "{59F56E2C-09C9-48B4-9F68-6A5DA48ABEEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIGC.RestoreTool", "SIGC.RestoreTool\SIGC.RestoreTool.csproj", "{BA022481-86FB-49E4-A903-D403E7291F19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +17,15 @@ Global
 		{59F56E2C-09C9-48B4-9F68-6A5DA48ABEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59F56E2C-09C9-48B4-9F68-6A5DA48ABEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59F56E2C-09C9-48B4-9F68-6A5DA48ABEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA022481-86FB-49E4-A903-D403E7291F19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA022481-86FB-49E4-A903-D403E7291F19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA022481-86FB-49E4-A903-D403E7291F19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA022481-86FB-49E4-A903-D403E7291F19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {87EC0731-7DDE-4767-9CB9-83E00C94C981}
 	EndGlobalSection
 EndGlobal
